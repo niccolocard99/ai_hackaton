@@ -22,9 +22,12 @@ cd JAHN/pipeline
 ## How a round feeds the next
 
 1. Round r's new survivors are ranked **together with the previous round's selected windows** on their absolute
-   scores (elitism), so the selected set cannot get worse under the configured scorers.
-2. The top `--select` are chosen walking the ranking best-first, keeping a window only if it differs from every one
-   already kept in >= 3 positions and no single substitution exceeds 25% of the list.
+   scores (elitism). Only the single best candidate is guaranteed not to get worse: the selected set as a whole can
+   shift, because a child within 2 substitutions of an elite displaces it when it scores better.
+2. Selection walks the best `--pool-frac` (default 10%) of that ranking best-first and keeps a window only if it
+   differs from every one already kept in >= 3 positions and no single substitution appears in more than 25% of the
+   list that is **returned** (the cap is re-derived until the list and its cap agree). It returns **fewer** than
+   `--select` rather than pad the list with mid-pool candidates or let one substitution dominate; the log says so.
 3. Those windows become `parents` for the next generator: residue, mutated-position and substitution-count
    distributions are pulled towards them (`eta`), and children come from `sample` / `mutate` / `cross`.
 4. Every window ever generated is `history` and is never proposed again.
@@ -53,7 +56,11 @@ Read `NICCOLO/eda/AGENT_GUIDE.md` sections 3-5 before trusting a ranking.
 - Both models are linear in a one-hot encoding. Their optimum under the constraints is nearly reachable in one shot,
   so extra rounds mostly concentrate and diversify around it. The loop earns its keep when you add scorers that are
   not additive (thermostability, expression, anything with feedback from the lab) to the config.
-- `pred_log10_kd` is a ranking, not a KD; it compresses at the tight end.
+- `pred_log10_kd` is a ranking, not a KD; it compresses at the tight end. **Predictions beyond the measured range are
+  extrapolation.** In the legal band (>= 4 substitutions) 658 variants were measured, 131 gave a KD, the tightest is
+  0.095 nM (log10 -1.02) and only 9 are below 1 nM. A predicted log10 KD below -1.02 is tighter than anything measured
+  there. Because the loop selects for the model's best scores, the top of its list is the part most likely to be
+  model error rather than binding.
 - Thermostability and epitope preservation, two of the three judged properties, are **not scored**. Nor is expression.
 - A window that passes `window_novelty` and `track_check` here is a prediction of eligibility; abguard's own
   assignment at submission time is the real one.

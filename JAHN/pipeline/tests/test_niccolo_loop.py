@@ -86,23 +86,72 @@ def test_window_index_matches_brute_force_hamming():
 
 
 # ----------------------------------------------------------------------------- selection
+def _ranked(windows):
+    rows = [{"sequence_id": f"c{i}", "heavy_sequence": HEAVY[:98] + w + HEAVY[108:]} for i, w in enumerate(windows)]
+    return pl.DataFrame(rows).with_row_index("rank", offset=1)
+
+
 def test_select_diverse_enforces_pairwise_distance_and_substitution_cap():
     rng = np.random.default_rng(2)
-    rows = []
-    for i in range(400):
+    windows = []
+    for _ in range(400):
         w = list(WT)
         for p in rng.choice(10, size=5, replace=False):
             w[p] = rng.choice(list("ADEKRST"))
-        rows.append({"sequence_id": f"c{i}", "heavy_sequence": HEAVY[:98] + "".join(w) + HEAVY[108:]})
-    ranked = pl.DataFrame(rows).with_row_index("rank", offset=1)
-    sel = select_diverse(ranked, PARENT, 25, min_pair_hamming=3, max_sub_share=0.25)
+        windows.append("".join(w))
+    sel = select_diverse(_ranked(windows), PARENT, 25, min_pair_hamming=3, max_sub_share=0.25, pool_frac=1.0)
     wins = _wins(sel)
     assert 5 <= len(wins) <= 25 and sel["sequence_id"][0] == "c0"
     assert sel["rank"].to_list() == sorted(sel["rank"].to_list())
     assert min(sum(a != b for a, b in zip(x, y)) for i, x in enumerate(wins) for y in wins[i + 1:]) >= 3
     from collections import Counter
     cnt = Counter((p, w[p]) for w in wins for p in range(10) if w[p] != WT[p])
-    assert max(cnt.values()) <= max(2, int(np.ceil(0.25 * len(wins))))
+    assert max(cnt.values()) <= max(2, int(np.ceil(0.25 * len(wins)))), "the cap is a share of the RETURNED list"
+
+
+def test_select_diverse_never_pads_the_list_from_the_middle_of_the_pool():
+    """Regression: with a cap that grew with the list, a pool whose strong candidates share a few favoured residues
+    was walked down to its median (53 of 60 picks came from pool ranks ~3250 of 6556). The top slice here is one tight
+    cluster, so at most one of it can be kept; the 450 diverse mid-pool candidates must NOT be used to fill the list."""
+    rng = np.random.default_rng(3)
+    base = list(WT)
+    for p, a in ((1, "K"), (2, "S"), (3, "E"), (7, "E"), (9, "I")):
+        base[p] = a
+    cluster = []
+    for _ in range(50):                                            # each differs from the base by <= 1 edit -> pairwise <= 2
+        w = list(base)
+        w[rng.integers(0, 10)] = rng.choice(list("ADEKRST"))
+        cluster.append("".join(w))
+    rest = []
+    for _ in range(450):
+        w = list(WT)
+        for p in rng.choice(10, size=5, replace=False):
+            w[p] = rng.choice(list("ACDEFGHIKLMNPQRSTVWY"))
+        rest.append("".join(w))
+    sel = select_diverse(_ranked(cluster + rest), PARENT, 25, min_pair_hamming=3, pool_frac=0.10)
+    assert sel.height == 1 and sel["rank"][0] == 1, "only the best of the tight top cluster may be kept"
+    padded = select_diverse(_ranked(cluster + rest), PARENT, 25, min_pair_hamming=3, pool_frac=1.0)
+    assert padded.height > 10 and padded["rank"].max() > 50, "sanity: with the pool limit off, the walk does reach the mid-pool"
+
+
+def test_select_diverse_cap_is_a_share_of_the_list_that_comes_back():
+    """Regression: with the cap tied to the requested size (25% of 60 = 15), 15 of a 17-long list shared A106E. The
+    pool here has 40 strong candidates that all share one substitution and are otherwise mutually far apart, and
+    nothing else good: the list must come back short, with that substitution in at most a quarter of it."""
+    rng = np.random.default_rng(5)
+    shared = []
+    for i in range(40):                                  # same G103K, other positions differ in every member
+        w = list(WT)
+        w[3] = "K"
+        pos = [p for p in range(10) if p != 3]
+        for p in rng.choice(pos, size=3, replace=False):
+            w[p] = rng.choice(list("ADEFHILMNQRSTVWY"))
+        shared.append("".join(w))
+    sel = select_diverse(_ranked(shared), PARENT, 60, min_pair_hamming=3, max_sub_share=0.25, pool_frac=1.0)
+    wins = _wins(sel)
+    n_shared = sum(w[3] == "K" for w in wins)
+    assert 1 <= len(wins) < 20, "a homogeneous pool must give a short list"
+    assert n_shared <= max(2, int(np.ceil(0.25 * len(wins)))), (n_shared, len(wins))
 
 
 # ----------------------------------------------------------------------------- generator
@@ -236,12 +285,12 @@ def test_two_rounds_end_to_end_learn_from_each_other(data_dir, repo_root, tmp_pa
            "scorers": [{"name": "niccolo_prefilter"}],
            "aggregator": {"name": "borda", "params": {"columns": ["score__pred_log10_kd"]}}}
     out = tmp_path / "loop"
-    summ = iterate.run_loop(cfg, rounds=2, n_select=15, out_dir=out, log=lambda m: None)
+    summ = iterate.run_loop(cfg, rounds=2, n_select=15, out_dir=out, pool_frac=0.3, log=lambda m: None)
     assert [r["round"] for r in summ["rounds"]] == [0, 1] and "stopped" not in summ
     g1 = pl.read_parquet(out / "round_01" / "01_generated.parquet")
     assert {"scored_evolution:mutate", "scored_evolution:cross"} <= set(g1["origin"].to_list()), "round 1 must use the elites"
     s0, s1 = (pl.read_parquet(out / f"round_0{r}" / "selected.parquet") for r in (0, 1))
-    assert s1.height >= 5 and s1["sequence_id"].n_unique() == s1.height
+    assert s1.height >= 3 and s1["sequence_id"].n_unique() == s1.height
     assert s1["score__pred_log10_kd"].min() <= s0["score__pred_log10_kd"].min() + 1e-12      # elitism: never worse
     assert (s1["score__p_binder"] >= 0.8).all() and set(s1["info__track"]) == {"novel"}
     parent = data.load_parent(cfg["parent"], data_dir)

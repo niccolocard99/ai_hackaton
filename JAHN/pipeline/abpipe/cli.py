@@ -62,7 +62,7 @@ def cmd_stage(args) -> int:
 def cmd_iterate(args) -> int:
     from abpipe import iterate
     summary = iterate.run_loop(args.config, rounds=args.rounds, n_select=args.select, out_dir=args.out,
-                               seed=args.seed, n=args.n, propose_next=args.propose_next)
+                               seed=args.seed, n=args.n, pool_frac=args.pool_frac, propose_next=args.propose_next)
     return 1 if summary.get("stopped") else 0
 
 
@@ -93,6 +93,8 @@ def main(argv=None) -> int:
     ip.add_argument("--rounds", type=int, default=3)
     ip.add_argument("--select", type=int, default=60, help="windows kept (and fed forward) per round")
     ip.add_argument("--out", default="runs/loop")
+    ip.add_argument("--pool-frac", type=float, default=0.10,
+                    help="selection looks only at the best fraction of the ranking (fewer rows are returned rather than padding)")
     ip.add_argument("--seed", type=int)
     ip.add_argument("--n", type=int, help="override n for every generator (smoke tests)")
     ip.add_argument("--propose-next", action="store_true",
