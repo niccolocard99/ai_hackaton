@@ -9,7 +9,7 @@ from pathlib import Path
 import yaml
 
 TOP_KEYS = {"run", "data_dir", "repo_root", "plugins", "parent", "generators", "generator",
-            "filters", "scorers", "aggregator"}
+            "filters", "scorers", "aggregator", "validators", "validate_top"}
 RUN_KEYS = {"name", "out_dir", "cache_dir", "seed"}
 
 
@@ -39,6 +39,8 @@ class Config:
     filters: list
     scorers: list
     aggregator: ModuleSpec
+    validators: list          # filters that run AFTER ranking, on the top `validate_top`
+    validate_top: int | None  # None: validate the whole ranked list
     raw: dict
 
 
@@ -92,6 +94,9 @@ def load(source, base_dir: Path | None = None) -> Config:
         raise ConfigError("at least one generator is required")
     if "aggregator" not in raw:
         raise ConfigError("`aggregator` is required")
+    validate_top = raw.get("validate_top")
+    if validate_top is not None and (not isinstance(validate_top, int) or validate_top <= 0):
+        raise ConfigError("`validate_top` must be a positive integer (omit it to validate the whole list)")
     out_dir = Path(run.get("out_dir", "runs"))
     repo_root = raw.get("repo_root")
     if repo_root is None:
@@ -106,4 +111,6 @@ def load(source, base_dir: Path | None = None) -> Config:
         generators=[_spec(g, "generators", kind="generator") for g in gens],
         filters=[_spec(f, "filters", kind="filter") for f in raw.get("filters") or []],
         scorers=[_spec(s, "scorers", kind="scorer") for s in raw.get("scorers") or []],
-        aggregator=_spec(raw["aggregator"], "aggregator", kind="aggregator"), raw=raw)
+        aggregator=_spec(raw["aggregator"], "aggregator", kind="aggregator"),
+        validators=[_spec(v, "validators", kind="filter") for v in raw.get("validators") or []],
+        validate_top=validate_top, raw=raw)

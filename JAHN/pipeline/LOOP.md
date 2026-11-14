@@ -10,9 +10,10 @@ cd JAHN/pipeline
 | Stage | Module | What it does |
 |---|---|---|
 | generate | `scored_evolution` | Proposes CDRH3 windows. Prior from the classifier and ranker weights plus FACS 'high' enrichment; from round 1 it also learns from the previous round's selected windows. |
-| filter | `framework_integrity`, `window_novelty`, `prefilter_gate`, `abguard_hard`, `dedupe`, `new_liabilities`, `track_check` | Cheap first. `window_novelty` is an exact vectorised pre-screen of the ">2 mutations from every provided window" rule; `prefilter_gate` is step 2 of Niccolo's cascade; `track_check` is BASE VALIDATION. |
+| filter | `framework_integrity`, `window_novelty`, `prefilter_gate`, `dedupe` | Cheap first, and all of it O(1) per design. `window_novelty` is an exact vectorised pre-screen of the ">2 mutations from every provided window" rule; `prefilter_gate` is step 2 of Niccolo's cascade. |
 | score | `niccolo_prefilter` | `score__p_binder`, `score__pred_log10_kd` from `NICCOLO/eda/prefilter.py`, unmodified. |
 | rank | `borda` on `score__pred_log10_kd` | Gate on p_binder, rank on predicted KD (`NICCOLO/eda/AGENT_GUIDE.md`, section 2). |
+| validate | `abguard_hard`, `new_liabilities`, `track_check` | BASE VALIDATION, **after ranking**, on the top `validate_top` (2000) only. abguard is authoritative but expensive — 37 designs/s with the novelty cross join, ~7.5 h per 1M — and only the top of the list can be submitted. Selection is restricted to its survivors, so this is a reordering, not a weakening (`tests/test_validate_stage.py`). See `FAST_NOVELTY.md`. |
 
 ## How a round feeds the next
 
@@ -30,7 +31,8 @@ cd JAHN/pipeline
 Re-running with a larger `--rounds` resumes after the last finished round. `--propose-next` additionally writes
 `round_NN/proposals.csv`: the next round's candidates after generation and all filters, not yet scored.
 
-Outputs per round: `selected.csv` (scored, ranked, diversified), `ranked.csv`, `02_rejections.parquet` (why each
+Outputs per round: `selected.csv` (scored, ranked, diversified), `ranked.csv`, `validated.csv` (the top of the
+ranked list that cleared BASE VALIDATION), `02_rejections.parquet` and `05_validate_rejections.parquet` (why each
 candidate was dropped), `manifest.json`. `loop_summary.json` has the per-round funnel and score statistics.
 
 ## Setup this needs

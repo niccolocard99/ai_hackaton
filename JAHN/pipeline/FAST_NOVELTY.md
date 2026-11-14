@@ -72,7 +72,53 @@ Reference: the bundled 610,109 loops. Queries: 1,000,000 trastuzumab CDRH3 varia
 at distance 0 from a known loop (literal prior art) and 11,771 at distance 1 — 12,088 that
 the official rule rejects.
 
-## 4. What is verified, and what is not
+## 4. The other half: abguard runs after ranking
+
+Speeding novelty up left numbering as the top cost (~0.7 ms/design, ~60% of what remained).
+The fix there is not a faster algorithm but a better place in the funnel.
+
+abguard is the *authoritative* gate, but only the top of the ranked list can ever be
+submitted — 20 designs at most, of which 4 are guaranteed to be tested. Numbering 360,000
+survivors to submit 20 is work thrown away. So the abguard modules moved out of `filters`
+and into a new `validators` stage that runs **after `rank`**, capped by `validate_top`:
+
+```yaml
+filters:                 # O(1) per design, runs on everything
+  - framework_integrity
+  - window_novelty
+  - prefilter_gate
+  - dedupe
+scorers:
+  - niccolo_prefilter
+validators:              # authoritative and expensive, after ranking
+  - abguard_hard
+  - new_liabilities
+  - track_check
+validate_top: 2000
+```
+
+**This is a reordering, not a weakening.** The one real hazard is that `abpipe.iterate`
+picks its elites from `03_scored.parquet`, which is *upstream* of the validate stage —
+so without care, designs abguard rejects would seed the next round and reach
+`selected.csv` with no symptom until submission. `iterate` now restricts selection to
+validate survivors, and `tests/test_validate_stage.py::test_the_loop_never_selects_a_design_that_failed_validation`
+fails if that is ever undone (it was written first, and did fail).
+
+Effect on a 1M screen, using the measured per-stage rates:
+
+| | abguard in `filters` | abguard in `validators` |
+|---|---|---|
+| designs numbered | ~359,000 (the gate survivors) | **2,000** |
+| numbering time | ~4 min | **~1.4 s** |
+| novelty time (patched) | ~2 s | ~0.01 s |
+
+Combined with §2–3, the 1M screen goes from ~7.6 h to **~2.5 min**, and what dominates is
+now generation — which is the thing actually producing candidates.
+
+Raise `validate_top` if validation rejects so much that fewer than `--select` designs
+survive; the round log and `manifest.json` report `rows_in` and `rows_out` for the stage.
+
+## 5. What is verified, and what is not
 
 **Verified** — `tests/test_novelty_index.py`, 14 tests, all passing (5 min):
 - Exact agreement with brute-force rapidfuzz Levenshtein over the **full real reference**
@@ -94,7 +140,7 @@ ABPIPE_DATA_DIR=~/hackathon-team-3/apheris/hackathon-data POLARS_MAX_THREADS=4 \
   nice -n 19 ~/.venvs/abpipe/bin/python -m pytest tests/test_abguard_fast.py -q
 ```
 
-## 5. Limits (do not read past these)
+## 6. Limits (do not read past these)
 
 - **Distances saturate at the cap.** Built at `max_distance = max(MUTATIONS_REQUIRED) = 3`,
   every *gate* comparison is exact and so is every *rejection message* (a failing design is

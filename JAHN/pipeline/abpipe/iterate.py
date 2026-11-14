@@ -156,6 +156,13 @@ def run_loop(config_path, rounds: int = 3, n_select: int = 60, out_dir="runs/loo
             summary["stopped"] = f"{name}: {man['stopped']}"
             break
         scored = pl.read_parquet(rd / "03_scored.parquet")
+        if cfg.validators:
+            # `03_scored` is upstream of the validate stage, which runs after ranking so
+            # the expensive gate only sees the top of the list. Selection must still never
+            # promote a design that gate rejected -- it would seed the next round and reach
+            # selected.csv with no symptom until submission -- so restrict to its survivors.
+            validated = pl.read_parquet(rd / "05_validated.parquet")["sequence_id"].to_list()
+            scored = scored.filter(pl.col("sequence_id").is_in(validated))
         directions = json.loads((rd / "03_directions.json").read_text())
         ctx = runner.build_context(cfg)
         agg = registry.get("aggregator", cfg.aggregator.name)(**cfg.aggregator.params)

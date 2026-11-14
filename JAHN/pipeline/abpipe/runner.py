@@ -23,7 +23,7 @@ from abpipe import registry, schema
 from abpipe.base import INFO, SCORE, Context
 from abpipe.config import Config
 
-STAGES = ("generate", "filter", "score", "rank")
+STAGES = ("generate", "filter", "score", "rank", "validate")
 _KEY_COLS = ["sequence_id", "kind", "heavy_sequence", "light_sequence"]
 
 
@@ -123,12 +123,12 @@ def _check_filter_result(res: pl.DataFrame, df: pl.DataFrame, name: str) -> None
         raise ValueError(f"filter {name}: must return exactly one row for every input sequence_id")
 
 
-def stage_filter(cfg: Config, ctx: Context, df: pl.DataFrame, log=_log):
+def stage_filter(cfg: Config, ctx: Context, df: pl.DataFrame, log=_log, specs=None, label="filter"):
     rejections, entries, stopped = [], [], None
-    for spec in cfg.filters:
+    for spec in (cfg.filters if specs is None else specs):
         flt = registry.get("filter", spec.name)(**spec.params)
         t0, rows_in = time.time(), df.height
-        parts = {"stage": "filter", "name": spec.name, "version": flt.version, "params": spec.params,
+        parts = {"stage": label, "name": spec.name, "version": flt.version, "params": spec.params,
                  "input": schema.content_hash(df, _KEY_COLS), "parent": _parent_key(ctx)}
         res, cached = _cached(ctx, parts, lambda: flt.check(df, ctx))
         _check_filter_result(res, df, spec.name)
@@ -151,7 +151,7 @@ def stage_filter(cfg: Config, ctx: Context, df: pl.DataFrame, log=_log):
                 res.select("sequence_id", pl.col("reason").alias(flag), *info), on="sequence_id", how="left")
             n_fail = res.filter(pl.col("reason").is_not_null()).height
         entries.append(_entry(spec, flt, df.height, t0, cached, rows_in=rows_in, failed=n_fail, on_fail=spec.on_fail))
-        log(f"  filter    {spec.name:<24} {rows_in:>7} -> {df.height:>7}  ({n_fail} {'dropped' if spec.on_fail == 'drop' else 'flagged'}){'  (cached)' if cached else ''}")
+        log(f"  {label:<9} {spec.name:<24} {rows_in:>7} -> {df.height:>7}  ({n_fail} {'dropped' if spec.on_fail == 'drop' else 'flagged'}){'  (cached)' if cached else ''}")
         if df.height == 0:
             stopped = spec.name
             break
@@ -209,6 +209,12 @@ def _rej_summary(rej: pl.DataFrame) -> dict:
     return out
 
 
+def _write_table(df: pl.DataFrame, rd, name: str) -> None:
+    """A CSV companion for a stage output, dropping nested columns CSV cannot hold."""
+    scalar = [c for c, t in df.schema.items() if not isinstance(t, (pl.List, pl.Struct, pl.Array))]
+    df.select(scalar).write_csv(rd / f"{name}.csv")
+
+
 def _write_ranked(ranked: pl.DataFrame, rd) -> None:
     ranked.write_parquet(rd / "04_ranked.parquet")
     scalar = [c for c, t in ranked.schema.items() if not isinstance(t, (pl.List, pl.Struct, pl.Array))]
@@ -251,6 +257,23 @@ def run(cfg: Config, stages=STAGES, log=_log) -> dict:
             ranked, entries = stage_rank(cfg, ctx, df, directions, log)
             _write_ranked(ranked, rd)
             man["stages"]["rank"] = {"modules": entries, "rows_out": ranked.height, "config_sha256": cfg_sha}
+        if "validate" in stages and cfg.validators:
+            # The expensive gate runs last, on the top of the ranked list only: abguard
+            # costs ~0.7 ms/design to number and the novelty cross join 26 ms/design
+            # unpatched, and only the top of the list can ever be submitted.
+            ranked = pl.read_parquet(rd / "04_ranked.parquet")
+            top = ranked.head(cfg.validate_top) if cfg.validate_top else ranked
+            kept, rej, entries, stopped = stage_filter(cfg, ctx, top, log,
+                                                       specs=cfg.validators, label="validate")
+            kept = kept.sort("rank") if "rank" in kept.columns else kept
+            kept.write_parquet(rd / "05_validated.parquet")
+            rej.write_parquet(rd / "05_validate_rejections.parquet")
+            _write_table(kept, rd, "validated")
+            man["stages"]["validate"] = {"modules": entries, "rows_in": top.height, "rows_out": kept.height,
+                                         "validate_top": cfg.validate_top,
+                                         "rejections": _rej_summary(rej), "config_sha256": cfg_sha}
+            if stopped:
+                raise PipelineEmpty(f"every validated candidate was rejected by {stopped!r}")
     except PipelineEmpty as e:
         man["stopped"] = str(e)
         log(f"  STOP      {e}")
