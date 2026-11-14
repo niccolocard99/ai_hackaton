@@ -35,6 +35,9 @@ cd JAHN/pipeline
    - `min_dist == 3` (novelty) — more than 2 substitutions from every provided window
    - `min_pair_hamming >= 3` — the same rule inside the selected list
    - `identity_max <= 0.68` / `cdrh3_dist_min >= 3` — margins inside the official de novo gate
+   Loop knobs: `select`, `min_pair_hamming`, `max_sub_share`, `pool_frac` (how deep into the ranking
+   the selection may walk — jahn's first-full-run fix: a short selection means the pool top is too
+   mutually similar, and the walk must widen rather than pad the list).
 3. **Stop** if the deadline cannot fit another measured round, the disk is < 2 GB, or (rules
    policy) the primary score has plateaued with every exploration lever at its cap.
 4. **Run** the round: ordinary `runner.run` stages into `round_NN/`, cached per module; survivors
@@ -47,9 +50,10 @@ cd JAHN/pipeline
 
 - **rules** (default, deterministic): starved funnel → bigger batch (+relaxed `min_p_binder` if
   nothing survived); flooded funnel under time pressure → smaller batch; rich region with time →
-  larger `select`; crowding (low pairwise Hamming) → more fresh samples, weaker elite pull;
-  plateau (no score improvement and no new blood for `patience` rounds) → explore harder
-  (temperature up, eta down, wider band), and stop as *converged* when every lever is capped.
+  larger `select`; selection itself coming back short → widen `pool_frac`; crowding (low pairwise
+  Hamming) → more fresh samples, weaker elite pull; plateau (no score improvement and no new blood
+  for `patience` rounds) → explore harder (temperature up, eta down, wider band), and stop as
+  *converged* when every lever is capped.
 - **agent** (`--policy agent`, default command `claude -p`): the same state digest plus the
   allowlist is sent to an external LLM agent, which answers with a JSON patch **through the same
   validator**. Garbage, timeouts, or out-of-bounds answers fall back to the rules decision, and the

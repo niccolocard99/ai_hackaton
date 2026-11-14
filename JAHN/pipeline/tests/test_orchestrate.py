@@ -65,7 +65,7 @@ def toy_cfg(tmp_path, plugin, *, n=8, rounds=None):
     return raw
 
 
-BASE_STATE = {"loop": {"select": 60, "min_pair_hamming": 3, "max_sub_share": 0.25},
+BASE_STATE = {"loop": {"select": 60, "min_pair_hamming": 3, "max_sub_share": 0.25, "pool_frac": 0.10},
               "effective": {"scored_evolution": {"n": 20000, "min_subs": 4, "max_subs": 8, "eta": 0.5,
                                                 "temperature": 1.0, "frac_sample": 0.4},
                             "prefilter_gate": {"min_p_binder": 0.8}},
@@ -161,6 +161,14 @@ def test_diversity_collapse_pulls_towards_fresh_samples():
     d = rules_decision(state(rounds=hist))
     assert d.patch["modules"]["scored_evolution"]["frac_sample"] == 0.55
     assert d.patch["modules"]["scored_evolution"]["eta"] == 0.4
+
+
+def test_short_selection_widens_the_pool_walk():
+    hist = [{"round": 0, "survivors": 600, "selected": 41, "new_in_selected": 5,
+             "selected_medians": {"score__pred_log10_kd": 0.5}, "mean_pairwise_hamming": 6.0}]
+    d = rules_decision(state(rounds=hist))
+    assert d.patch["loop"]["pool_frac"] == 0.15
+    assert any("came back short" in r for r in d.reasoning)
 
 
 # --------------------------------------------------------------------- agent policy

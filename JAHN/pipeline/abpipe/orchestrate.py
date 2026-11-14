@@ -200,7 +200,7 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
     pol = policymod.make_policy(policy_kind or o.get("policy", "rules"), agent_cmd or o.get("agent_cmd"))
     seed0 = seed if seed is not None else base.seed
     pcol, pdir = _primary(base, primary or o.get("primary"))
-    lp = {"select": select, "min_pair_hamming": 3, "max_sub_share": 0.25}
+    lp = {"select": select, "min_pair_hamming": 3, "max_sub_share": 0.25, "pool_frac": 0.10}
     loop_dir = Path(out_dir)
     loop_dir.mkdir(parents=True, exist_ok=True)
     state_path, jsonl_path, md_path = loop_dir / "orchestration.json", loop_dir / "decisions.jsonl", loop_dir / "DECISIONS.md"
@@ -287,7 +287,8 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
         pool = scored if prev is None else pl.concat([_strip_rank(prev), scored], how="diagonal_relaxed")
         ranked = agg.combine(pool, directions, ctx)
         if ctx.parent is not None:
-            sel = select_diverse(ranked, ctx.parent, lp["select"], lp["min_pair_hamming"], lp["max_sub_share"])
+            sel = select_diverse(ranked, ctx.parent, lp["select"], lp["min_pair_hamming"],
+                                 lp["max_sub_share"], lp["pool_frac"])
         else:
             sel = select_generic_diverse(ranked, lp["select"], lp["min_pair_hamming"])
         carried = int(sel["sequence_id"].is_in(prev["sequence_id"].to_list()).sum()) if prev is not None else 0
@@ -296,6 +297,7 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
         (rd / "loop_round.json").write_text(json.dumps({"round": r, "config_sha256": cfg_sha, "select": lp["select"],
                                                          "min_pair_hamming": lp["min_pair_hamming"],
                                                          "max_sub_share": lp["max_sub_share"],
+                                                         "pool_frac": lp["pool_frac"],
                                                          "patch_applied": decision.patch}))
         if ctx.parent is not None:
             st = _round_stats(man, sel, scored, ctx.parent, pool.height, carried)

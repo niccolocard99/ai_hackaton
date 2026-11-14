@@ -22,6 +22,7 @@ LOOP_BOUNDS = {
     "select": (int, 10, 200),
     "min_pair_hamming": (int, 3, 5),          # floor 3: the >2-mutations-from-provided rule
     "max_sub_share": (float, 0.05, 0.5),
+    "pool_frac": (float, 0.02, 0.5),          # how deep into the ranking selection may walk
 }
 
 MODULE_BOUNDS = {
@@ -226,6 +227,14 @@ def rules_decision(state: dict) -> Decision:
         if sel2 > select:
             loop["select"] = sel2
             reasoning.append(f"rich region ({last['survivors']} survivors) with time to spare; select {select} -> {sel2}")
+
+    sel_n = last.get("selected")
+    if sel_n is not None and sel_n < select and last["survivors"] >= select:
+        pf = round(_clamp(float(lp.get("pool_frac", 0.10)) * 1.5, *LOOP_BOUNDS["pool_frac"][1:]), 4)
+        if pf > lp.get("pool_frac", 0.10):
+            loop["pool_frac"] = pf
+            reasoning.append(f"selection itself came back short ({last['selected']} of {select}): the top of the "
+                             f"pool is too mutually similar; widen the walk to the best {pf:.0%} of the ranking")
 
     mph = last.get("mean_pairwise_hamming")
     if mph is not None and mph <= lp["min_pair_hamming"] + 0.5:
