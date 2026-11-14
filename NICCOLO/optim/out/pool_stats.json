@@ -1,0 +1,40 @@
+{
+  "classifier_fit_rows": {
+    "spr": 732,
+    "facs": 445695
+  },
+  "gate_p_binder": 0.8,
+  "provided_windows": 525042,
+  "sampled": 4000000,
+  "unique_after_dedupe": 3923314,
+  "after_hard_rules": 3079204,
+  "p_binder_quantiles_all_k>=4": {
+    "0.1": 0.11,
+    "0.5": 0.477,
+    "0.9": 0.857,
+    "0.99": 0.956
+  },
+  "rfd4_her2novel": {
+    "unique_windows": 94,
+    "pass_hard_rules_k>=4": 85,
+    "p_binder>=gate": 18
+  },
+  "pass_gate": 493977,
+  "hole_checked": 40000,
+  "fail_hole_(<=2_from_a_provided_window)": 17683,
+  "survive_all_rules_and_gate": 22317,
+  "max_substitution_share": 0.25,
+  "selected": 200,
+  "selected_by_source": {
+    "insilico": 200
+  },
+  "selected_n_mut": {
+    "4": 105,
+    "5": 85,
+    "6": 10
+  },
+  "selected_min_hamming_to_provided": {
+    "3": 181,
+    "4": 19
+  }
+}

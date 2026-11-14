@@ -1,0 +1,671 @@
+{
+ "created_at": "2026-11-14T13:20:24.669347+00:00",
+ "done": 127,
+ "download": "curl -fsSL -H \"Authorization: Bearer $JAPANFOLD_API_KEY\" -o d9c4b0fcd6d2b102a7950e3a9219d51c-results.zip https://api.japanfold.aiand.com/v1/jobs/d9c4b0fcd6d2b102a7950e3a9219d51c/archive && unzip -oq d9c4b0fcd6d2b102a7950e3a9219d51c-results.zip",
+ "error": null,
+ "finished_at": "2026-11-14T13:27:29.092233+00:00",
+ "id": "d9c4b0fcd6d2b102a7950e3a9219d51c",
+ "kind": "predict",
+ "links": {
+  "archive": "/v1/jobs/d9c4b0fcd6d2b102a7950e3a9219d51c/archive",
+  "logs": "/v1/jobs/d9c4b0fcd6d2b102a7950e3a9219d51c/logs",
+  "results": "/v1/jobs/d9c4b0fcd6d2b102a7950e3a9219d51c/results",
+  "self": "/v1/jobs/d9c4b0fcd6d2b102a7950e3a9219d51c",
+  "usage": "/v1/jobs/d9c4b0fcd6d2b102a7950e3a9219d51c/usage"
+ },
+ "model": "rf3",
+ "name": "optim-variants-rf3",
+ "object": "job",
+ "params": {
+  "diffusion_samples": 1,
+  "output_format": "cif",
+  "seed": 0,
+  "use_msa_server": true,
+  "write_pae": true
+ },
+ "progress": 1.0,
+ "protocol": null,
+ "residues": 346,
+ "results_ready": true,
+ "stage": "done",
+ "started_at": "2026-11-14T13:20:30.039262+00:00",
+ "status": "succeeded",
+ "targets": [
+  {
+   "id": "v001_WSSEGFYEMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v002_WGSQGFYEMN",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v003_WGYQGFYLMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v004_WKVEGFYPMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v005_WYVYGFYMMP",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v006_WGQYGFYLMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v007_WNYHGFYWMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v008_WGDSGFYWMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v009_YRSQGFYTMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v010_WWGRYFYEMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v011_WYPEMFYAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v012_WGFFGFYWMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v013_WGPQMFYAMG",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v014_WYGEGFYMMN",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v015_WGSGMFYWMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v017_WTYDGFYEMG",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v018_WWEEGFYAMM",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v019_WNAHGFYLMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v020_LGVYGFYLML",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v021_WASQPFYAME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v022_WHSEPFYAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v023_WGIFGPYEMG",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v024_YYHQGFYAMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v025_WGGEQFYLME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v026_YYYLGFYEMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v027_WYSQGFYKHY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v028_WTVAGFYHMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v029_WVYQGFYKME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v030_WGREDFYHMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v031_WKRSGFYWMP",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v032_YGYGGFYEMG",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v033_WWAQGFYKMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v034_WQSYGFYAMT",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v035_WESEMFYKMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v036_WHEHYFYEMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v037_WGSAGFYHMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v038_WGIQGFYKMH",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v039_WRGVGFYEMH",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v040_WKYTGFYAMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v041_WRKQAFYSMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v042_WGKNYFYEMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v043_WYNEGFYTMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v044_WGSPYFYAMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v045_WGSNMWYEMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v046_WGDEYFYKMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v047_WNGQGFYSMN",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v048_WFREGFYAMT",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v049_WRKEDFYLMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v050_WRSQGFHAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v051_WEFSGFYEMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v052_WAYYGFYLMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v053_WWADGFYEMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v054_WGSWAFYLMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v055_WIVTGFYHMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v056_WAGEGFYWMK",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v057_WMAEGFYHML",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v058_WGGAGPYEMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v059_WRDWGFYLMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v060_FPSQGFYAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v061_WESQWFYAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v062_WRVAGFYKMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v063_WEGQGWYEMG",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v064_WYYEGFYQMW",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v065_WNVQGSYAMH",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v066_WNFEGFYSMQ",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v067_WGHWGFYEML",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v068_WWVGSFYMMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v069_WYGQHFYAMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v070_WQSVGFYLMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v071_WPYEGFYAME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v072_WIRVGFYEMT",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v073_WMAQGFYAME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v074_WTVFGFYWMN",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v075_WNVIGFYNMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v076_WGSIGFYNMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v077_WVKIGFYEMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v078_WGSTGPYAMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v079_WGQEGFYKMK",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v080_WYSNGFYHMV",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v081_WHGQGFYNMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v082_WYAGGFYWMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v083_WGSPGFGEME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v084_WTVRMFYAMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v085_WGRSGFHEMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v086_WGGHQFYEMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v087_WVAEMFYAMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v088_WLSTGFYHMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v089_WGEEMFYKMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v090_WNSMGFYAMP",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v091_WFDQGFYVMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v092_WKRQPFYAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v093_WYSDNFYEMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v094_WTGQGFYIME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v095_WNGEYFYAMK",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v096_WAVVDFYEMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v097_WGWPMFYEMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v098_WAWEGFYHMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v099_YNGQGFYMME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v100_WGVSMFYAMH",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v101_WAIQGFYMMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v102_WGERGFYEMM",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v103_YGYEGFYHMW",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v104_WVRQGFYHMN",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v105_WYSEGFGAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v106_LGSEGFYKME",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v107_WYGWGFYEMT",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v108_WGVMMFYYMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v109_WWPQAFYAMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v110_WYSYGFYQMK",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v111_WGSLMFYMMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v112_WRFEGFYAMN",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v113_WKRYMFYHMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v114_WYYQIFYSMF",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v115_WGIVGFYEMP",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v116_WGGQEFYSMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v117_WGAQMFYMMM",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v118_WGSTWFYAMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v119_WGSDMFYLMY",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v120_WNGIMFYEMD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "v121_WGEWWFYEMI",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "ctl_wt",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "ctl_binder1_WGGSGPYLFD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "ctl_binder2_WGGDGGNTYD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "ctl_binder3_YLLNGVFVFD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "ctl_nonbinder1_RGSGGTGPDD",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "ctl_nonbinder2_GTGTAKDYYG",
+   "stage": null,
+   "state": "done"
+  },
+  {
+   "id": "ctl_nonbinder3_DKPGRGNPID",
+   "stage": null,
+   "state": "done"
+  }
+ ],
+ "total": 127
+}

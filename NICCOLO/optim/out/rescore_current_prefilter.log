@@ -1,0 +1,30 @@
+current prefilter use_facs=False; fitted on 732 SPR variants
+p_binder   max |now - then| = 2.95e-08
+pred_log10_kd  Spearman(then, now) = 0.989; shift now-then: mean +0.001, min -0.002, max +0.003 (log10 nM)
+gate p_binder >= 0.80 under the current model: 120/120
+pred_log10_kd now: median -0.31, range -1.21..-0.30; 2 below -1.02 (tightest measured SPR KD 0.095 nM = extrapolation)
+min Hamming to the SPR training windows: {3: 56, 4: 51, 5: 13}
+
+borda top-20 (current prefilter) overlaps my first 20 (old ranking) in 13 designs; median rank of the borda top-20 in my list = 13
+wrote out/final_variants_rescored_current_prefilter.csv
+ rank     window                     mutations  p_binder_now  pred_log10_kd_now  min_hamming_to_spr_train  borda_rank_now
+    2 WGSQGFYEMN       G101S,D102Q,A106E,D108N         0.979             -1.082                         3               1
+    6 WGQYGFYLMI       G101Q,D102Y,A106L,D108I         0.964             -0.571                         3               2
+   12 WGFFGFYWMI       G101F,D102F,A106W,D108I         0.976             -0.326                         4               3
+    1 WSSEGFYEMF G100S,G101S,D102E,A106E,D108F         0.961             -1.208                         4               4
+   13 WGPQMFYAMG       G101P,D102Q,G103M,D108G         0.969             -0.329                         3               5
+    7 WNYHGFYWMF G100N,G101Y,D102H,A106W,D108F         0.963             -0.380                         5               6
+   18 WWEEGFYAMM       G100W,G101E,D102E,D108M         0.972             -0.325                         3               7
+   37 WGSAGFYHMF       G101S,D102A,A106H,D108F         0.986             -0.323                         4               8
+    3 WGYQGFYLMY       G101Y,D102Q,A106L,D108Y         0.953             -0.829                         3               9
+   34 WQSYGFYAMT       G100Q,G101S,D102Y,D108T         0.975             -0.321                         4              10
+   14 WYGEGFYMMN       G100Y,D102E,A106M,D108N         0.952             -0.329                         3              11
+   44 WGSPYFYAMF       G101S,D102P,G103Y,D108F         0.974             -0.320                         4              12
+    8 WGDSGFYWMY       G101D,D102S,A106W,D108Y         0.946             -0.345                         4              13
+   38 WGIQGFYKMH       G101I,D102Q,A106K,D108H         0.964             -0.321                         3              14
+    5 WYVYGFYMMP G100Y,G101V,D102Y,A106M,D108P         0.935             -0.598                         5              15
+   15 WGSGMFYWMD       G101S,D102G,G103M,A106W         0.942             -0.327                         3              16
+   40 WKYTGFYAMI       G100K,G101Y,D102T,D108I         0.959             -0.320                         4              17
+    9 YRSQGFYTMD  W99Y,G100R,G101S,D102Q,A106T         0.930             -0.342                         4              18
+   48 WFREGFYAMT       G100F,G101R,D102E,D108T         0.963             -0.316                         3              19
+   43 WYNEGFYTMI G100Y,G101N,D102E,A106T,D108I         0.959             -0.317                         4              20

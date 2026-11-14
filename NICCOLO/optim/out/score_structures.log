@@ -1,0 +1,61 @@
+crystal her2_fv_1n8z.cif: HER2 resolved 109 residues; epitope 19 residues (11 via VH, 11 via VL); CDRH3-window epitope 7; epitope residues: [557, 558, 560, 561, 569, 570, 571, 572, 573, 579, 591, 593, 596, 598, 600, 602, 603, 604, 605]
+
+PAE token-order check: within-chain PAE of the wrong segmentation minus the right one, min over folds = 0.67 A (positive = file order H,L,A is right); mean PAE 11.8
+wrote /home/hackathon/nick-work/optim/out/rf3_structure_scores.csv (127 rows)
+
+=== controls (SPR-measured; ctl_wt = trastuzumab) ===
+                     name  iptm  iptm_AH  n_her2_contact  ep_recall  ep_precision  n_offep  cdrh3_ep_recall  lrmsd_xtal  drift_wt   ipae  pae_cdrh3_ep
+                   ctl_wt 0.594    0.246              23      0.947         0.947        1            0.857       2.164     0.000 19.421        18.968
+   ctl_binder1_WGGSGPYLFD 0.582    0.238              25      0.895         0.944        1            1.000       3.578     1.633 20.224        19.504
+   ctl_binder2_WGGDGGNTYD 0.592    0.246              25      0.421         0.400       12            0.000      36.408    36.836 19.729        19.735
+   ctl_binder3_YLLNGVFVFD 0.592    0.248              24      0.947         1.000        0            0.857       4.952     4.022 19.402        18.459
+ctl_nonbinder1_RGSGGTGPDD 0.586    0.241              20      0.526         0.588        7            0.000      28.309    27.240 19.083        19.609
+ctl_nonbinder2_GTGTAKDYYG 0.584    0.236              25      0.947         0.947        1            0.857       2.011     2.740 19.836        19.083
+ctl_nonbinder3_DKPGRGNPID 0.581    0.229              18      0.474         0.643        5            0.000      29.495    29.603 19.969        20.099
+
+=== 120 designs ===
+                        min     p10  median     p90     max
+iptm                  0.561   0.579   0.591   0.610   0.795
+iptm_AH               0.225   0.239   0.256   0.278   0.697
+n_her2_contact       12.000  17.000  22.000  27.000  30.000
+ep_recall             0.000   0.316   0.658   1.000   1.000
+ep_precision          0.000   0.367   0.776   0.947   1.000
+n_offep               0.000   1.000   3.500  12.000  17.000
+cdrh3_n_res_contact   0.000   2.000   6.000   8.000   9.000
+cdrh3_ep_recall       0.000   0.000   0.857   1.000   1.000
+lrmsd_xtal            1.625   2.419  11.605  37.786  57.080
+drift_wt              1.099   2.714  11.190  38.750  56.423
+pae_fv_her2           9.815  19.474  20.177  20.814  21.374
+ipae                  7.002  17.369  18.815  19.824  20.639
+pae_cdrh3_ep          5.983  16.544  18.537  19.821  21.093
+plddt                 0.808   0.815   0.821   0.829   0.836
+
+vs the WT fold: ep_recall >= WT 29/120; ipae <= WT 93/120; pae_cdrh3_ep <= WT 83/120; drift_wt < 3 A 19/120, < 5 A 50/120; lrmsd_xtal < 5 A 44/120
+
+=== Spearman among designs (classifier / mutation count vs fold metrics) ===
+               iptm  iptm_AH  ep_recall  n_her2_contact  drift_wt  ipae  pae_cdrh3_ep
+p_binder       0.10     0.15      -0.08           -0.06      0.01 -0.22         -0.13
+pred_log10_kd -0.09    -0.20       0.02           -0.05     -0.08  0.18          0.13
+n_mut         -0.22     0.02       0.02            0.01     -0.01 -0.02          0.02
+
+=== top 8 designs by iptm ===
+           name                     mutations  iptm  iptm_AH  n_her2_contact  ep_recall  ep_precision  n_offep  cdrh3_ep_recall  lrmsd_xtal  drift_wt  ipae  pae_cdrh3_ep
+v017_WTYDGFYEMG       G100T,G101Y,A106E,D108G 0.795    0.696              26      1.000         1.000        0            1.000       4.769     2.998 7.254         5.983
+v102_WGERGFYEMM       G101E,D102R,A106E,D108M 0.793    0.694              23      0.895         0.944        1            1.000       3.964     2.450 7.165         6.343
+v121_WGEWWFYEMI G101E,D102W,G103W,A106E,D108I 0.793    0.697              28      1.000         0.905        2            1.000       2.429     2.367 7.532         6.263
+v051_WEFSGFYEMD       G100E,G101F,D102S,A106E 0.784    0.655              21      0.895         1.000        0            1.000       4.169     3.141 7.002         7.429
+v071_WPYEGFYAME       G100P,G101Y,D102E,D108E 0.780    0.639              25      0.842         0.889        2            1.000       2.141     2.965 7.683         6.502
+v043_WYNEGFYTMI G100Y,G101N,D102E,A106T,D108I 0.766    0.609              26      0.895         0.944        1            0.857       2.714     3.479 8.172         7.282
+v018_WWEEGFYAMM       G100W,G101E,D102E,D108M 0.766    0.600              24      0.895         0.944        1            1.000       1.625     2.721 8.057         7.460
+v055_WIVTGFYHMD       G100I,G101V,D102T,A106H 0.737    0.564              24      1.000         1.000        0            1.000       3.589     3.252 9.389         8.733
+
+=== 8 designs with the largest pose drift from the WT fold ===
+           name                     mutations  iptm  iptm_AH  n_her2_contact  ep_recall  ep_precision  n_offep  cdrh3_ep_recall  lrmsd_xtal  drift_wt   ipae  pae_cdrh3_ep
+v038_WGIQGFYKMH       G101I,D102Q,A106K,D108H 0.572    0.235              12      0.000         0.000       12              0.0      57.080    56.423 20.304        20.536
+v118_WGSTWFYAMI       G101S,D102T,G103W,D108I 0.586    0.236              14      0.000         0.000       14              0.0      50.111    49.673 19.679        19.478
+v086_WGGHQFYEMI       D102H,G103Q,A106E,D108I 0.576    0.234              17      0.000         0.000       17              0.0      48.722    48.449 19.862        20.492
+v062_WRVAGFYKMI G100R,G101V,D102A,A106K,D108I 0.591    0.276              16      0.000         0.000       16              0.0      46.744    45.945 19.071        17.821
+v105_WYSEGFGAMD       G100Y,G101S,D102E,Y105G 0.592    0.241              20      0.316         0.400        9              0.0      39.917    41.103 19.959        19.425
+v058_WGGAGPYEMI       D102A,F104P,A106E,D108I 0.584    0.247              22      0.368         0.438        9              0.0      39.563    40.533 19.861        19.942
+v065_WNVQGSYAMH G100N,G101V,D102Q,F104S,D108H 0.593    0.254              25      0.421         0.381       13              0.0      39.624    40.263 18.794        19.117
+v057_WMAEGFYHML G100M,G101A,D102E,A106H,D108L 0.581    0.242              18      0.316         0.353       11              0.0      38.909    39.688 18.580        20.039

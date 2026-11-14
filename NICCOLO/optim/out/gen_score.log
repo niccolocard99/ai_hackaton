@@ -1,0 +1,62 @@
+[   6.2s] classifier fitted in 6.1s on 732 SPR / 445695 FACS rows
+[   6.9s] provided windows (FACS train+val+test + SPR, 10-mers): 525,042
+[   9.4s] sampled 4,000,000 -> 3,923,314 unique
+[   9.9s] after hard rules (k>=4, no Cys, no new sequon): 3,079,204
+[  31.7s] scored 3,079,204 windows in 21.8s
+[  31.8s] rfd4 her2-novel comparison source: {'unique_windows': 94, 'pass_hard_rules_k>=4': 85, 'p_binder>=gate': 18}
+[  31.9s] pass p_binder >= 0.8: 493,977
+[  34.8s] hole check on 40,000 best candidates in 2.9s: 17,683 within 2 of a provided window
+[  37.5s] done
+{
+ "classifier_fit_rows": {
+  "spr": 732,
+  "facs": 445695
+ },
+ "gate_p_binder": 0.8,
+ "provided_windows": 525042,
+ "sampled": 4000000,
+ "unique_after_dedupe": 3923314,
+ "after_hard_rules": 3079204,
+ "p_binder_quantiles_all_k>=4": {
+  "0.1": 0.11,
+  "0.5": 0.477,
+  "0.9": 0.857,
+  "0.99": 0.956
+ },
+ "rfd4_her2novel": {
+  "unique_windows": 94,
+  "pass_hard_rules_k>=4": 85,
+  "p_binder>=gate": 18
+ },
+ "pass_gate": 493977,
+ "hole_checked": 40000,
+ "fail_hole_(<=2_from_a_provided_window)": 17683,
+ "survive_all_rules_and_gate": 22317,
+ "max_substitution_share": 0.25,
+ "selected": 200,
+ "selected_by_source": {
+  "insilico": 200
+ },
+ "selected_n_mut": {
+  "4": 105,
+  "5": 85,
+  "6": 10
+ },
+ "selected_min_hamming_to_provided": {
+  "3": 181,
+  "4": 19
+ }
+}
+ rank     window  n_mut                     mutations  p_binder  pred_log10_kd  p_facs_high  min_hamming_to_provided      src
+    1 WSSEGFYEMF      5 G100S,G101S,D102E,A106E,D108F  0.961218      -1.210466     0.048795                        3 insilico
+    2 WGSQGFYEMN      4       G101S,D102Q,A106E,D108N  0.978748      -1.082520     0.588650                        3 insilico
+    3 WGYQGFYLMY      4       G101Y,D102Q,A106L,D108Y  0.952712      -0.830500     0.237680                        3 insilico
+    4 WKVEGFYPMI      5 G100K,G101V,D102E,A106P,D108I  0.895927      -0.732402     0.032583                        3 insilico
+    5 WYVYGFYMMP      5 G100Y,G101V,D102Y,A106M,D108P  0.934738      -0.599313     0.108120                        3 insilico
+    6 WGQYGFYLMI      4       G101Q,D102Y,A106L,D108I  0.963661      -0.571913     0.193562                        3 insilico
+    7 WNYHGFYWMF      5 G100N,G101Y,D102H,A106W,D108F  0.962934      -0.382414     0.010369                        4 insilico
+    8 WGDSGFYWMY      4       G101D,D102S,A106W,D108Y  0.946021      -0.344936     0.580004                        3 insilico
+    9 YRSQGFYTMD      5  W99Y,G100R,G101S,D102Q,A106T  0.930203      -0.344356     0.439613                        3 insilico
+   10 WWGRYFYEMY      5 G100W,D102R,G103Y,A106E,D108Y  0.868579      -0.343957     0.248539                        4 insilico
+   11 WYPEMFYAMD      4       G100Y,G101P,D102E,G103M  0.922998      -0.343000     0.642980                        3 insilico
+   12 WGFFGFYWMI      4       G101F,D102F,A106W,D108I  0.975543      -0.327534     0.055717                        3 insilico

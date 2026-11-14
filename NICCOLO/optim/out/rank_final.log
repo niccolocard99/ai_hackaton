@@ -1,0 +1,25 @@
+tier 1 (RF3 ipTM >= 0.7): 9 designs; tier 2: 111
+ final_rank  tier     window                     mutations  p_binder  pred_log10_kd_now  borda_rank_now  iptm  iptm_AH   ipae  ep_recall  lrmsd_xtal
+          1     1 WWEEGFYAMM       G100W,G101E,D102E,D108M     0.972             -0.325               7 0.766    0.600  8.057      0.895       1.625
+          2     1 WYNEGFYTMI G100Y,G101N,D102E,A106T,D108I     0.959             -0.317              20 0.766    0.609  8.172      0.895       2.714
+          3     1 WTYDGFYEMG       G100T,G101Y,A106E,D108G     0.910             -0.323              39 0.795    0.696  7.254      1.000       4.769
+          4     1 WPYEGFYAME       G100P,G101Y,D102E,D108E     0.947             -0.308              46 0.780    0.639  7.683      0.842       2.141
+          5     1 WGERGFYEMM       G101E,D102R,A106E,D108M     0.971             -0.301              55 0.793    0.694  7.165      0.895       3.964
+          6     1 WEFSGFYEMD       G100E,G101F,D102S,A106E     0.916             -0.313              61 0.784    0.655  7.002      0.895       4.169
+          7     1 WIVTGFYHMD       G100I,G101V,D102T,A106H     0.909             -0.310              74 0.737    0.564  9.389      1.000       3.589
+          8     1 WGEWWFYEMI G101E,D102W,G103W,A106E,D108I     0.949             -0.297              91 0.793    0.697  7.532      1.000       2.429
+          9     1 WAWEGFYHMD       G100A,G101W,D102E,A106H     0.887             -0.304             106 0.720    0.526 10.173      0.895       2.013
+         10     2 WGSQGFYEMN       G101S,D102Q,A106E,D108N     0.979             -1.082               1 0.590    0.258 18.727      0.579      17.193
+         11     2 WGQYGFYLMI       G101Q,D102Y,A106L,D108I     0.964             -0.571               2 0.591    0.262 17.794      0.842       8.322
+         12     2 WGFFGFYWMI       G101F,D102F,A106W,D108I     0.976             -0.326               3 0.593    0.260 17.611      0.316      37.488
+         13     2 WSSEGFYEMF G100S,G101S,D102E,A106E,D108F     0.961             -1.208               4 0.586    0.263 18.971      0.316      37.380
+         14     2 WGPQMFYAMG       G101P,D102Q,G103M,D108G     0.969             -0.329               5 0.592    0.253 19.474      0.947       5.577
+         15     2 WNYHGFYWMF G100N,G101Y,D102H,A106W,D108F     0.963             -0.380               6 0.582    0.254 18.690      0.368      37.109
+         16     2 WGSAGFYHMF       G101S,D102A,A106H,D108F     0.986             -0.323               8 0.584    0.260 19.060      0.684      10.627
+         17     2 WGYQGFYLMY       G101Y,D102Q,A106L,D108Y     0.953             -0.829               9 0.592    0.271 17.819      0.368      35.310
+         18     2 WQSYGFYAMT       G100Q,G101S,D102Y,D108T     0.975             -0.321              10 0.609    0.270 18.364      0.526      25.338
+         19     2 WYGEGFYMMN       G100Y,D102E,A106M,D108N     0.952             -0.329              11 0.593    0.254 17.812      0.526      23.354
+         20     2 WGSPYFYAMF       G101S,D102P,G103Y,D108F     0.974             -0.320              12 0.598    0.262 18.440      0.526      26.115
+top 10: tier-1 9, min pairwise Hamming 3, most repeated substitutions {'A106E': 5, 'D102E': 4, 'G101E': 3, 'D108M': 2}, min p_binder 0.887, n_mut {4: 8, 5: 2}
+top 20: tier-1 9, min pairwise Hamming 3, most repeated substitutions {'D102E': 6, 'A106E': 6, 'G101S': 5, 'D108I': 4}, min p_binder 0.887, n_mut {4: 16, 5: 4}
+wrote out/final_variants_ranked.csv and out/final_variants_ranked_abguard.csv
