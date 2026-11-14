@@ -92,7 +92,7 @@ The 8 VL/framework-mutated rows are hedges, not scorer output: D28K comes from t
 NanoMelt Tm measurements. No VL or pairing search was performed anywhere in the campaign; there is no
 labelled data to score one with. The de novo rows are single-chain VHHs and have no light chain.
 
-
+## What this scoring cannot tell you (the honest limits)
 
 - **These are surrogate scores.** The models were fitted on the parent framework's measured variants;
   predictions below log10 KD −1.02 (0.095 nM) are tighter than anything measured in the legal band —
