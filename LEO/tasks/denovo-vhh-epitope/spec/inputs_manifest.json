@@ -1,0 +1,89 @@
+{
+  "sources": {
+    "apheris\\rfd4\\Data\\12-her2\\her2_fv_1n8z.cif": "2920ebcf369ae19942da685fc29f5841dc9e992948e539c2177026a5e80fa425",
+    "apheris\\rfd4\\Data\\03-vhh\\pmvk_caplacizumab.cif.zst": "52a6799ba55989f47346fd2b7ef5208bd7910f351012a607bc1d6bc5058273f0"
+  },
+  "outputs": {
+    "design_fixedfw.json": "2f28e02d2965fa14232222f9b69f32a0dbf780ee49c7a59f5e99d0d20f5dd6cf",
+    "design_freefw.json": "1f961fbea5289b3ac08ab40ba8a6cd8501b992f92c23db86e2e5458877590f77",
+    "framework_vhh.cif": "66354d95f32759701d82c8b0048c005436e0dea3226ba65e005807d12da2a1f7",
+    "target_her2_d4.cif": "6ec157d42a5533a844d2eeeccf1c32cd32e11880e8e2ff975e49894c5bbe2445"
+  },
+  "target_ranges": {
+    "C": [
+      489,
+      580
+    ],
+    "D": [
+      591,
+      607
+    ]
+  },
+  "framework_residues": 83,
+  "framework_segments": [
+    [
+      1,
+      22
+    ],
+    [
+      24,
+      37
+    ],
+    [
+      39,
+      75
+    ],
+    [
+      77,
+      86
+    ]
+  ],
+  "cdr_slots": [
+    23,
+    38,
+    76
+  ],
+  "cdr_lengths": [
+    "13-13",
+    "9-10",
+    "12-21"
+  ],
+  "hotspots": [
+    "D/593/NZ",
+    "C/573/CD1",
+    "D/591/CG2",
+    "C/572/CD"
+  ],
+  "free_rule": {
+    "burial_radius_A": 10.0,
+    "max_neighbours": 12,
+    "cdr_margin": 3,
+    "keep_first": 3,
+    "keep_from": 77,
+    "never_free": [
+      "CYS",
+      "GLY",
+      "PRO"
+    ]
+  },
+  "free_positions": [
+    5,
+    7,
+    11,
+    13,
+    17,
+    31,
+    42,
+    44,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    67,
+    68
+  ]
+}

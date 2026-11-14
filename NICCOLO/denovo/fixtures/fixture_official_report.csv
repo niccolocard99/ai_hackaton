@@ -1,0 +1,4 @@
+sequence_id,kind,track_assigned,identity_to_trastuzumab,cdrh3,cdrh3_min_distance,cdrh3_identity_to_trastuzumab,passes,failures
+fx_tz_wt_paired,paired,novel,1.0,SRWGGDGFYAMDY,0,1.0,false,"not de novo: 100% identity to a known antibody (needs < 70%); it would be an optimisation design and is rejected here, not reclassified"
+fx_tz_cdrh3_2sub,paired,novel,0.9911894273127754,SRWGGDGFYKLDY,1,0.8461538461538461,false,"not de novo: 99% identity to a known antibody (needs < 70%); it would be an optimisation design and is rejected here, not reclassified"
+fx_vhh_denovo,vhh,de_novo,0.6119402985074627,AAQLPHNTRIEKSGWVDFYTGNQLPSHE,17,0.1428571428571429,true,""

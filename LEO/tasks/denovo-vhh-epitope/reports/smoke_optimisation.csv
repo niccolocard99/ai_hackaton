@@ -1,0 +1,5 @@
+sequence_id,kind,track_assigned,identity_to_trastuzumab,cdrh3,cdrh3_min_distance,cdrh3_identity_to_trastuzumab,passes,failures
+vhh-fixedfw-n2-s1__her2d4_vhh_fixedfw_0,vhh,de_novo,0.6585365853658536,AARLAGLYSTLESDYDY,6,0.23529411764705888,false,"not an optimisation design: 66% identity to a known antibody (< 70% is de novo); rejected here, not reclassified"
+vhh-fixedfw-n2-s1__her2d4_vhh_fixedfw_1,vhh,de_novo,0.6504065040650406,AAHRNSVLSTSSSVYSY,7,0.11764705882352944,false,"not an optimisation design: 65% identity to a known antibody (< 70% is de novo); rejected here, not reclassified"
+vhh-freefw-n2-s1__her2d4_vhh_freefw_0,vhh,de_novo,0.6829268292682926,ARYNGTGSSTAPSSYDY,7,0.3529411764705882,false,"not an optimisation design: 68% identity to a known antibody (< 70% is de novo); rejected here, not reclassified"
+vhh-freefw-n2-s1__her2d4_vhh_freefw_1,vhh,de_novo,0.6585365853658536,AAASGYSPSTLMSDYDY,7,0.23529411764705888,false,"not an optimisation design: 66% identity to a known antibody (< 70% is de novo); rejected here, not reclassified"

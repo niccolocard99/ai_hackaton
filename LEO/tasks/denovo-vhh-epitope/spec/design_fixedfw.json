@@ -1,0 +1,64 @@
+{
+  "her2d4_vhh_fixedfw": {
+    "input": [
+      "target_her2_d4.cif",
+      "framework_vhh.cif"
+    ],
+    "contig": "C489-580, /0, D591-607, /0, H1-22, 13-13, H24-37, 9-10, H39-75, 12-21, H77-86",
+    "conditions": {
+      "C_CRD": {
+        "true": [
+          {
+            "select": "sel('C/*/*/[N,CA,C,O]')"
+          },
+          {
+            "select": "sel('D/*/*/[N,CA,C,O]')"
+          }
+        ]
+      },
+      "C_CRDGRP": {
+        "1": [
+          {
+            "select": "sel('H/*/[1-22, 24-37, 39-75, 77-86]/[N,CA,C,O]')"
+          }
+        ]
+      },
+      "C_SEQ": {
+        "true": [
+          {
+            "select": "sel('C')"
+          },
+          {
+            "select": "sel('D')"
+          },
+          {
+            "select": "sel('H/*/[1-22, 24-37, 39-75, 77-86]')"
+          }
+        ]
+      },
+      "C_HOT": {
+        "true": [
+          {
+            "select": "sel('D/*/593/NZ')"
+          },
+          {
+            "select": "sel('C/*/573/CD1')"
+          },
+          {
+            "select": "sel('D/*/591/CG2')"
+          },
+          {
+            "select": "sel('C/*/572/CD')"
+          }
+        ]
+      },
+      "C_CATH": {
+        "2.60.40": [
+          {
+            "select": "sel('H')"
+          }
+        ]
+      }
+    }
+  }
+}

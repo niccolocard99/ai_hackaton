@@ -1,0 +1,69 @@
+nanobody chain: 188 residues, author labels 1..273; HER2 chain has duplicate numbers: False
+=== numbering: mature = 5MY6 author -22; 80/80 overlapping residues identical ===
+5MY6 HER2 modelled: author 24..597 (mature 2..575); 1N8Z crop: 489..607
+
+=== nanobody 2Rs15d: 115 aa, CDR spans (1-based): CDR1 26-35 GYIFNSCGMG, CDR2 50-65 RISGDGDTWHKESVKG, CDR3 98-104 CYNLETY
+
+=== 5MY6 epitope: HER2 residues within 4.5 A of the nanobody ===
+ author  mature  aa  n_vhh  nanobody residues (region)
+    109      87   E      1  W58(CDR2)
+    110      88   D      2  R50(CDR2), W58(CDR2)
+    111      89   N      3  L47(FR), R50(CDR2), W58(CDR2)
+    112      90   Y      2  Y37(FR), L47(FR)
+    156     134   Q      2  E44(FR), R45(FR)
+    157     135   R      1  E44(FR)
+    170     148   K      3  N100(CDR3), L101(CDR3), E102(CDR3)
+    173     151   F      1  L101(CDR3)
+    174     152   H      1  L101(CDR3)
+    175     153   K      1  L101(CDR3)
+    177     155   N      3  S31(CDR1), C32(CDR1), L101(CDR3)
+    178     156   Q      6  S31(CDR1), C32(CDR1), G33(CDR1), S52(CDR2), G53(CDR2), D54(CDR2)
+    179     157   L      4  C32(CDR1), G33(CDR1), R50(CDR2), S52(CDR2)
+    180     158   A      4  C32(CDR1), C98(CDR3), L101(CDR3), T103(CDR3)
+    181     159   L     10  C32(CDR1), G33(CDR1), M34(CDR1), G35(CDR1), Y37(FR), R50(CDR2), A96(FR), V97(FR), C98(CDR3), T103(CDR3)
+    182     160   T      2  T103(CDR3), W105(FR)
+    183     161   L      3  Y37(FR), R45(FR), W105(FR)
+    217     195   R      1  L101(CDR3)
+-> 18 HER2 residues; mature numbering span 87..195
+
+=== nanobody paratope (residues touching HER2) ===
+  S31    CDR1  touches 2 HER2 residues
+  C32    CDR1  touches 5 HER2 residues
+  G33    CDR1  touches 3 HER2 residues
+  M34    CDR1  touches 1 HER2 residues
+  G35    CDR1  touches 1 HER2 residues
+  Y37    FR    touches 3 HER2 residues
+  E44    FR    touches 2 HER2 residues
+  R45    FR    touches 2 HER2 residues
+  L47    FR    touches 2 HER2 residues
+  R50    CDR2  touches 4 HER2 residues
+  S52    CDR2  touches 2 HER2 residues
+  G53    CDR2  touches 1 HER2 residues
+  D54    CDR2  touches 1 HER2 residues
+  W58    CDR2  touches 3 HER2 residues
+  A96    FR    touches 1 HER2 residues
+  V97    FR    touches 1 HER2 residues
+  C98    CDR3  touches 2 HER2 residues
+  N100   CDR3  touches 1 HER2 residues
+  L101   CDR3  touches 7 HER2 residues
+  E102   CDR3  touches 1 HER2 residues
+  T103   CDR3  touches 3 HER2 residues
+  W105   FR    touches 2 HER2 residues
+contact share by region: CDR1 12/50 (24%), CDR2 11/50 (22%), CDR3 14/50 (28%), FR 13/50 (26%)
+
+nanobody-glycan (chain C NAG) contacts within 4.5 A: 0 residue pairs
+
+=== cross-check: trastuzumab epitope by this code = 19 HER2 residues (earlier measurement: 19) ===
+
+=== superposition on 80 shared domain IV CA atoms ===
+gemmi reports rmsd 0.73; direct check: forward 0.73, inverse 314.30; using forward
+
+=== footprint overlap (mature numbering) ===
+2Rs15d epitope : 18 residues
+trastuzumab    : 19 residues, of which 5 are modelled in 5MY6
+shared residues: 0 -> []
+
+=== steric test: nanobody placed in the 1N8Z frame vs trastuzumab Fv ===
+grid search (4.5 A cells): atom pairs <=2.0 A: 0; <=3.0 A: 0; <=4.0 A: 0; nanobody residues with an atom <=3.0 A of the Fv: 0
+true closest approach, any nanobody atom to any trastuzumab Fv atom (all pairs): 43.7 A
+distance between the two epitope centroids (CA, 1N8Z frame): 85.8 A
