@@ -152,7 +152,8 @@ def _validate_selection(raw: dict, sel: pl.DataFrame, ctx, rd: Path, slog) -> tu
                                  lambda: flt.check(sel, ctx))
     keep = res.filter(pl.col("reason").is_null())
     info = [c for c in res.columns if c.startswith("info__")]
-    out = sel.join(keep.select("sequence_id"), on="sequence_id", how="semi").join(
+    base = sel.drop([c for c in info if c in sel.columns]) if info else sel     # res is authoritative
+    out = base.join(keep.select("sequence_id"), on="sequence_id", how="semi").join(
         res.select("sequence_id", *info), on="sequence_id", how="left") if info else \
         sel.join(keep.select("sequence_id"), on="sequence_id", how="semi")
     dropped = sel.height - out.height
