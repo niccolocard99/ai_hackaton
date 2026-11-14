@@ -1,4 +1,4 @@
-"""abpipe list | validate CONFIG | run CONFIG | stage STAGE CONFIG | iterate CONFIG"""
+"""abpipe list | validate CONFIG | run CONFIG | stage STAGE CONFIG | iterate CONFIG | orchestrate CONFIG"""
 from __future__ import annotations
 
 import argparse
@@ -66,6 +66,16 @@ def cmd_iterate(args) -> int:
     return 1 if summary.get("stopped") else 0
 
 
+def cmd_orchestrate(args) -> int:
+    from abpipe import orchestrate
+    summary = orchestrate.run_orchestrated(args.config, rounds=args.rounds, select=args.select,
+                                           out_dir=args.out, seed=args.seed, policy_kind=args.policy,
+                                           agent_cmd=args.agent_cmd, deadline=args.deadline,
+                                           patience=args.patience, primary=args.primary, n=args.n,
+                                           propose_next=args.propose_next, dry_run=args.dry_run)
+    return 1 if summary.get("stopped") else 0
+
+
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(prog="abpipe", description=__doc__)
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -90,6 +100,23 @@ def main(argv=None) -> int:
     ip.add_argument("--propose-next", action="store_true",
                     help="after the last round, also generate and filter the next round's proposals (unscored)")
     ip.set_defaults(fn=cmd_iterate)
+    op = sub.add_parser("orchestrate",
+                        help="rounds steered between rounds by a policy that adapts the config and "
+                             "watches the machine; see ORCHESTRATOR.md")
+    op.add_argument("config")
+    op.add_argument("--rounds", type=int, help="max rounds (default: config orchestrate.rounds or 6)")
+    op.add_argument("--select", type=int, help="windows kept per round (default: config or 60)")
+    op.add_argument("--out", default="runs/orchestrated")
+    op.add_argument("--seed", type=int)
+    op.add_argument("--n", type=int, help="override n for every generator (smoke tests)")
+    op.add_argument("--policy", choices=["rules", "agent"], help="rules (default) or an LLM agent through the same allowlist")
+    op.add_argument("--agent-cmd", help="agent command reading the prompt on stdin (default: claude -p)")
+    op.add_argument("--deadline", help="stop when one more round cannot fit: '17:30' or ISO '2026-11-14T17:30'")
+    op.add_argument("--patience", type=int, help="rounds without improvement before the rules policy explores/stops")
+    op.add_argument("--primary", help="score column the plateau rule watches (default: the aggregator's first column)")
+    op.add_argument("--propose-next", action="store_true")
+    op.add_argument("--dry-run", action="store_true", help="print the probe and the next decision, run nothing")
+    op.set_defaults(fn=cmd_orchestrate)
     args = p.parse_args(argv)
     return args.fn(args)
 

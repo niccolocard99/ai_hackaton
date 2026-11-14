@@ -1,0 +1,4 @@
+# Model outputs are large and regenerable; RUNLOG.tsv records what produced them.
+runs/
+__pycache__/
+*.pyc

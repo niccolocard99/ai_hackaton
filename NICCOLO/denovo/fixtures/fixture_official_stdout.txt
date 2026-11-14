@@ -1,0 +1,5 @@
+FAIL  fx_tz_wt_paired          assigned=novel     <- not de novo: 100% identity to a known antibody (needs < 70%); it would be an optimisation design and is rejected here, not reclassified
+FAIL  fx_tz_cdrh3_2sub         assigned=novel     <- not de novo: 99% identity to a known antibody (needs < 70%); it would be an optimisation design and is rejected here, not reclassified
+PASS  fx_vhh_denovo            assigned=de_novo 
+
+de novo track: 1/3 design(s) eligible

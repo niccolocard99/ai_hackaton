@@ -1,0 +1,43 @@
+=== measured epitope: 19 HER2 residues within 4.5 A of trastuzumab ===
+     residue  n_ab_res   heavy/light  contact atoms
+GLU558 (C)           6         H6/L0  CD,CG,OE1,OE2
+PRO572 (C)           6         H2/L4  C,CA,CB,CD,CG,N,O
+PRO571 (C)           4         H1/L3  C,CA,CB,CG,O
+PHE573 (C)           4         H4/L0  CD1,CE1,CE2,CZ
+ASP560 (C)           3         H2/L1  CB,CG,O,OD1,OD2
+ASP570 (C)           2         H2/L0  C,CB,CG,O,OD1,OD2
+LYS593 (D)           2         H2/L0  CD,CE,NZ
+GLU598 (D)           2         H0/L2  CD,OE1
+GLN602 (D)           2         H0/L2  CD,NE2,OE1
+PRO603 (D)           2         H0/L2  C,CA,CB,CD,CG,O
+PRO557 (C)           1         H1/L0  CB,CG
+GLN561 (C)           1         H1/L0  CD,CG,NE2
+LYS569 (C)           1         H0/L1  CD,CE,NZ
+PRO579 (C)           1         H1/L0  CG
+ILE591 (D)           1         H1/L0  CG2
+ASP596 (D)           1         H0/L1  CG,OD2
+ALA600 (D)           1         H0/L1  CB
+CYS604 (D)           1         H0/L1  C,O
+PRO605 (D)           1         H0/L1  CA
+
+=== epitope spread ===
+max residue-centroid separation across the whole epitope: 32.4 A
+(a VHH paratope spans roughly 18-22 A, a Fab footprint much more)
+
+=== best patch per paratope radius (sum of contact weight covered) ===
+
+  R= 9.0 A around PHE573: covers 7/19 residues, 26/42 (62%) of contact weight
+        GLU558, ASP560, LYS569, ASP570, PRO571, PRO572, PHE573
+        heavy-chain contacts 17/23 (74%), light-chain 9/19 (47%)
+
+  R=11.0 A around ASP570: covers 13/19 residues, 30/42 (71%) of contact weight
+        ASP560, LYS569, ASP570, PRO571, PRO572, PHE573, PRO579, ILE591, LYS593, ASP596, ALA600, GLN602, PRO603
+        heavy-chain contacts 15/23 (65%), light-chain 15/19 (79%)
+
+  R=13.0 A around ASP570: covers 15/19 residues, 33/42 (79%) of contact weight
+        ASP560, LYS569, ASP570, PRO571, PRO572, PHE573, PRO579, ILE591, LYS593, ASP596, GLU598, ALA600, GLN602, PRO603, CYS604
+        heavy-chain contacts 15/23 (65%), light-chain 18/19 (95%)
+
+  R=15.0 A around PRO571: covers 17/19 residues, 40/42 (95%) of contact weight
+        GLU558, ASP560, GLN561, LYS569, ASP570, PRO571, PRO572, PHE573, PRO579, ILE591, LYS593, ASP596, GLU598, ALA600, GLN602, PRO603, CYS604
+        heavy-chain contacts 22/23 (96%), light-chain 18/19 (95%)

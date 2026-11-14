@@ -1,0 +1,5 @@
+sequence_id,variant,run,hotspot_obedience,sequence_adherence,clash_frac_1p5A,hbond_pairs,saltbridge_pairs,hydrophobic_pairs,pistack_pairs,pre_oracle_pass
+vhh-fixedfw-n2-s1__her2d4_vhh_fixedfw_0,fixedfw,vhh-fixedfw-n2-s1,1.0,1.0,0.0,3.0,1.0,3.0,0.0,1.0
+vhh-fixedfw-n2-s1__her2d4_vhh_fixedfw_1,fixedfw,vhh-fixedfw-n2-s1,1.0,1.0,0.0,6.0,2.0,5.0,0.0,1.0
+vhh-freefw-n2-s1__her2d4_vhh_freefw_0,freefw,vhh-freefw-n2-s1,1.0,1.0,0.0,4.0,3.0,6.0,0.0,1.0
+vhh-freefw-n2-s1__her2d4_vhh_freefw_1,freefw,vhh-freefw-n2-s1,1.0,1.0,0.0,6.0,4.0,1.0,0.0,1.0

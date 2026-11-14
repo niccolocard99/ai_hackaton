@@ -1,0 +1,51 @@
+{
+  "pass": 1,
+  "date": "2026-11-14",
+  "scope": "campaign-seed",
+  "rationale": "cache-only import of de novo VHH priors from LEO/tasks/experiment-ledger, each mapped to a generation-arm parameter or a funnel threshold",
+  "cache_only": true,
+  "amass_api_key_set": false,
+  "network_calls": 0,
+  "targets": ["TH-003", "TH-004", "TH-005", "TH-006", "TH-008", "TH-009", "TH-010", "TH-011"],
+  "queries": {
+    "cache_files_read": 32,
+    "unique_records": 585,
+    "fetched": 0,
+    "failed": [],
+    "queued": [
+      ["Q1", "biomedcore", "RFdiffusion de novo antibody VHH CDR length hotspot designs tested success rate", "TH-009, TH-011"],
+      ["Q2", "biomedcore", "nanobody CDR3 length distribution camelid repertoire residues", "TH-009"],
+      ["Q3", "biomedcore", "antibody developability sequence liability threshold deamidation isomerization glycosylation CDR", "TH-010"],
+      ["Q4", "biomedcore", "nanobody aggregation hydrophobic patch surface prediction threshold", "TH-010"],
+      ["Q5", "biomedcore", "de novo binder design experimental validation hit rate nanomolar fraction", "TH-011"],
+      ["Q6", "patentcore", "anti-HER2 VHH single domain antibody sequence claim", "IDEA-007"],
+      ["Q7", "patentcore", "nanobody HER2 domain IV epitope claim", "IDEA-007"]
+    ]
+  },
+  "spend_this_pass_usd": 0.0,
+  "spend_total": {"searches": 0, "usd": 0.0, "passes": 1},
+  "imported": {
+    "TH-003": {"from": "LEO/tasks/experiment-ledger", "confidence": "medium", "rescoped": "numeric Arg cap added as OUR JUDGEMENT"},
+    "TH-004": {"from": "LEO/tasks/experiment-ledger", "confidence": "medium", "rescoped": "scope limit: excludes pLDDT/PAE"},
+    "TH-005": {"from": "LEO/tasks/experiment-ledger", "confidence": "medium", "rescoped": "framework DESIGN unsupported on RFD4-Proteina; became framework CHOICE"},
+    "TH-006": {"from": "LEO/tasks/experiment-ledger", "confidence": "medium", "rescoped": null},
+    "TH-008": {"from": "LEO/tasks/experiment-ledger", "confidence": "low", "rescoped": "hotspot placement only; no contact-preservation scoring"},
+    "IDEA-001": {"from": "LEO/tasks/experiment-ledger", "status": "lit-checked", "rescoped": "framework choice, not framework design"},
+    "IDEA-002": {"from": "LEO/tasks/experiment-ledger", "status": "open", "rescoped": null},
+    "IDEA-003": {"from": "LEO/tasks/experiment-ledger", "status": "done", "rescoped": "closed favourably: VHH submission gets the Tm-trained predictor; TEMPRO installed and run"},
+    "IDEA-004": {"from": "LEO/tasks/experiment-ledger", "status": "lit-checked", "rescoped": "dropped the per-residue-energetics plan; kept the 4 cited C_HOT atoms"},
+    "IDEA-005": {"from": "LEO/tasks/experiment-ledger", "status": "open", "rescoped": "promoted from hedge to the whole campaign"},
+    "IDEA-007": {"from": "LEO/tasks/experiment-ledger", "status": "open", "rescoped": "blocked on unclaimed credits; salvaged the zero-cost PMID:37632647 identity check"}
+  },
+  "created": ["TH-009", "TH-010", "TH-011", "IDEA-008", "IDEA-009", "IDEA-010"],
+  "blockers": [
+    "biomedcore records are abstract-only: PMID:41193805 recipe numbers (CDR length ranges, hotspot counts, designs per target, filters, success rates) are NOT in the cache. Fulltext is PMC12727541. See IDEA-008.",
+    "AMASS_API_KEY unset and credits unclaimed: 7 queries queued, 0 run."
+  ],
+  "upstream_bugs_verified": {
+    "trialcore_field_names": {"real": true, "evidence": "20/20 records have briefTitle, 17/20 briefSummary, 0/20 title, 0/20 abstract; score_record reads title+abstract so every trialcore record scores 0 silently"},
+    "cache_key_collision": {"real": true, "evidence": "12 of 32 cache filenames already at exactly 60 chars; two queries differing only after char 60 resolve to one file; limit is already request-determining and absent from the key, so the bug does not wait for filters"}
+  },
+  "experiment_rows_written": 0,
+  "note": "No experiment rows: hypotheses are written before runs."
+}

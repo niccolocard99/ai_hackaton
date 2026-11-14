@@ -1,0 +1,60 @@
+# The MAIN LOOP, optimisation track: frozen stage 1 + the orchestrator, warm-started from team work.
+#
+#   abpipe orchestrate configs/orchestrated_loop.yaml --rounds 3 --select 60 \
+#       --out runs/orchestrated-optim --deadline 17:30
+#
+# The stage-1 module chain is copied from configs/stage1_frozen.yaml (do not drift from it: measure
+# any change with NICCOLO/eda/p18_jahn_eval.py and p19_agg_bootstrap.py). What this config adds:
+#   - an `orchestrate:` block (policy, patience, primary score),
+#   - warm-start `parents`/`history` built by scripts/build_bootstrap.py from work that already
+#     exists: LEO's final shortlist + pool (Tm-, epitope- and fold-aware) and the RFD4-on-JapanFold
+#     geometry candidates. The generator pulls its distributions towards those elites and never
+#     re-proposes any evaluated window.
+run:
+  name: orchestrated_loop
+  out_dir: runs
+  seed: 11
+data_dir: ${HOME}/hackathon-team-3/apheris/hackathon-data     # git-ignored organiser data
+parent:
+  table: her2-trastuzumab/trastuzumab_her2_spr_all_768.csv
+  window_column: cdrh3
+  id: trastuzumab
+
+orchestrate:
+  policy: rules            # rules | agent (an LLM through the same allowlist; needs claude on PATH)
+  patience: 2              # rounds without score improvement or new blood before exploring harder
+  # deadline: 17:30        # Oslo local; set here or with --deadline
+  primary: score__pred_log10_kd
+
+generators:
+  - name: scored_evolution
+    n: 20000
+    params:
+      min_subs: 4          # the 70% CDRH3-identity rule binds before ">2 mutations": 3 substitutions on a
+      max_subs: 8          # 10-mer leave exactly 70% identity, and the rule needs strictly under 70%
+      parents: bootstrap/candidates_1m_batch00001.csv        # NICCOLO's 1M-screen batch 1: top 2000 ranked
+      parents_sha256: a771f98b23a52b0a                      # windows (score__p_binder, score__pred_log10_kd)
+      history: [bootstrap/history.csv, bootstrap/candidates_1m_batch00001.csv]   # never re-propose scored work
+      history_sha256: 7a1d29aefb0b029b
+
+filters:                   # cheap first, expensive last; each runs on the previous survivors
+  - {name: framework_integrity}
+  - {name: window_novelty, params: {min_dist: 3}}                 # > 2 substitutions from every provided window
+  - {name: prefilter_gate, params: {min_p_binder: 0.8}}           # step 2 of the cascade; 0.8 is a budget choice
+  - {name: abguard_hard}
+  - {name: dedupe}
+  - {name: new_liabilities, params: {severities: [high], max_new: 0}}
+  # track_check is NOT here: it runs as `validate` below, on the selected shortlist only.
+  # Measured on this VM: both official scripts over ~13.6k survivors dominated the round (~7 of 8
+  # minutes) while the selection keeps at most `select` rows. Same official verdict, ~200x fewer rows.
+
+validate:                  # BASE VALIDATION, after ranking, on what the round actually keeps
+  name: track_check
+
+scorers:
+  - {name: niccolo_prefilter}        # no splits_dir: the FACS feature was measured to add nothing and is off
+
+# Rank on BOTH pre-filter scores (out-of-fold +0.729 vs +0.680 for pred_log10_kd alone; in the legal
+# >=4-sub band the gain is +0.041, CI [-0.005, +0.092] -- not established, never harmful). `columns`
+# is deliberate: every score__* ranked equally dilutes (+0.659 vs +0.729).
+aggregator: {name: borda, params: {columns: [score__pred_log10_kd, score__p_binder]}}

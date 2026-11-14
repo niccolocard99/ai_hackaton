@@ -11,6 +11,7 @@ import yaml
 TOP_KEYS = {"run", "data_dir", "repo_root", "plugins", "parent", "generators", "generator",
             "filters", "scorers", "aggregator", "validators", "validate_top"}
 RUN_KEYS = {"name", "out_dir", "cache_dir", "seed"}
+ORCHESTRATE_KEYS = {"policy", "agent_cmd", "patience", "deadline", "primary", "select", "rounds"}
 
 
 class ConfigError(ValueError):
@@ -42,6 +43,7 @@ class Config:
     validators: list          # filters that run AFTER ranking, on the top `validate_top`
     validate_top: int | None  # None: validate the whole ranked list
     raw: dict
+    orchestrate: dict = field(default_factory=dict)
 
 
 def _expand(obj):
