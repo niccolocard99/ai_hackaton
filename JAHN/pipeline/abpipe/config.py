@@ -9,8 +9,9 @@ from pathlib import Path
 import yaml
 
 TOP_KEYS = {"run", "data_dir", "repo_root", "plugins", "parent", "generators", "generator",
-            "filters", "scorers", "aggregator"}
+            "filters", "scorers", "aggregator", "orchestrate"}
 RUN_KEYS = {"name", "out_dir", "cache_dir", "seed"}
+ORCHESTRATE_KEYS = {"policy", "agent_cmd", "patience", "deadline", "primary", "select", "rounds"}
 
 
 class ConfigError(ValueError):
@@ -40,6 +41,7 @@ class Config:
     scorers: list
     aggregator: ModuleSpec
     raw: dict
+    orchestrate: dict = field(default_factory=dict)
 
 
 def _expand(obj):
@@ -92,6 +94,10 @@ def load(source, base_dir: Path | None = None) -> Config:
         raise ConfigError("at least one generator is required")
     if "aggregator" not in raw:
         raise ConfigError("`aggregator` is required")
+    orch = raw.get("orchestrate") or {}
+    bad = set(orch) - ORCHESTRATE_KEYS
+    if bad:
+        raise ConfigError(f"unknown orchestrate keys {sorted(bad)}; allowed {sorted(ORCHESTRATE_KEYS)}")
     out_dir = Path(run.get("out_dir", "runs"))
     repo_root = raw.get("repo_root")
     if repo_root is None:
@@ -106,4 +112,4 @@ def load(source, base_dir: Path | None = None) -> Config:
         generators=[_spec(g, "generators", kind="generator") for g in gens],
         filters=[_spec(f, "filters", kind="filter") for f in raw.get("filters") or []],
         scorers=[_spec(s, "scorers", kind="scorer") for s in raw.get("scorers") or []],
-        aggregator=_spec(raw["aggregator"], "aggregator", kind="aggregator"), raw=raw)
+        aggregator=_spec(raw["aggregator"], "aggregator", kind="aggregator"), raw=raw, orchestrate=dict(orch))

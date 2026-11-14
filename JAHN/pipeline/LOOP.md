@@ -1,5 +1,10 @@
 # Generate -> filter -> score loop with Niccolo's pre-filter
 
+> 2026-11-14: the loop has an orchestrator now — a policy that adapts the config between rounds,
+> watches the machine (GPU, disk, JapanFold balance) and stops on the time budget.
+> Read [`ORCHESTRATOR.md`](ORCHESTRATOR.md) for the steered loop; this file describes the
+> `abpipe iterate` path it is built on.
+
 ```bash
 cd JAHN/pipeline
 ~/.venvs/abpipe/bin/abpipe iterate configs/niccolo_loop.yaml --rounds 3 --select 60 --out runs/loop --propose-next

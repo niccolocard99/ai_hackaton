@@ -1,0 +1,40 @@
+# The MAIN LOOP, de novo track: ANDERS' VHH variant generator (PR #11) as an abpipe generator, steered
+# by the same orchestrator. There is no parent window here (the whole binder is new), so:
+#   - the window-specific filters/generator of the optimisation track are absent,
+#   - selection uses pairwise Levenshtein diversity on the heavy chain instead of window Hamming,
+#   - ranking is the INHERITED parent score (a prior, not evidence) until a validated de novo scorer
+#     exists. Refold the shortlist for plausibility only; do not rank on fold metrics.
+# Cold start: `ranked` is a scored/ranked VHH list. Once the loop runs, the orchestrator feeds each
+# round the previous round's selected.csv (parents), so recombine/mutate/graft work on OUR winners.
+#   abpipe orchestrate configs/orchestrated_denovo.yaml --rounds 4 --select 20 --out runs/orchestrated_denovo
+run:
+  name: orchestrated_denovo
+  out_dir: runs
+  seed: 7
+data_dir: ${HOME}/hackathon-team-3/apheris/hackathon-data
+repo_root: ${HOME}/hackathon-team-3
+
+orchestrate:
+  policy: rules
+  patience: 2
+  primary: score__parent_score
+
+generators:
+  - name: vhh_variants
+    n: 40
+    params:
+      ranked: ${HOME}/hackathon-team-3/ANDERS/demo/ranked.csv   # REPLACE with the team's real VHH shortlist
+      strategies: recombine,extend,mutate,graft
+      parents_top: 6
+      identity_max: 0.62     # margin; the official de novo cap is 0.70 strictly
+      cdrh3_dist_min: 4      # margin; the official floor is 2 edits from every reference CDRH3
+
+filters:
+  - {name: abguard_hard}
+  - {name: dedupe}
+  - {name: track_check}      # BASE VALIDATION; assigns the track and applies its extra rules
+
+scorers:
+  - {name: pass_through, params: {column: info__parent_score, output: score__parent_score, direction: higher}}
+
+aggregator: {name: borda, params: {columns: [score__parent_score]}}

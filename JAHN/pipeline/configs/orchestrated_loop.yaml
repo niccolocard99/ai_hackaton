@@ -1,0 +1,44 @@
+# The MAIN LOOP, optimisation track: Niccolo's pre-filter in a generate -> filter -> score loop that
+# a policy steers between rounds. Same stages as configs/niccolo_loop.yaml; the orchestrate block and
+# `abpipe orchestrate` add the fourth component: a policy that adapts the config from each round's
+# funnel, the score trend and the machine state, and stops when the time budget runs out.
+#   abpipe orchestrate configs/orchestrated_loop.yaml --rounds 6 --select 60 --out runs/orchestrated \
+#       --deadline 17:30
+run:
+  name: orchestrated_loop
+  out_dir: runs
+  seed: 11
+data_dir: ${HOME}/hackathon-team-3/apheris/hackathon-data
+parent:
+  table: her2-trastuzumab/trastuzumab_her2_spr_all_768.csv
+  window_column: cdrh3
+  id: trastuzumab
+
+orchestrate:
+  policy: rules            # rules | agent (an LLM through the same allowlist; needs claude on PATH)
+  patience: 2              # rounds without score improvement or new blood before exploring harder
+  # deadline: 17:30        # Oslo local; the driver stops when one more round cannot fit. Set here or --deadline
+  primary: score__pred_log10_kd
+
+generators:
+  - name: scored_evolution
+    n: 20000
+    params:
+      min_subs: 4          # >= 4 substitutions: the 70% CDRH3-identity rule binds before ">2 mutations"
+      max_subs: 8
+      splits_dir: ${HOME}/nick-work/splits
+
+filters:                   # cheap first, expensive last; each runs on the previous survivors
+  - {name: framework_integrity}
+  - {name: window_novelty, params: {min_dist: 3}}                 # > 2 substitutions from every provided window
+  - {name: prefilter_gate, params: {min_p_binder: 0.8, splits_dir: "${HOME}/nick-work/splits"}}
+  - {name: abguard_hard}
+  - {name: dedupe}
+  - {name: new_liabilities, params: {severities: [high], max_new: 0}}
+  - {name: track_check}                                           # BASE VALIDATION: abguard track + each track's rules
+
+scorers:
+  - {name: niccolo_prefilter, params: {splits_dir: "${HOME}/nick-work/splits"}}
+
+# Niccolo's cascade: gate on p_binder (the filter above), then rank on predicted log10 KD (lower is tighter).
+aggregator: {name: borda, params: {columns: [score__pred_log10_kd]}}

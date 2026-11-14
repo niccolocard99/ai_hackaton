@@ -68,6 +68,7 @@ Then open `~/hackathon-team-3/apheris/rfd4/Tutorial.html`.
 
 ### 4.1 AMASS
 
+- **Key status (14 Nov, 14:45):** team key installed (env `AMASS_API_KEY` via `~/.bashrc`, never committed) and verified valid — but the account returns **403 "out of API credits"**. The $100 hackathon credits still need claiming/top-up by a person at <https://platform.amass.tech/settings/credits>. Until then AMASS is unusable; the orchestrator's probe reports key presence only.
 - **Event page:** https://amass.tech/oslo-ai-antibodies-hackathon
 - **Onboarding walkthrough:** https://amass.tech/onboarding/oslo-ai-antibodies-hackathon (returned 404 when checked; try again or ask the organisers)
 - **Connect to Claude (guide):** https://amass.tech/how-to-do-scientific-work-in-claude
