@@ -8,9 +8,9 @@
 
 | | |
 |---|---|
-| Experiments | 9 (`worked` 7, `failed` 1, `inconclusive` 1) — **3 of them ours** |
+| Experiments | 11 (`worked` 9, `failed` 1, `inconclusive` 1) — **3 of them ours** |
 | Theories | 18 active + 2 retired — `low` 1, `medium` 6, `high` 11 |
-| Ideas | 14 open/lit-checked, 3 done |
+| Ideas | 17 open/lit-checked, 3 done |
 | Research passes | 7 (step B blocked: no credits) |
 | AMASS spend | 14 searches, $0.70 — **team credits now exhausted**, see Blocked |
 | Published | PR #2 **merged** into `main` at `27b6982`; later work goes out as a new PR |
@@ -46,6 +46,7 @@ alone until credits are topped up.
 | `research_pass.py` runs a scoped pass, caches, tracks spend, writes pass files | pass-001 executed at `--max-new 0`, zero spend | initial |
 | Field parser bug fixed: `\s*` swallowed the line after an empty field | 4 of 8 theories had silently lost `query_terms`; re-ran and all 8 parse | initial |
 | **EXP-009: cross-checked this ledger against the full SPR-768 table** — overturned TH-019's hit rate and inverted IDEA-008's recipe | `python -I validate.py` passes; scripts in `NICCOLO/eda/p15`–`p17` | this pass |
+| **EXP-010 / EXP-011: both final lists scored** — the optimisation list's position strategy is right, three slots are wasted, and de novo holds our only epitope evidence | `python -I validate.py` passes; `NICCOLO/SCORED_LEO_FINAL.md`, `NICCOLO/SCORED_DENOVO_VHH.md` | this pass |
 
 ## Blocked
 
@@ -58,6 +59,18 @@ alone until credits are topped up.
 | trialcore evidence | 20 cached records returned empty titles | Re-query or drop the core |
 
 ## Next, in order
+
+0. **IDEA-019 — refold the 12 de novo VHHs with Protenix v2, not Boltz-2.** Three minutes of GPU. Boltz-2's
+   real-vs-shuffled AUROC on VHH-antigen pairs is 0.64 and it gives ipTM >= 0.7 to 94% of known non-binders,
+   so the current fold read is uninformative; 6 of our 8 score *below* a typical non-binder. Cheapest action
+   that changes what we can say.
+0. **IDEA-018 — stop paying slots for changes no scorer can see.** `D28K` is invisible to all three scorers
+   (identical `kd_mean`, `dtm_vs_wt`, `epi_risk` for the three windows that appear with and without it, yet
+   ranks 2/10, 5/17, 19/4). Deduplicate on the window first: 20 rows currently hold 14 distinct loops.
+0. **IDEA-020 — weight slots toward de novo.** Separate prize pot, and it is the only track where a second
+   property is backed by anything (epitope coverage, 4 of 12 designs). The optimisation list has no epitope
+   handle at all.
+
 
 0. **Top up AMASS credits** (or accept repo-scan-only passes). Step B cannot run at all until then — though note Step A has produced every substantive result so far.
 1. **IDEA-011 — switch the ranker.** Adopt the sequence pre-filter (`NICCOLO/eda/prefilter.py`, branch `origin/nick`) as the primary ranking for optimisation-track designs. Costs no GPU, runs on a laptop, and replaces a metric EXP-003 shows is near-useless (Boltz-2 ipTM AUROC 0.645) with one at Spearman +0.622 against measured KD. Highest-value action available.

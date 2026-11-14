@@ -42,7 +42,7 @@ suggested it) | `team`.
 - **query_terms:** scFv Tm predictor validation benchmark antibody fragment; nanobody thermostability deep learning screening criterion
 - **notes:** Named as an open decision in `AGENTS.md`. Two of the three scored properties have no built-in proxy and this is the cheaper one to fix. Blocking for any S-tier claim. **pass-002 split this in two:** for a **VHH** submission use TEMPRO (PMID:39154093, MAE 4.03 °C) cross-checked against the `Tm > 65 °C` criterion in PMID:41564239 — both sdAb-specific and both reporting on Tm directly. For an **scFv** there is still no Tm-trained predictor; the best available is the TS50-trained pair in PMID:36683173, which recovered 18 of 20 known thermostable positions on a held-out mAb. Recommendation: if we submit a VHH, this decision is effectively closed; if scFv only, flag the predictor as a known weakness in the pitch rather than overclaiming.
   **DONE by EXP-005**, and the recommendation held up. The answer: **NanoMelt** (MAE 4.1 °C on 639 measured nanobody Tm), installed on the VM and verified against its own reference output. Neither platform ships anything else — Nebius `stab-ddg` is StaB-ddG (*binding* ddG), Foundry AQ is small-molecule — and cheap features reach only Pearson +0.40. It is nanobody-trained, so it is in-domain for a VHH and out-of-domain for our scFv/VH, exactly the split pass-002 predicted. See TH-016.
-
+  **Qualified by EXP-011.** The choice was never required: Adaptyv measures thermostability directly (challenge doc lines 323, 329) and root `AGENTS.md` records picking a predictor as an *open decision*, not an obligation. More importantly the predictor chosen cannot answer the question that scores — tiers count improvement **on trastuzumab**, and trastuzumab is not a nanobody, so NanoMelt has no comparable baseline for a VHH and only ranks nanobody designs against each other. Keep it as a tie-break; do not let it appear in the pitch as evidence that a design improves thermostability.
 ### IDEA-004 — Extract per-residue energetic contributions at the 1N8Z interface, not just the contact list
 
 - **status:** done
@@ -202,3 +202,37 @@ suggested it) | `team`.
 - **query_terms:**
 - **notes:** Every affinity number in this ledger comes from the **60-variant fold-calibration subset**, the only SPR table committed to the repo. That subset was deliberately built as 30 binders spanning the KD range plus 30 non-binders, so it cannot give a base rate: TH-019's "1 of 21 legal variants beats trastuzumab" is an existence proof, not a frequency. The full table has **179 quantified** variants of 620 outcomes. Re-running `analysis/legal_band_affinity.py` against it would turn three soft claims into real ones — the legal-band hit rate against 0.152 nM, the per-position substitution frequencies behind IDEA-008's recipe, and the n backing TH-015's per-position preferences (currently 4-5 at the standout residues). The path is in `NICCOLO/eda/AGENT_GUIDE.md`: `scp` `trastuzumab_her2_spr_all_768.csv` from `hackathon-data/her2-trastuzumab/` on the VM. Cheapest high-value item on the board.
   **DONE by EXP-009** — no `scp` was needed, the full table was already on the `nick` session's laptop. It cost this ledger two claims: the legal-band hit rate fell from 1 of 21 to **1 of 131** (0 of 131 against trastuzumab's best replicate), and the per-position frequencies behind IDEA-008 turned out to be base-rate artefacts. TH-015's thin n=4-5 residue preferences are superseded at the position level by n=131.
+
+### IDEA-018 — Stop spending submission slots on changes no scorer can see
+
+- **status:** open
+- **priority:** high
+- **tests:** TH-014
+- **cost:** none; a selection rule, not a run
+- **source:** experiment
+- **evidence:** EXP-010
+- **query_terms:** antibody design portfolio selection diversity submission slots; experimental design replicate allocation
+- **notes:** EXP-010 found two leaks in the 20 slots. **First, `D28K` is invisible to every scorer we have.** For the three windows present both with and without it, `kd_mean`, `dtm_vs_wt` and `epi_risk` are *identical*, yet the pairs sit at ranks 2/10, 5/17 and 19/4 — separated only by tie-breaking. The ranker was fitted on trastuzumab's light chain and the Tm model is heavy-only, so no scorer can see a VL substitution. Either make one of them see it, or stop paying a slot for it. **Second, 20 rows hold only 14 distinct CDRH3 loops**; six loops appear twice under different add-ons. Suggested rule for the next list: deduplicate on the window first, then spend the remaining slots on add-ons *that a scorer can distinguish* — which today means `fwTm` (worth +2.4 to +2.6 °C of predicted Tm) and not `D28K`. Keeping a blind variant is defensible only as a deliberate A/B against a measured readout, and if that is the intent it should be stated in the pitch rather than left as an apparent ranking.
+
+### IDEA-019 — Refold the de novo VHH designs with Protenix v2 or OpenFold3, not Boltz-2
+
+- **status:** open
+- **priority:** high
+- **tests:** TH-013
+- **cost:** ~12.8 s per structure on the H100; 12 designs is about 3 minutes, one container
+- **source:** experiment
+- **evidence:** EXP-011; EXP-006
+- **query_terms:** AlphaFold3 Boltz Protenix antibody antigen interface confidence benchmark comparison; nanobody complex structure prediction accuracy
+- **notes:** The shortlist was refolded with **Boltz-2, the weakest model for exactly this task**. On the published VHH–antigen benchmark its real-vs-shuffled AUROC is **0.64** against AF3's 0.75 and it gives ipTM ≥ 0.7 to **94% of shuffled non-binding pairs**, so a high Boltz-2 ipTM carries almost no information and 6 of our 8 folded designs score *below* the level it hands a typical non-binder. AF3 is not available, but **Protenix v2 and OpenFold3 are on the VM, both take templates**, and in the `nick` session's own calibration Protenix had real dynamic range where Boltz-2 had almost none (ipTM spread 0.19 against 0.07 on the same 60 inputs). Re-folding the 12 with Protenix is three minutes of GPU and would turn an uninformative read into a usable one. Do it before the submission rationale is written, and keep one container at a time per root `AGENTS.md`.
+
+### IDEA-020 — Weight submission slots toward de novo, the only track with epitope evidence
+
+- **status:** open
+- **priority:** high
+- **tests:** TH-012; TH-019
+- **cost:** a portfolio decision; the VHH batch already exists and passes base validation
+- **source:** experiment
+- **evidence:** EXP-011; EXP-010
+- **query_terms:** epitope binning competitive binding assay antibody characterisation; nanobody epitope targeting structure based design
+- **notes:** The two tracks have separate prize pots, and the evidence we hold is lopsided in a way the slot allocation does not yet reflect. **Optimisation:** binding is predicted but TH-019 says beating trastuzumab is a ~1% shot, thermostability has no claim, and there is **no epitope handle at all** (`epi_risk` is a contact count over crystal structures, not a property of the design). **De novo VHH:** binding is unpredicted, thermostability cannot be baselined — but **epitope coverage is computable per design against the defined HER2 patch**, and 4 of 12 clear `epitope_cov ≥ 0.6` with `contacts_in_ep ≥ 0.7`. Since tiers count *how many* properties improve, the de novo designs are the only ones that can carry a second axis backed by anything. An empty or thin de novo entry also scores zero in its own pot. Recommended order on current evidence: `fixedfw_48` (0.79/0.94), then `freefw_0` and `fixedfw_42` (0.63/0.92), then `fixedfw_89` (0.68/0.87).
+
