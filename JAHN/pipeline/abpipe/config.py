@@ -43,11 +43,8 @@ class Config:
     aggregator: ModuleSpec
     raw: dict
     orchestrate: dict = field(default_factory=dict)
-<<<<<<< HEAD
     validators: list = field(default_factory=list)
     validate_top: int | None = None
-=======
->>>>>>> origin/main
 
 
 def _expand(obj):

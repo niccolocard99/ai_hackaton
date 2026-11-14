@@ -77,7 +77,10 @@ class ScoredEvolution(Generator):
                  frac_mutate: float = 0.4, frac_cross: float = 0.2, min_subs: int = 4, max_subs: int = 8,
                  w_clf: float = 1.0, w_rank: float = 1.0, w_facs: float = 0.5, temperature: float = 1.0,
                  eta: float = 0.5, min_dist_provided: int = 3, exclude: str = "C",
-                 eda_dir: str = _niccolo.EDA_REL, splits_dir: str | None = None, spr_csv: str = _niccolo.SPR_REL):
+                 eda_dir: str = _niccolo.EDA_REL, splits_dir: str | None = None, spr_csv: str = _niccolo.SPR_REL,
+                 pin: tuple = ()):
+        if pin and not all(isinstance(p, int) and 0 <= p < L for p in pin):
+            raise ValueError(f"pin must be window indices 0-{L - 1}")
         if not 1 <= min_subs <= max_subs <= L:
             raise ValueError(f"need 1 <= min_subs <= max_subs <= {L}")
         if min(frac_sample, frac_mutate, frac_cross) < 0 or frac_sample + frac_mutate + frac_cross <= 0:
@@ -92,6 +95,7 @@ class ScoredEvolution(Generator):
         self.min_subs, self.max_subs = min_subs, max_subs
         self.w_clf, self.w_rank, self.w_facs, self.temperature, self.eta = w_clf, w_rank, w_facs, temperature, eta
         self.min_dist_provided, self.exclude = min_dist_provided, exclude
+        self.pin = tuple(pin)      # window indices kept at the parent residue, e.g. (6,) keeps Y105 fixed
         self.eda_dir, self.splits_dir, self.spr_csv = eda_dir, splits_dir, spr_csv
         self.version = f"2+{_niccolo.quick_tag(eda_dir)}"
 
@@ -213,6 +217,8 @@ class ScoredEvolution(Generator):
     def _accept(self, S: np.ndarray, st) -> np.ndarray:
         nm = (S != st.wt).sum(1)
         ok = (nm >= self.min_subs) & (nm <= self.max_subs)
+        if self.pin:                                          # e.g. keep Y105: children that touch it are rejected
+            ok &= (S[:, list(self.pin)] == st.wt[list(self.pin)]).all(1)
         if len(st.excl):
             ok &= ~np.isin(S, st.excl).any(1)
         ext = np.concatenate([np.tile(st.left, (len(S), 1)), S, np.tile(st.right, (len(S), 1))], axis=1)

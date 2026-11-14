@@ -40,6 +40,7 @@ from abpipe.iterate import EVOLVER, _round_stats, _strip_rank, _write_selected, 
 from abpipe.generators.scored_evolution import file_sha256, history_digest
 
 VHH_GEN = "vhh_variants"
+S97_GEN = "s97_hedge"
 
 
 # --------------------------------------------------------------------------- helpers
@@ -306,6 +307,9 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
             if spec.name == VHH_GEN and prev_dir is not None:
                 spec.params = {**spec.params, "parents": str(prev_dir / "selected.csv"),
                                "parents_sha256": file_sha256(prev_dir / "selected.csv")}
+            if spec.name == S97_GEN and prev_dir is not None:
+                spec.params = {**spec.params, "parents": str(prev_dir / "selected.csv"),
+                               "parents_sha256": file_sha256(prev_dir / "selected.csv")}
         log(f"=== round_{r:02d} (seed {cfg.seed}) ===")
         rd.mkdir(parents=True, exist_ok=True)
         slog = report.StepLog(rd, t0, log)
@@ -386,6 +390,9 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
                 sel_csv = last / "selected.csv"
                 spec.params = {**spec.params, "parents": str(sel_csv),
                                "parents_sha256": file_sha256(sel_csv)}
+            if spec.name == S97_GEN and prev_dir is not None:
+                spec.params = {**spec.params, "parents": str(prev_dir / "selected.csv"),
+                               "parents_sha256": file_sha256(prev_dir / "selected.csv")}
         rem = probemod.seconds_until(deadline)
         if rem is not None and (est is None or rem > 0.5 * est):
             log(f"=== round_{r:02d}: proposals for the next iteration (generate + filter only) ===")

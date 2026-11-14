@@ -1,0 +1,66 @@
+# SATURATED MAIN LOOP — the frozen stage-1 chain + every ported handoff item (LEO PR #20) that
+# fits the optimisation track, for the full-machine campaign:
+#   abpipe orchestrate configs/orchestrated_saturated.yaml --rounds 12 --select 60 --out runs/sat-s11
+#
+#   item 1  s97_hedge generator: +1 CDRH3 novelty distance from every reference loop via the
+#           never-varied S97; children inherit their parent's window scores
+#   item 7  pin: [6] — Y105 stays fixed in scored_evolution's children and in the hedge's parents
+#   item 2  nanomelt_tm scorer: predicted VH Tm as a tie-break (weights 0.25 vs 1.0 for the two
+#           pre-filter columns); error ~4.1 degC and out-of-domain, never a gate
+#   item 5  one fast validation path: validate-after-select (the official checkers on the shortlist)
+#   item 4  the ledger gate: every run is check-run/add-run before launch, designs added after
+run:
+  name: orchestrated_saturated
+  out_dir: runs
+  seed: 11
+data_dir: ${HOME}/hackathon-team-3/apheris/hackathon-data
+repo_root: ${HOME}/hackathon-team-3
+parent:
+  table: her2-trastuzumab/trastuzumab_her2_spr_all_768.csv
+  window_column: cdrh3
+  id: trastuzumab
+
+orchestrate:
+  policy: rules
+  patience: 3
+  primary: score__pred_log10_kd
+
+generators:
+  - name: scored_evolution
+    n: 20000
+    params:
+      min_subs: 4
+      max_subs: 8
+      pin: [6]                                  # Y105 fixed (largest buried surface; standing instruction)
+      parents: bootstrap/candidates_1m_batch00001.csv
+      parents_sha256: a771f98b23a52b0a
+      history: [bootstrap/history.csv, bootstrap/candidates_1m_batch00001.csv]
+      history_sha256: 7a1d29aefb0b029b
+  - name: s97_hedge
+    n: 40
+    params:
+      residues: WY                              # S97W and S97Y (the JapanFold-RFD4 agent's jw97/jy97 arms)
+      pin: [6]                                  # only hedge parents that keep Y105
+      parents: shortlist/final_shortlist.csv   # the campaign shortlist so far; later rounds feed themselves
+      parents_sha256: b18a2898f0062e12
+
+filters:
+  - {name: framework_integrity}
+  - {name: window_novelty, params: {min_dist: 3}}
+  - {name: prefilter_gate, params: {min_p_binder: 0.8}}
+  - {name: abguard_hard}
+  - {name: dedupe}
+  - {name: new_liabilities, params: {severities: [high], max_new: 0}}
+
+validate:
+  name: track_check
+
+scorers:
+  - {name: niccolo_prefilter}
+  - {name: nanomelt_tm, params: {ncpu: 4}}
+
+aggregator:
+  name: borda
+  params:
+    columns: [score__pred_log10_kd, score__p_binder, score__dtm_vs_wt]
+    weights: {score__dtm_vs_wt: 0.25}          # the tie-break, per the handoff: never a gate
