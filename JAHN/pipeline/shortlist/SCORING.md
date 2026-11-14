@@ -71,7 +71,28 @@ the 1N8Z initial guess: pLDDT 0.87-0.89 (they fold), ipTM 0.20-0.22, interface P
 **not** separate binders from non-binders for CDRH3-window designs — Boltz-2 ipTM ≥ 0.7 passes 100%
 of true non-binders — so the fold is recorded as provenance, never used to rank or gate.
 
-## What this scoring cannot tell you (the honest limits)
+## What was optimized as paired sequences — and what deliberately was not
+
+All 32 optimisation rows are paired VH+VL (trastuzumab Fab format). The breakdown, verified against
+the parent chains: **24 keep trastuzumab's VL and VH framework residue-for-residue** (only the CDRH3
+window varies — the loop's `framework_integrity` filter enforces exactly this); **8 carry LEO's D28K
+VL variant** and 4 also carry his framework-Tm mutations (R87S-class) — the `fwTm`/`D28K` rows from
+his literature and NanoMelt arms.
+
+Why the loop half pinned the pair: every measured datapoint the scoring rests on — all 768 SPR
+variants and all 524k FACS variants — shares this one VH framework and this one VL. The pre-filter's
+evidence exists only on this pairing; any VL or framework departure leaves the training distribution
+and the surrogate goes blind. So the loop optimized the only coordinate where measured evidence
+exists, and the pairing-aware validity is intact: abguard splits paired designs and compares them as
+paired antibodies (the challenge's type-aware comparison), which is how the 32/32 PASS and track
+assignment were produced.
+
+The 8 VL/framework-mutated rows are hedges, not scorer output: D28K comes from the literature review
+(unmeasured — D28 contacts HER2, flagged as such in the PR #20 handoff), the framework mutations from
+NanoMelt Tm measurements. No VL or pairing search was performed anywhere in the campaign; there is no
+labelled data to score one with. The de novo rows are single-chain VHHs and have no light chain.
+
+
 
 - **These are surrogate scores.** The models were fitted on the parent framework's measured variants;
   predictions below log10 KD −1.02 (0.095 nM) are tighter than anything measured in the legal band —
