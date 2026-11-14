@@ -32,6 +32,15 @@ def file_sha256(path) -> str:
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
+def sha_pinned(path, expected: str | None) -> bool:
+    """True when `expected` is absent, or is the file's full sha256, or a >=8-hex-char prefix of it."""
+    if not expected:
+        return True
+    full = file_sha256(path).lower()
+    e = str(expected).lower()
+    return full == e or (len(e) >= 8 and full.startswith(e))
+
+
 def history_digest(paths) -> str:
     return hashlib.sha256("".join(file_sha256(p) for p in paths).encode()).hexdigest()
 
@@ -90,7 +99,7 @@ class ScoredEvolution(Generator):
     def _elites(self, parent) -> np.ndarray:
         if not self.parents:
             return np.zeros((0, L), np.uint8)
-        if self.parents_sha256 and file_sha256(self.parents) != self.parents_sha256:
+        if self.parents_sha256 and not sha_pinned(self.parents, self.parents_sha256):
             raise ValueError(f"{self.parents} changed since the config was written (sha256 mismatch)")
         df = read_table(self.parents)
         if "rank" in df.columns:
@@ -100,7 +109,11 @@ class ScoredEvolution(Generator):
 
     def _history(self, parent) -> np.ndarray:
         if self.history_sha256:
-            if history_digest(self.history) != self.history_sha256:
+            files = [str(p) for p in self.history]
+            e = str(self.history_sha256).lower()
+            combined = history_digest(files)
+            if not (combined == e or (len(e) >= 8 and combined.startswith(e))
+                    or all(sha_pinned(p, e) for p in files)):
                 raise ValueError("a history file changed since the config was written (sha256 mismatch)")
         codes = []
         for path in self.history:

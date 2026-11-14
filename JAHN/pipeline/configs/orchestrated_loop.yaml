@@ -1,14 +1,20 @@
-# The MAIN LOOP, optimisation track: Niccolo's pre-filter in a generate -> filter -> score loop that
-# a policy steers between rounds. Same stages as configs/niccolo_loop.yaml; the orchestrate block and
-# `abpipe orchestrate` add the fourth component: a policy that adapts the config from each round's
-# funnel, the score trend and the machine state, and stops when the time budget runs out.
-#   abpipe orchestrate configs/orchestrated_loop.yaml --rounds 6 --select 60 --out runs/orchestrated \
-#       --deadline 17:30
+# The MAIN LOOP, optimisation track: frozen stage 1 + the orchestrator, warm-started from team work.
+#
+#   abpipe orchestrate configs/orchestrated_loop.yaml --rounds 3 --select 60 \
+#       --out runs/orchestrated-optim --deadline 17:30
+#
+# The stage-1 module chain is copied from configs/stage1_frozen.yaml (do not drift from it: measure
+# any change with NICCOLO/eda/p18_jahn_eval.py and p19_agg_bootstrap.py). What this config adds:
+#   - an `orchestrate:` block (policy, patience, primary score),
+#   - warm-start `parents`/`history` built by scripts/build_bootstrap.py from work that already
+#     exists: LEO's final shortlist + pool (Tm-, epitope- and fold-aware) and the RFD4-on-JapanFold
+#     geometry candidates. The generator pulls its distributions towards those elites and never
+#     re-proposes any evaluated window.
 run:
   name: orchestrated_loop
   out_dir: runs
   seed: 11
-data_dir: ${HOME}/hackathon-team-3/apheris/hackathon-data
+data_dir: ${HOME}/hackathon-team-3/apheris/hackathon-data     # git-ignored organiser data
 parent:
   table: her2-trastuzumab/trastuzumab_her2_spr_all_768.csv
   window_column: cdrh3
@@ -17,31 +23,33 @@ parent:
 orchestrate:
   policy: rules            # rules | agent (an LLM through the same allowlist; needs claude on PATH)
   patience: 2              # rounds without score improvement or new blood before exploring harder
-  # deadline: 17:30        # Oslo local; the driver stops when one more round cannot fit. Set here or --deadline
+  # deadline: 17:30        # Oslo local; set here or with --deadline
   primary: score__pred_log10_kd
 
 generators:
   - name: scored_evolution
     n: 20000
     params:
-      min_subs: 4          # >= 4 substitutions: the 70% CDRH3-identity rule binds before ">2 mutations"
-      max_subs: 8
-      splits_dir: ${HOME}/nick-work/splits
+      min_subs: 4          # the 70% CDRH3-identity rule binds before ">2 mutations": 3 substitutions on a
+      max_subs: 8          # 10-mer leave exactly 70% identity, and the rule needs strictly under 70%
+      parents: bootstrap/parents.csv          # sha-pinned: LEO final (20) + RFD4-JapanFold (9) elites
+      parents_sha256: 5c2f49353238e547
+      history: [bootstrap/history.csv]        # 686 windows already evaluated; never proposed again
+      history_sha256: 7a1d29aefb0b029b
 
 filters:                   # cheap first, expensive last; each runs on the previous survivors
   - {name: framework_integrity}
   - {name: window_novelty, params: {min_dist: 3}}                 # > 2 substitutions from every provided window
-  - {name: prefilter_gate, params: {min_p_binder: 0.8, splits_dir: "${HOME}/nick-work/splits"}}
+  - {name: prefilter_gate, params: {min_p_binder: 0.8}}           # step 2 of the cascade; 0.8 is a budget choice
   - {name: abguard_hard}
   - {name: dedupe}
   - {name: new_liabilities, params: {severities: [high], max_new: 0}}
-  - {name: track_check}                                           # BASE VALIDATION: abguard track + each track's rules
+  - {name: track_check}                                           # BASE VALIDATION: abguard track + track rules
 
 scorers:
-  - {name: niccolo_prefilter, params: {splits_dir: "${HOME}/nick-work/splits"}}
+  - {name: niccolo_prefilter}        # no splits_dir: the FACS feature was measured to add nothing and is off
 
-# Rank on BOTH columns (equal weights): borda(pred_log10_kd, p_binder) measured +0.729 Spearman vs
-# +0.680 on pred_log10_kd alone (NICCOLO/eda/p18-p19, PR #13); in the legal >=4-sub band the gap is
-# not established (+0.041, CI [-0.005, +0.092]) but the sign holds and it never hurt. Ranking on
-# every score__* column is worse than the best two (+0.659 vs +0.729), so the columns stay explicit.
+# Rank on BOTH pre-filter scores (out-of-fold +0.729 vs +0.680 for pred_log10_kd alone; in the legal
+# >=4-sub band the gain is +0.041, CI [-0.005, +0.092] -- not established, never harmful). `columns`
+# is deliberate: every score__* ranked equally dilutes (+0.659 vs +0.729).
 aggregator: {name: borda, params: {columns: [score__pred_log10_kd, score__p_binder]}}

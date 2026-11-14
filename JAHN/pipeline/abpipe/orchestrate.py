@@ -222,6 +222,9 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
                      f"({'lower is better' if pdir == 'lower' else 'higher is better'}).\n")
 
     raw_current = copy.deepcopy(base.raw)
+    boot_hist = [Path(str(p)) for g in base.generators if g.name == EVOLVER
+                 for p in (g.params.get("history") or [])]
+    history = boot_hist + history          # config-declared evaluated windows are never re-proposed
     for r in range(rounds):
         rd = loop_dir / f"round_{r:02d}"
         if (rd / "selected.parquet").exists():
@@ -263,8 +266,9 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
             if spec.name == EVOLVER:
                 spec.params = {**spec.params, "n_elite": lp["select"], "history": [str(p) for p in history],
                                "history_sha256": history_digest(history) if history else None,
-                               "parents": str(prev_dir / "selected.parquet") if prev_dir else None,
-                               "parents_sha256": file_sha256(prev_dir / "selected.parquet") if prev_dir else None}
+                               "parents": str(prev_dir / "selected.parquet") if prev_dir else spec.params.get("parents"),
+                               "parents_sha256": (file_sha256(prev_dir / "selected.parquet") if prev_dir
+                                                  else spec.params.get("parents_sha256"))}
             if spec.name == VHH_GEN and prev_dir is not None:
                 spec.params = {**spec.params, "parents": str(prev_dir / "selected.csv"),
                                "parents_sha256": file_sha256(prev_dir / "selected.csv")}
@@ -330,10 +334,15 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
             if n is not None:
                 spec.n = n
             if spec.name == EVOLVER:
-                spec.params = {**spec.params, "n_elite": lp["select"], "history": [str(p) for p in history],
+                spec.params = {**spec.params, "n_elite": lp["select"],
+                               "history": [str(p) for p in history],
                                "history_sha256": history_digest(history),
                                "parents": str(last / "selected.parquet"),
                                "parents_sha256": file_sha256(last / "selected.parquet")}
+            if spec.name == VHH_GEN:
+                sel_csv = last / "selected.csv"
+                spec.params = {**spec.params, "parents": str(sel_csv),
+                               "parents_sha256": file_sha256(sel_csv)}
         rem = probemod.seconds_until(deadline)
         if rem is not None and (est is None or rem > 0.5 * est):
             log(f"=== round_{r:02d}: proposals for the next iteration (generate + filter only) ===")
