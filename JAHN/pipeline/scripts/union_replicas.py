@@ -27,6 +27,10 @@ def main() -> None:
     ap.add_argument("-c", "--config", default="configs/orchestrated_loop.yaml")
     ap.add_argument("-o", "--out", default="runs/union")
     ap.add_argument("-n", "--select", type=int, default=60)
+    ap.add_argument("--max-sub-share", type=float, default=0.25,
+                    help="cap on one substitution's share of the returned list (0.25 inside a single "
+                         "run; raise it when pooling many CEM-concentrated rounds, where overlap is "
+                         "intrinsic and the cap starves the walk)")
     a = ap.parse_args()
 
     cfg = load_cfg(a.config)
@@ -45,7 +49,7 @@ def main() -> None:
             frames.append(df.drop([c for c in df.columns if c.startswith("rank")]))
     pool = pl.concat(frames, how="diagonal_relaxed")
     ranked = agg.combine(pool, directions, None)
-    sel = select_diverse(ranked, ctx_parent, a.select)
+    sel = select_diverse(ranked, ctx_parent, a.select, max_sub_share=a.max_sub_share)
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     sel.write_parquet(out / "union_selected.parquet")
