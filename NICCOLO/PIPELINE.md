@@ -194,6 +194,20 @@ rank on one property of three.
 
 ---
 
+## 6b. Per-position design guidance (from the full 131 legal variants)
+
+From `LEDGER_CROSSCHECK.md`, Mann-Whitney with BH correction over all 10 positions:
+
+- **Spend substitutions on G100 and G101** — the only positions where mutating associates with *tighter*
+  binding (q = 0.062, 0.077).
+- **Then D102, A106, D108** — inert (q > 0.8), so they are free filler to reach the ≥4 floor.
+- **Conserve W99, Y105, F104, M107** — mutating any of them associates with *weaker* binding
+  (q < 0.001, < 0.001, 0.028, 0.040).
+
+Counting substitutions at those costly positions predicts affinity better than mutation count alone
+(Spearman +0.505 vs +0.234). Note that only **1 of 131** legal variants beats trastuzumab's measured KD, and
+**0 of 131** beat its best replicate — and all 131 are in the provided data, so none is itself submittable.
+
 ## 7. What would actually move the needle
 
 1. **More measured KDs in the ≥5-substitution band.** With 179 labels, differences below ~0.1 Spearman are
@@ -219,6 +233,7 @@ and further physicochemical features.
 | `eda/seqfeat.py` | T0 feature builder (tested, rejected) |
 | `features/README.md` | ddG feature cost tiers, from a different task |
 | `thermo/README.md` | thermostability evidence base and the CDRH3 control |
+| `LEDGER_CROSSCHECK.md` | cross-check of LEO's ledger against the full SPR-768 table; corrects TH-019 and IDEA-008 |
 | `scripts/` | `check_denovo.py`, `check_optimisation.py` (BASE VALIDATION) |
 
 Inputs live in `eda/data/` and are git-ignored; `eda/AGENT_GUIDE.md` §2 has the `scp` commands.
