@@ -18,7 +18,7 @@ What *does* apply, and it is the mirror image of the optimisation track:
 | Tool | Optimisation track | De novo VHH track |
 |---|---|---|
 | sequence pre-filter | the main signal (Spearman +0.69) | **inapplicable** |
-| NanoMelt Tm | out of domain (VH, not a nanobody) | **in domain** (639 measured nanobody Tm) |
+| NanoMelt Tm | out of domain (VH, not a nanobody) | in domain, but see the caveat below |
 | fold confidence (ipTM) | measured at chance (AUROC 0.50) | the regime where it has signal (AF3 0.75) |
 | epitope coverage | no handle at all | **measurable** against a defined patch |
 
@@ -39,15 +39,20 @@ What *does* apply, and it is the mirror image of the optimisation track:
 NanoMelt was run CPU-only (`CUDA_VISIBLE_DEVICES=""`) to avoid adding a third job to a GPU that already had
 two Boltz-2 containers on it.
 
-## Thermostability: real discrimination, no usable baseline
+## Thermostability: no predictor is required, and this one cannot answer the scored question
 
-Tm spans **65.6 to 73.5 °C**, a 7.9 °C spread against NanoMelt's 4.1 °C MAE — so unlike the CDRH3 case,
-where the whole spread sat inside the error bar, there is genuine signal here. `fixedfw_6` (73.5 °C) and
-`freefw_1` (71.6 °C) are the stable end; `fixedfw_48` (65.6 °C) the weak end.
+**Nothing requires a Tm predictor.** Adaptyv *measures* thermostability directly after submission
+(`ai-antibodies-hackathon-apheris.md` lines 323, 329). The challenge provides no predictor, and root
+`AGENTS.md` records choosing one as an *open decision*, not a requirement. A predictor is only an aid for
+deciding which designs to submit.
 
-**The catch:** the tier score is improvement *over trastuzumab*, and trastuzumab is not a nanobody, so
-NanoMelt cannot give a comparable baseline. We can rank these 12 against each other on Tm. We cannot say any
-of them beats trastuzumab.
+NanoMelt gives Tm 65.6–73.5 °C, a 7.9 °C spread against its 4.1 °C MAE, so it does discriminate among these
+12 — unlike the CDRH3 case, where the whole spread sat inside the error bar.
+
+**But it cannot answer the question that scores.** Tiers count properties that *improve on trastuzumab*, and
+trastuzumab is not a nanobody, so NanoMelt has no comparable baseline for it. It can rank these 12 against
+each other and nothing more. Treat it as a tie-break, not as a thermostability claim, and do not put it in
+the pitch as evidence that a design improves thermostability.
 
 ## Binding: Boltz-2 cannot endorse any of them
 
@@ -79,12 +84,14 @@ only design that can make a two-property claim backed by anything.
 **12 valid de novo candidates.** On the three judged properties:
 
 - **Binding: unpredicted.** No applicable model. Boltz-2 ipTM leans weakly negative on 6 of 8.
-- **Thermostability: ranked, not baselined.** Real spread, in-domain predictor, but no trastuzumab comparison.
+- **Thermostability: no claim possible.** No predictor is required and the one we have cannot compare a VHH
+  to trastuzumab. Adaptyv measures it; we are choosing blind on this axis.
 - **Epitope: 4 designs with a defensible claim** — the only epitope evidence anywhere in our submission.
 
-Best single candidates on current evidence: **`freefw_0`** (epitope 0.63/0.92, the highest ipTM, median Tm)
-and **`fixedfw_6`** (highest Tm 73.5 °C, second-highest ipTM, weaker epitope). **`fixedfw_48`** is the
-epitope-purist pick at the cost of Tm.
+Best single candidates on current evidence, which means **epitope coverage** since that is the only axis
+with a usable signal: **`fixedfw_48`** (0.79 / 0.94, the best), then **`freefw_0`** and **`fixedfw_42`**
+(both 0.63 / 0.92), then **`fixedfw_89`** (0.68 / 0.87). `fixedfw_6` leads on Tm (73.5 °C) and ipTM, but
+neither of those supports a tier claim — the Tm has no baseline and the ipTM cannot beat a non-binder.
 
 The de novo track is worth entering precisely because it is the only place we have epitope evidence — and
 because an empty track scores zero while the optimisation track is, per LEO's own backtest, a 1% shot on
