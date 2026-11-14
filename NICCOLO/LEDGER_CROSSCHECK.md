@@ -125,3 +125,79 @@ measurably costly to mutate.
 | New standing rule | compare a new predictor against the existing model out-of-fold, never an in-sample univariate r against a CV score |
 
 All figures reproducible with `python -I eda/p15_ledger_check.py` and `python -I eda/p16_position_test.py`.
+
+---
+
+# Appendix: JAHN's scoring pipeline — integration and effectiveness
+
+Checked `JAHN/pipeline` (abpipe) on 2026-11-14. Scripts: `eda/p18_jahn_eval.py`, `eda/p19_agg_bootstrap.py`.
+
+## Integration: careful, and I broke it
+
+The wrapper (`abpipe/_niccolo.py`) is good work. It imports `prefilter.py` rather than reimplementing it,
+handles its cwd dependency, fingerprints the source file into the cache key so a changed model cannot serve
+stale scores, enforces the trastuzumab-window scope via `check_parent`, rejects unscorable rows instead of
+passing them, and its tests pin my published numbers as a contract.
+
+**I broke all of it.** Defaulting `PreFilter` to `use_facs=False` removed the `p_facs_high` column that
+`AGENT_GUIDE.md` had documented as an output. `score_windows` read that key unconditionally, so the scorer,
+the gate filter and `emit_facs` every one failed with `KeyError: 'p_facs_high'`. The 13 integration tests
+did not catch it because they are gated on `abguard`, which is not installed locally, so they silently skip.
+
+Fixed in this change:
+
+- `score_windows` now follows the keys the fitted model actually emits, so both model variants work.
+- `has_facs(fit)` added; the scorer raises a clear `PrefilterUnavailable` when `emit_facs=True` has no FACS
+  model, instead of a `KeyError`.
+- `find_splits(required=False)` and `get_prefilter(use_facs=...)`: the FACS clonotype splits are no longer a
+  hard requirement, since the default model does not use them. The pipeline now runs off the SPR table alone
+  — one 200 KB file instead of an 11 MB extract from a 2.5 GB zip.
+
+Verified end to end: scorer, gate and the no-splits path all produce sensible numbers, and his 23 unit tests
+still pass.
+
+## Effectiveness, measured against real KD
+
+179 variants with a measured KD. **The pre-filter columns are supplied out-of-fold** (clusters held out) so
+the comparison is not rigged in its favour; his scorers never see KD at all.
+
+| Signal | Spearman vs log10 KD | Top-20 median KD |
+|---|---|---|
+| `score__p_binder` (pre-filter, OOF) | **0.720** | 2.2 nM |
+| `score__pred_log10_kd` (pre-filter, OOF) | 0.680 | 1.9 nM |
+| `score__binder_distance` (his, KD-blind) | **0.595** | 8.6 nM |
+| `score__parent_distance` (≈ mutation count) | 0.412 | 6.5 nM |
+| `score__neighbor_binder_frac` (his) | **0.100 (p=0.18)** | 27.7 nM |
+
+Set median is 86 nM. Two things stand out.
+
+**`binder_distance` at 0.595 is a genuinely good KD-blind signal** — nearest-neighbour distance to a
+FACS-measured high binder, using no affinity data at all. It does not add to the ranker, but it is the best
+thing available for a design the ranker cannot speak to.
+
+**`neighbor_binder_frac` does not work.** Spearman 0.100, p=0.18, and it actively dilutes: ranker +
+that scores 0.508 against 0.680 for the ranker alone. It should be dropped or reworked, and it must not sit
+in a default `borda` column set.
+
+### Aggregation: combining the two pre-filter scores helps
+
+| Ranking | Spearman, all 179 | Spearman, legal band (n=131) |
+|---|---|---|
+| `pred_log10_kd` alone (what `niccolo_loop.yaml` shipped) | +0.680 | +0.618 |
+| **borda(`pred_log10_kd`, `p_binder`)** | **+0.729** | **+0.659** |
+| his 3 scorers, no pre-filter | +0.431 | +0.235 |
+| all 5 columns | +0.659 | +0.576 |
+
+Cluster-bootstrapped difference for adding `p_binder`: **+0.049, 95% CI [+0.013, +0.094]** on all 179 —
+real. Inside the legal band: +0.041, CI [-0.005, +0.092] — **not established**, though the sign is the same
+and it never hurt in any slice. The top-20 median KD difference (0.58 nM vs 1.92 nM) is **not** significant,
+CI [-0.91, +0.60] in log10 units; top-20 medians at this n are too noisy to rank on.
+
+`niccolo_loop.yaml` now ranks on both columns, with that caveat recorded inline.
+
+**Note for my own pipeline:** I used `p_binder` only as a gate and ranked on `pred_log10_kd`. Ranking on
+both is better, and I had not tested it. That came out of his aggregator, not mine.
+
+**Dilution is real:** all five columns (+0.659) is worse than the best two (+0.729). `borda` with no
+`columns` set — the `baseline.yaml` default — ranks on every registered score equally, which drags the two
+good signals down with the weak ones. Column sets should be chosen, not defaulted.

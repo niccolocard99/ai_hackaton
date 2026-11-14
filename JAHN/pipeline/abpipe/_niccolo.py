@@ -51,14 +51,20 @@ def resolve_eda(eda_dir: str, repo_root=None) -> Path:
     return Path(repo_root or repo_guess()) / p
 
 
-def find_splits(explicit=None) -> Path:
-    """The FACS clonotype splits (train.csv, val.csv) that prefilter.py's FACS model is trained on."""
+def find_splits(explicit=None, required: bool = True):
+    """The FACS clonotype splits (train.csv, val.csv) behind prefilter.py's optional FACS feature.
+
+    Only needed for `use_facs=True`. prefilter.py defaults to False, so with `required=False` a missing
+    splits directory returns None instead of raising, and the pre-filter runs off the SPR table alone.
+    """
     for cand in (explicit, os.environ.get("PREFILTER_SPLITS_DIR"), *_SPLITS_SEARCH):
         if not cand:
             continue
         p = Path(os.path.expanduser(str(cand)))
         if (p / "train.csv").exists() and (p / "val.csv").exists():
             return p.resolve()
+    if not required:
+        return None
     raise PrefilterUnavailable(
         "FACS clonotype splits (train.csv, val.csv) not found. Pass `splits_dir` to the module or set "
         "PREFILTER_SPLITS_DIR; on the team VM they are in ~/nick-work/splits (NICCOLO/eda/AGENT_GUIDE.md, section 2).")
@@ -102,27 +108,29 @@ def _import(src: Path):
 
 
 def get_prefilter(*, data_dir, cache_dir, repo_root=None, eda_dir: str = EDA_REL, splits_dir=None,
-                  spr_csv: str = SPR_REL) -> Fitted:
+                  spr_csv: str = SPR_REL, use_facs: bool = False) -> Fitted:
     src = resolve_eda(eda_dir, repo_root) / "prefilter.py"
     if not src.exists():
         raise PrefilterUnavailable(f"{src} not found. It lives on origin/main under NICCOLO/eda; `git pull` first.")
     spr = (Path(data_dir) / spr_csv).resolve()
     if not spr.exists():
         raise PrefilterUnavailable(f"SPR table not found: {spr}")
-    splits = find_splits(splits_dir)
-    sizes = ".".join(str((splits / f).stat().st_size) for f in ("train.csv", "val.csv"))
+    # the splits are only needed for use_facs=True, which prefilter.py no longer defaults to
+    splits = find_splits(splits_dir, required=use_facs)
+    sizes = ".".join(str((splits / f).stat().st_size) for f in ("train.csv", "val.csv")) if splits else "nofacs"
     tag = f"{_sha(src, 8)}.{_sha(spr, 8)}.{sizes}"
     if tag in _FITTED:
         return _FITTED[tag]
     stage = Path(cache_dir) / "niccolo_prefilter_data"
     stage.mkdir(parents=True, exist_ok=True)
     _link(spr, stage / "trastuzumab_her2_spr_all_768.csv")
-    _link(splits, stage / "splits")
+    if splits:
+        _link(splits, stage / "splits")
     try:
         mod = _import(src)
         mod.DATA = stage                              # prefilter.load() reads DATA/<file>
-        spr_df, facs_df = mod.load()
-        pf = mod.PreFilter().fit(spr_df, facs_df)
+        spr_df, facs_df = mod.load(with_facs=use_facs) if use_facs else mod.load()
+        pf = mod.PreFilter(use_facs=use_facs).fit(spr_df, facs_df) if use_facs else mod.PreFilter().fit(spr_df)
     except ImportError as e:
         raise PrefilterUnavailable(f"prefilter.py needs pandas and scikit-learn in this environment ({e}); "
                                    "install with `uv pip install pandas scikit-learn`.") from e
@@ -153,14 +161,32 @@ def windows(heavy: list, parent) -> list:
     return out
 
 
+SCORE_KEYS = ("p_binder", "pred_log10_kd", "p_facs_high")
+
+
 def score_windows(fit: Fitted, wins: list, chunk: int = 200_000) -> dict:
-    """prefilter.PreFilter.score on every scorable window; NaN where the window is None."""
+    """prefilter.PreFilter.score on every scorable window; NaN where the window is None.
+
+    The keys follow what the fitted model actually emits, which is not fixed: `p_facs_high` is present only
+    when prefilter.py was fitted with `use_facs=True`. It defaults to False upstream, because the FACS
+    feature was measured to add nothing to the ranker (+0.671 with it, +0.673 without) while costing an
+    11 MB data dependency. Callers must treat that key as optional -- use `has_facs(fit)`.
+    """
     n = len(wins)
-    out = {k: np.full(n, np.nan) for k in ("p_binder", "pred_log10_kd", "p_facs_high")}
     ok = np.array([i for i, w in enumerate(wins) if w is not None], dtype=int)
+    out = {k: np.full(n, np.nan) for k in ("p_binder", "pred_log10_kd")}
+    keys = None
     for lo in range(0, len(ok), chunk):
         idx = ok[lo:lo + chunk]
         res = fit.pf.score([wins[i] for i in idx])
-        for k in out:
+        if keys is None:
+            keys = [k for k in SCORE_KEYS if k in res.columns]
+            out = {k: np.full(n, np.nan) for k in keys}
+        for k in keys:
             out[k][idx] = res[k].to_numpy()
     return out
+
+
+def has_facs(fit: Fitted) -> bool:
+    """Whether this fitted model carries the FACS feature, i.e. emits `p_facs_high`."""
+    return getattr(fit.pf, "facs", None) is not None

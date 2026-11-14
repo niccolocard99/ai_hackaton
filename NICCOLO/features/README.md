@@ -73,6 +73,67 @@ This is not evidence against the tiering in this file, which is for a different 
 complex, 26-fold LOCO). It only says T0 adds nothing *on top of a one-hot CDRH3 encoding* for
 sequence-only KD ranking, where one-hot already spans the design space exactly.
 
+## Epitope spec: what a VHH can and cannot reach
+
+Decision (14 Nov): **target trastuzumab's own epitope**, because epitope preservation is one of the three
+scored properties and is judged by competitive binding against trastuzumab. The deposited VHH–HER2
+structures are all unusable for this: `5MY6` (2.25 Å X-ray, nanobody 2Rs15d) binds **domain I**, and
+`9MTE` / `9MTX` (cryo-EM 2.66 / 3.06 Å, VHHs 27A05, 47D05, 29E09) come from a paper whose own abstract
+says the epitope is *"distinct from that recognized by trastuzumab and pertuzumab"*. So there is **no
+deposited VHH–HER2 complex on trastuzumab's epitope** — the only experimental structure of the scored
+site is the trastuzumab Fv complex.
+
+Measured from `apheris/rfd4/Data/12-her2/her2_fv_1n8z.cif` (cropped 1N8Z: A = VL, B = VH, C+D = HER2
+domain IV), heavy-atom cutoff 4.5 Å. **19 epitope residues, 221 contact pairs, VH 52% / VL 48%.**
+
+| | HER2 residues | VHH |
+|---|---|---|
+| VH-only | C557 P, C558 E, C561 Q, C570 D, **C573 F**, C579 P, D591 I, D593 K | reachable |
+| VH + VL | C560 D, C571 P, C572 P | partly reachable |
+| VL-only | C569 K, D596 D, D598 E, D600 A, D602 Q, D603 P, D604 C, D605 P | **unreachable** |
+
+**Half of trastuzumab's footprint is off-limits to a single domain.** The VL-only residues form a
+contiguous D596–605 stretch that exists only because trastuzumab has a light chain.
+
+**Target spec for a VHH: C557, C558, C560, C561, C570, C571, C572, C573**, anchored on **F573** (27
+pairs, contacted by all three VH CDRs), with D591/D593 secondary. Drop D596–605 — scoring a VHH against
+residues it cannot reach is scoring against physics.
+
+This is still expected to compete: the assay needs steric blocking, not footprint reproduction, and the
+reachable core holds the hottest residue plus the P571/P572 pair (57 pairs between them). It also
+explains the asymmetric competition reported for VHH E5 (PMID:37632647) — trastuzumab fully blocked E5,
+E5 only perturbed trastuzumab's kinetics — which is the signature of a single domain occupying a
+sub-patch of a larger paired footprint.
+
+Paratope side: VH CDR2 (53 pairs) and VH CDR3 (53) contribute about equally, so **CDRH3 alone is not the
+paratope**. The `../eda/` work is a CDRH3-only slice of this interface.
+
+### The rfd4 hotspots are valid selectors
+
+All four `C_HOT` atoms in `her2_cdrh3.yaml` resolve, at occupancy 1.00 with complete side chains, and all
+are in real contact: `C/572/CD` (4.00 Å, B 11.1), `C/573/CD1` (3.44 Å, B 7.8), `D/591/CG2` (3.74 Å,
+B 22.5), `D/593/NZ` (2.42 Å, B 10.5). All four are VH-reachable, so they carry over to a VHH design.
+But: `C_HOT` marks hotspots for the objective and does **not** restrain them (`C_CRDGRP` group 2 holds
+only `[N,CA,C,O]` of C/D); the four cover only part of the reachable core, omitting D570 and C571; and
+D591 has ~3× the B-factor of the others and sits exactly at the chain break.
+
+### Known defect: the unresolved 581–590 loop
+
+HER2 581–590 has no density, which is why the file splits C (489–580) and D (591–607). **12 of the 19
+epitope residues sit within 12 Å of that break**, including F573 (11.3 Å), D570 (6.0 Å), D593 (4.3 Å),
+the D602–605 cluster, and D591 at 0.0 Å.
+
+Consequence for T1: distance and contact features between resolved atoms are fine, but every **burial
+or neighbour-count** feature (`cn_own`, `hse_up`, `hse_ratio`, `n_contact`, and the `cn_*`/`hse_*`
+interactions) is **biased low across most of the epitope**, because ten neighbouring residues are absent
+from the coordinates. Repair/model the loop, or mask those features within 12 Å of the break and say so.
+
+Also note this cropped copy has uniform low B-factors (16.2–19.9 across all four chains) and no
+resolution record, which suggests it has been processed rather than taken raw from the PDB. Pull
+canonical 1N8Z if the geometry matters.
+
+Reproduce the numbers above: `epitope.py` in this folder.
+
 ## Where the tables live
 
 On OLIVIA, `/cluster/projects/nn9603k/niccoloc/gmb_uio_lol/analysis/dg32_complex_descriptors/`:

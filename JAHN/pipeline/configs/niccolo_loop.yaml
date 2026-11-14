@@ -33,4 +33,8 @@ scorers:
 
 # Niccolo's cascade: gate on p_binder (the filter above), then rank on predicted log10 KD (lower is tighter).
 # Naming the column is deliberate: without `columns`, every score__* column would be ranked.
-aggregator: {name: borda, params: {columns: [score__pred_log10_kd]}}
+# Ranking on both pre-filter scores beats ranking on pred_log10_kd alone: measured on the 179 variants with a
+# known KD (out-of-fold), spearman +0.729 vs +0.680, 95% CI on the difference [+0.013, +0.094].
+# Caveat: inside the >=4-substitution legal band (n=131) the gain is +0.041 with CI [-0.005, +0.092], so it is
+# not established there -- but the sign is the same and it never hurt in any slice. NICCOLO/eda/p19_agg_bootstrap.py.
+aggregator: {name: borda, params: {columns: [score__pred_log10_kd, score__p_binder]}}

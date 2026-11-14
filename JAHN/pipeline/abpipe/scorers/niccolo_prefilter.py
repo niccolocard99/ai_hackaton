@@ -18,7 +18,8 @@ class NiccoloPrefilter(Scorer):
     (lower is tighter). A RANKING, not a predicted KD: it compresses at the tight end.
     Scope: trastuzumab's 10-residue CDRH3 window on the trastuzumab framework (optimisation track only). It says
     nothing about thermostability or epitope preservation. Rows it cannot score (framework changed, non-standard
-    residue) get null scores. The FACS score is context only (weak on its own); set emit_facs to keep it.
+    residue) get null scores. The FACS score is context only and measured to add nothing (+0.671 with it, +0.673 without), so prefilter.py
+    now defaults to use_facs=False and emits no `p_facs_high`; emit_facs then raises rather than returning nulls.
     """
 
     version = "1"
@@ -37,6 +38,12 @@ class NiccoloPrefilter(Scorer):
                                      eda_dir=self.eda_dir, splits_dir=self.splits_dir, spr_csv=self.spr_csv)
         parent = ctx.require_parent()
         _niccolo.check_parent(parent, fit)
+        if self.emit_facs and not _niccolo.has_facs(fit):
+            raise _niccolo.PrefilterUnavailable(
+                "emit_facs=True but this pre-filter carries no FACS model. prefilter.py defaults to "
+                "use_facs=False, because the FACS feature was measured to add nothing to the ranker "
+                "(+0.671 with it, +0.673 without; NICCOLO/eda/AGENT_GUIDE.md section 3). Drop emit_facs, or "
+                "fit with PreFilter(use_facs=True) and the clonotype splits.")
         res = _niccolo.score_windows(fit, _niccolo.windows(df["heavy_sequence"].to_list(), parent))
         cols = {"sequence_id": df["sequence_id"],
                 "score__p_binder": pl.Series(res["p_binder"]).fill_nan(None),
