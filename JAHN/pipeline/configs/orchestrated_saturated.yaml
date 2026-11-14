@@ -32,16 +32,16 @@ generators:
       min_subs: 4
       max_subs: 8
       pin: [6]                                  # Y105 fixed (largest buried surface; standing instruction)
-      parents: bootstrap/candidates_1m_batch00001.csv
-      parents_sha256: a771f98b23a52b0a
-      history: [bootstrap/history.csv, bootstrap/candidates_1m_batch00001.csv]
+      parents: bootstrap/parents_combined.csv   # LEO's JapanFold-RFD4 final 233 lead, then NICCOLO's 1M batch 1
+      parents_sha256: 1a2a9950c6888e19
+      history: [bootstrap/history.csv, bootstrap/candidates_1m_batch00001.csv, bootstrap/leo_jf_final.csv]
       history_sha256: 7a1d29aefb0b029b
   - name: s97_hedge
     n: 40
     params:
-      residues: WY                              # S97W and S97Y (the JapanFold-RFD4 agent's jw97/jy97 arms)
+      residues: AWY                              # S97A (LEO's own leads), S97W, S97Y
       pin: [6]                                  # only hedge parents that keep Y105
-      parents: shortlist/final_shortlist.csv   # the campaign shortlist so far; later rounds feed themselves
+      parents: shortlist/final_shortlist.csv   # window-only designs; later rounds feed themselves
       parents_sha256: b18a2898f0062e12
 
 filters:
@@ -55,12 +55,9 @@ filters:
 validate:
   name: track_check
 
-scorers:
-  - {name: niccolo_prefilter}
-  - {name: nanomelt_tm, params: {ncpu: 4}}
+scorers:                          # the ORIGINAL frozen stage-1 scorer; NanoMelt parked until its
+  - {name: niccolo_prefilter}      # -align path is verified (its no-align call fails: 960 vs 1192 features)
 
-aggregator:
+aggregator:                       # the frozen stage-1 aggregation, unchanged
   name: borda
-  params:
-    columns: [score__pred_log10_kd, score__p_binder, score__dtm_vs_wt]
-    weights: {score__dtm_vs_wt: 0.25}          # the tie-break, per the handoff: never a gate
+  params: {columns: [score__pred_log10_kd, score__p_binder]}
