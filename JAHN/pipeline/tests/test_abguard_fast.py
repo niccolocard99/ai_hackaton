@@ -13,8 +13,6 @@ import random
 import polars as pl
 import pytest
 
-pytestmark = pytest.mark.needs_data
-
 TZ_HEAVY = (
     "EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAY"
     "LQMNSLRAEDTAVYYCSRWGGDGFYAMDYWGQGTLVTVSS"
@@ -68,6 +66,7 @@ COMPARED = [
 ]
 
 
+@pytest.mark.needs_data
 def test_patch_preserves_every_novelty_verdict(reference):
     from abpipe import abguard_fast
 
@@ -100,6 +99,7 @@ def test_patch_preserves_every_novelty_verdict(reference):
     assert (saturated.get_column("fast") == cap + 1).all(), "far designs must report the sentinel"
 
 
+@pytest.mark.needs_data
 def test_patch_reports_the_same_rejection_reason(reference):
     """Designs that fail novelty must name the same colliding reference loop."""
     from abpipe import abguard_fast
@@ -123,6 +123,7 @@ def test_patch_reports_the_same_rejection_reason(reference):
                 == patched.filter(failed).get_column(column).to_list()), column
 
 
+@pytest.mark.needs_data
 def test_install_is_idempotent_and_reversible(reference):
     from abguard import novelty
 
@@ -134,3 +135,26 @@ def test_install_is_idempotent_and_reversible(reference):
     assert novelty._nearest is not original
     abguard_fast.uninstall()
     assert novelty._nearest is original
+
+
+# --- the cap rule: pure, so it needs neither abguard nor the data ------------------
+
+
+def test_cap_is_one_below_the_strictest_rule():
+    """`required - 1` is enough, because the sentinel `cap + 1` already means ">= cap+1".
+
+    abguard asks `cdrh3_min_distance >= required` for a required of 2 or 3. An index
+    capped at 2 reports 0, 1, 2 exactly and 3 for everything beyond, so both comparisons
+    land correctly -- at 92 deletion combinations per loop instead of 378.
+    """
+    from abpipe.abguard_fast import cap_for
+
+    assert cap_for({"novel": 3, "de_novo": 2}) == 2
+    assert cap_for({"de_novo": 2}) == 1
+
+
+def test_cap_never_goes_below_one():
+    from abpipe.abguard_fast import cap_for
+
+    assert cap_for({"anything": 1}) == 1
+    assert cap_for({"anything": 0}) == 1

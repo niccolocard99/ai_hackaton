@@ -123,7 +123,20 @@ def _boundary_queries(references: list[str], n: int, seed: int) -> list[str]:
     return out
 
 
-@pytest.mark.parametrize("max_distance", [1, 2, 3])
+@pytest.fixture(scope="module")
+def reference_sample(reference) -> list[str]:
+    """A slice of the real reference, for caps too expensive to index in full.
+
+    At cap 3 a 13-mer has 378 deletion subsequences, so the full 533k-loop length-13
+    bucket is ~200M keys (several GB and minutes to sort). Production never needs that
+    cap -- `abguard_fast.cap_for` uses 2 -- so cap 3 is covered on a sample instead,
+    while caps 1 and 2 are checked against the whole reference.
+    """
+    rng = random.Random(4)
+    return rng.sample(reference, 40_000)
+
+
+@pytest.mark.parametrize("max_distance", [1, 2])
 def test_matches_bruteforce_on_real_reference(reference, max_distance):
     queries = _boundary_queries(reference, 160, seed=20261114 + max_distance)
     index = NoveltyIndex.build(reference, max_distance=max_distance)
@@ -155,9 +168,10 @@ def test_nearest_is_none_beyond_the_cap():
     assert nearest == [None]
 
 
-def test_nearest_reference_really_is_at_the_reported_distance(reference):
+def test_nearest_reference_really_is_at_the_reported_distance(reference_sample):
     from rapidfuzz.distance import Levenshtein
 
+    reference = reference_sample
     queries = _boundary_queries(reference, 120, seed=99)
     index = NoveltyIndex.build(reference, max_distance=3)
     distance, nearest = index.nearest(queries)
@@ -179,3 +193,41 @@ def test_official_gate_verdict_matches_bruteforce(reference):
 
     assert np.array_equal(got_novel, expected_novel)
     assert expected_novel.any() and not expected_novel.all(), "test set must contain both verdicts"
+
+
+@pytest.mark.parametrize("max_distance", [3])
+def test_matches_bruteforce_at_a_high_cap(reference_sample, max_distance):
+    """Same exactness check at cap 3, on the sample (see `reference_sample`)."""
+    reference = reference_sample
+    queries = _boundary_queries(reference, 160, seed=777)
+    index = NoveltyIndex.build(reference, max_distance=max_distance)
+
+    expected_min = _bruteforce_min_distance(queries, reference)
+    got_min = index.min_distance(queries)
+
+    saturated = expected_min > max_distance
+    assert np.array_equal(got_min[~saturated], expected_min[~saturated])
+    assert np.all(got_min[saturated] == max_distance + 1)
+
+
+@pytest.mark.parametrize("required", [2, 3])
+def test_a_cap_one_below_the_rule_decides_the_rule_exactly(reference, required):
+    """Why `abguard_fast.cap_for` can use `required - 1` instead of `required`.
+
+    This is the invariant the production cap rests on, so it is checked against the
+    whole real reference: the verdict from an index capped at `required - 1` must match
+    brute-force Levenshtein's `>= required` exactly.
+    """
+    from abpipe.abguard_fast import cap_for
+
+    cap = cap_for({"rule": required})
+    assert cap == required - 1
+
+    queries = _boundary_queries(reference, 160, seed=500 + required)
+    index = NoveltyIndex.build(reference, max_distance=cap)
+
+    expected = _bruteforce_min_distance(queries, reference) >= required
+    got = index.min_distance(queries) >= required
+
+    assert np.array_equal(got, expected)
+    assert expected.any() and not expected.all(), "test set must contain both verdicts"

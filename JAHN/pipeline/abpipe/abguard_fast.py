@@ -45,24 +45,46 @@ import polars as pl
 
 from abpipe.novelty_index import NoveltyIndex
 
-__all__ = ["install", "uninstall", "is_installed", "max_distance"]
+__all__ = ["install", "uninstall", "is_installed", "max_distance", "cap_for"]
 
 _original = None
 _cache: dict[tuple[int, int, int], NoveltyIndex] = {}
 
 
+def cap_for(mutations_required: dict) -> int:
+    """The smallest cap that still decides every ``min_distance >= required`` exactly.
+
+    One below the strictest rule. The index reports distances up to the cap exactly and
+    ``cap + 1`` for everything beyond, and ``cap + 1`` already means "at least cap + 1" --
+    so a cap of ``required - 1`` answers ``>= required`` correctly:
+
+        required 3, true min 3  -> sentinel 3, 3 >= 3  pass   (correct)
+        required 3, true min 2  -> exact 2,    2 >= 3  fail   (correct)
+        required 2, true min 2  -> sentinel 3, 3 >= 2  pass   (correct)
+        required 2, true min 1  -> exact 1,    1 >= 2  fail   (correct)
+
+    Rejection messages stay exact too: a design that fails is at ``min < required <= cap + 1``,
+    so its distance is at most the cap and its nearest reference is resolved.
+
+    Worth the care -- for abguard's rules this is a cap of 2 rather than 3, which is 92
+    deletion combinations per 13-mer instead of 378: ~4x less index memory and build time.
+    """
+    return max(1, max(mutations_required.values()) - 1)
+
+
 def max_distance() -> int:
     """The largest distance the patched gate resolves exactly.
 
-    Defaults to the strictest rule abguard applies (``MUTATIONS_REQUIRED``), which is
-    what keeps every verdict exact; ``ABGUARD_FAST_MAX_DISTANCE`` overrides it.
+    Derived from the strictest rule abguard applies (``MUTATIONS_REQUIRED``) via
+    :func:`cap_for`, which is what keeps every verdict exact;
+    ``ABGUARD_FAST_MAX_DISTANCE`` overrides it when you want true distances further out.
     """
     override = os.environ.get("ABGUARD_FAST_MAX_DISTANCE")
     if override:
         return int(override)
     from abguard.novelty import MUTATIONS_REQUIRED
 
-    return max(MUTATIONS_REQUIRED.values())
+    return cap_for(MUTATIONS_REQUIRED)
 
 
 def _index_for(reference: pl.DataFrame, cap: int) -> NoveltyIndex:
