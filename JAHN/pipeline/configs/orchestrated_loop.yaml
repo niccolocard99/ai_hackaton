@@ -32,9 +32,9 @@ generators:
     params:
       min_subs: 4          # the 70% CDRH3-identity rule binds before ">2 mutations": 3 substitutions on a
       max_subs: 8          # 10-mer leave exactly 70% identity, and the rule needs strictly under 70%
-      parents: bootstrap/parents.csv          # sha-pinned: LEO final (20) + RFD4-JapanFold (9) elites
-      parents_sha256: 5c2f49353238e547
-      history: [bootstrap/history.csv]        # 686 windows already evaluated; never proposed again
+      parents: bootstrap/candidates_1m_batch00001.csv        # NICCOLO's 1M-screen batch 1: top 2000 ranked
+      parents_sha256: a771f98b23a52b0a                      # windows (score__p_binder, score__pred_log10_kd)
+      history: [bootstrap/history.csv, bootstrap/candidates_1m_batch00001.csv]   # never re-propose scored work
       history_sha256: 7a1d29aefb0b029b
 
 filters:                   # cheap first, expensive last; each runs on the previous survivors
