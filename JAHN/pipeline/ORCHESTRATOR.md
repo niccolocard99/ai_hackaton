@@ -91,8 +91,9 @@ Per round, in three places under `--out`:
   mix and the stopping time. The loop earns its keep when scorers for thermostability, epitope or
   expression are added — two of the three judged properties are not scored today.
 - `pass_through(info__parent_score)` on the de novo lane ranks on an inherited prior, not evidence.
-- Two `needs_data` tests in `tests/test_niccolo_loop.py` fail on 14 Nov **before** any of this work
-  (`KeyError: 'p_facs_high'` inside `prefilter.py` with the live `~/nick-work/splits`); verified on
-  a pristine tree. Everything else (56 tests incl. the 20 new orchestrator tests) passes.
+- Ranking on both pre-filter columns (`borda(pred_log10_kd, p_binder)`) measured +0.729 vs +0.680
+  Spearman overall, but in the legal >=4-substitution band the gap is not established (+0.041,
+  CI [-0.005, +0.092], NICCOLO/eda/p18-p19). `pred_log10_kd` beyond log10 -1.02 is extrapolation —
+  tighter than anything measured in the band (0.095 nM; 131 of 658 quantified).
 - The de novo cold start needs a real VHH shortlist; `configs/orchestrated_denovo.yaml` points at
   `ANDERS/demo/ranked.csv` as a placeholder.
