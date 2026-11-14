@@ -23,13 +23,28 @@ filters:                   # cheap first, expensive last; each runs on the previ
   - {name: framework_integrity}
   - {name: window_novelty, params: {min_dist: 3}}                 # > 2 substitutions from every provided window
   - {name: prefilter_gate, params: {min_p_binder: 0.8, splits_dir: "${HOME}/nick-work/splits"}}
-  - {name: abguard_hard}
   - {name: dedupe}
-  - {name: new_liabilities, params: {severities: [high], max_new: 0}}
-  - {name: track_check}                                           # BASE VALIDATION: abguard track + each track's rules
 
 scorers:
   - {name: niccolo_prefilter, params: {splits_dir: "${HOME}/nick-work/splits"}}
+
+# BASE VALIDATION, after ranking, on the top of the list only.
+#
+# abguard is the authoritative gate but it is also the expensive one: ~0.7 ms/design to
+# number, and the novelty cross join costs 26 ms/design unpatched (37 designs/s measured,
+# i.e. ~7.5 h per 1M candidates). Only the top of the ranked list can ever be submitted,
+# so running it on every survivor of a large screen is work thrown away. These were
+# `filters`; as `validators` they run after `rank` on `validate_top` designs.
+#
+# This is a reordering, not a weakening: nothing reaches selected.csv or a submission
+# table without passing them (abpipe.iterate restricts selection to validate survivors,
+# pinned by tests/test_validate_stage.py). Raise validate_top if validation rejects so
+# many that fewer than `--select` designs survive; the log and manifest report both counts.
+validators:
+  - {name: abguard_hard}                                          # numbering, format, length, cysteines
+  - {name: new_liabilities, params: {severities: [high], max_new: 0}}
+  - {name: track_check}                                           # abguard track + each track's extra rules
+validate_top: 2000
 
 # Niccolo's cascade: gate on p_binder (the filter above), then rank on predicted log10 KD (lower is tighter).
 # Naming the column is deliberate: without `columns`, every score__* column would be ranked.

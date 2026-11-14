@@ -211,3 +211,55 @@ clashes, and 3 to 6 interchain H-bonds. All four pass `NICCOLO/scripts/check_den
 So the designs do land on trastuzumab's epitope, and each overlaps trastuzumab's Fv heavily, which is the
 expected signature of competing for the same site. That is a geometric proxy for the competition assay,
 not a measurement of it. Four designs say nothing about the rate across a batch.
+
+**Batch 1 (`fixedfw`, 100 designs, seed 2) plus the 4 smoke designs, scored 14 Nov.**
+
+- **Base validation:** 99 of 104 pass the de novo track. The 5 failures all have a 12-residue CDR3 and 70 to
+  71% identity to trastuzumab, were assigned to the optimisation track, and are not reclassified.
+- **CDR3 length and track risk:** every design with a CDR3 of 15 residues or fewer has an estimated framework
+  identity of 70% or more to its caplacizumab scaffold (`score_designs.py`, arithmetic, not abguard's number),
+  so only 17-residue and longer loops have a comfortable margin.
+- **RFD4's own hotspot metric:** among the 99 passing designs, 72 have `hotspot_obedience` 1.0, 22 have 0.75
+  and 5 have 0.5.
+- **Epitope (the axis that carries signal):** 8 of 99 reach the team's bar (`epitope_cov` >= 0.6 and
+  `contacts_in_ep` >= 0.7). Mean coverage is flat, 0.51 to 0.53, across CDR3-length buckets, so length is not
+  what drives it.
+- **Epitope-first ranking** puts `fixedfw_48`, `fixedfw_89`, `freefw_0` and `fixedfw_42` first, the same four
+  that Nick's scoring found (`NICCOLO/SCORED_DENOVO_VHH.md`, EXP-011).
+- **Boltz-2 refold of the 12 (kept, none further):** the VHH fold is confident (median pLDDT 93) but only 2 of
+  12 reproduce the designed pose within 5 A (`fixedfw_6` 2.2 A, `freefw_0` 1.7 A, both ipTM about 0.96); the
+  other ten land 7 to 49 A away. EXP-011 shows why this cannot be read as endorsement: Boltz-2 gives ipTM >=
+  0.7 to 94% of known non-binding VHH-antigen pairs (real-versus-shuffled AUROC 0.64, against AF3 0.75).
+- **Thermostability:** NanoMelt predicted Tm for the 12 is 65.6 to 73.5 C (Nick's run; mine agrees, for example
+  69.7 C for `fixedfw_89`), against a 4.1 C error. It has no baseline for a VHH against trastuzumab, so it is
+  a tie-break among our own designs and must not be presented as a thermostability claim.
+
+## 9. Round 2: what changed after batch 1, and why
+
+Information that arrived after batch 1 (`origin/nick`, PR #17, not yet on main: EXP-010, EXP-011, IDEAs 018 to
+020) and what it changed:
+
+| Finding | Change |
+|---|---|
+| Epitope coverage is the only axis with a usable signal; binding is unpredicted; thermostability has no baseline | Ranking is epitope-first (`score_designs.py`); the team's thresholds are the definition of a strong epitope |
+| Only 8% of valid designs reach that bar | Refine the designs that already reach it (below) instead of re-rolling at 8% |
+| Boltz-2 cannot separate binders from non-binders (and the team decided on 14 Nov: no Boltz) | Boltz option removed from `refold.sh`. Leo's directive is RFD4-Proteina only, so the Protenix v2 refold that IDEA-019 recommends is not run either |
+| Short CDR3s carry HIGH estimated track risk at the same epitope quality | The fresh batch constrains CDR3 to 17 to 21 residues |
+
+`queue_round2.sh` runs two steps, RFD4-Proteina only, strictly one GPU job at a time, each waiting for the card:
+
+1. **Refine** the 5 parents that are valid, reach the epitope bar and are not HIGH track risk (`fixedfw_48`,
+   `fixedfw_89`, `freefw_0`, `fixedfw_42`, `fixedfw_18`): RFD4 partial diffusion, fraction 0.4, 16 children
+   each (80 designs), antibody weights, hotspot resampling off (`make_refine_spec.py`, `PARTIAL=0.4
+   ./run_design.sh refine_strong 16 4`). Partial diffusion keeps the docked pose, so the epitope stays fixed
+   by construction: the parent's annotations (HER2 fixed, the four hotspots, the framework) travel with its CIF.
+2. **Fresh batch**, `fixedfw_long` (CDR3 17 to 21), 100 designs, seed 3. Same hotspots, same framework.
+Not queued: the Protenix v2 refold of the 12 batch-1 designs that EXP-011 recommends. No model other than
+RFD4-Proteina runs. `refold.sh` and `refold_each.py` stay in the folder, unused.
+
+What is unchanged on purpose: the epitope and the four hotspots, the framework, the antibody weights.
+
+How to read the result: the number that matters is the share of children (and of the fresh batch) that reach
+the strong-epitope bar, against batch 1's 8%. A child that scores well is a design-pose measurement, not
+evidence of binding. Untested: a multi-parent refine spec (`input_as_annotated_cif` with a partial-trajectory
+fraction); if RFD4 rejects it, fall back to one parent per run with `--input parent.cif`.

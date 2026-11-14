@@ -9,7 +9,8 @@ from pathlib import Path
 import yaml
 
 TOP_KEYS = {"run", "data_dir", "repo_root", "plugins", "parent", "generators", "generator",
-            "filters", "scorers", "aggregator", "orchestrate", "validate"}
+            "filters", "scorers", "aggregator", "orchestrate", "validate",
+            "validators", "validate_top"}
 RUN_KEYS = {"name", "out_dir", "cache_dir", "seed"}
 ORCHESTRATE_KEYS = {"policy", "agent_cmd", "patience", "deadline", "primary", "select", "rounds"}
 
@@ -42,6 +43,8 @@ class Config:
     aggregator: ModuleSpec
     raw: dict
     orchestrate: dict = field(default_factory=dict)
+    validators: list = field(default_factory=list)
+    validate_top: int | None = None
 
 
 def _expand(obj):
@@ -103,6 +106,9 @@ def load(source, base_dir: Path | None = None) -> Config:
         if not isinstance(val, dict) or "name" not in val or set(val) - {"name", "params"}:
             raise ConfigError("`validate` must be {name: <filter>, params: {...}}; it runs on the "
                               "selected shortlist, after ranking, instead of on every survivor")
+    validate_top = raw.get("validate_top")
+    if validate_top is not None and (not isinstance(validate_top, int) or validate_top <= 0):
+        raise ConfigError("`validate_top` must be a positive integer (omit it to validate the whole list)")
     out_dir = Path(run.get("out_dir", "runs"))
     repo_root = raw.get("repo_root")
     if repo_root is None:
@@ -117,4 +123,6 @@ def load(source, base_dir: Path | None = None) -> Config:
         generators=[_spec(g, "generators", kind="generator") for g in gens],
         filters=[_spec(f, "filters", kind="filter") for f in raw.get("filters") or []],
         scorers=[_spec(s, "scorers", kind="scorer") for s in raw.get("scorers") or []],
-        aggregator=_spec(raw["aggregator"], "aggregator", kind="aggregator"), raw=raw, orchestrate=dict(orch))
+        aggregator=_spec(raw["aggregator"], "aggregator", kind="aggregator"),
+        validators=[_spec(v, "validators", kind="filter") for v in raw.get("validators") or []],
+        validate_top=validate_top, raw=raw, orchestrate=dict(orch))

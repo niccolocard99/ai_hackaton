@@ -33,15 +33,30 @@ SPEC=spec/design_${VARIANT}.json
 LEDGER=${LEDGER:-"$HERE/../generation-ledger/ledger.py"}
 [ -f "$LEDGER" ] || { echo "generation ledger not found at $LEDGER; AGENTS.md makes it mandatory before every run (set LEDGER=...)" >&2; exit 2; }
 
+# PARTIAL=0.4 switches to refinement: re-run that fraction of the sampling trajectory on the parent CIFs listed
+# in the spec (make_refine_spec.py), instead of designing from scratch. The parents carry their own conditions.
+PARTIAL=${PARTIAL:-}
+if [ -n "$PARTIAL" ]; then
+  INPUTS=(--input "$SPEC"); for f in spec/refine/*.cif; do INPUTS+=(--input "$f"); done
+  EXTRA=(--partial-trajectory-fraction "$PARTIAL")
+  PARTIAL_SETTING=(--setting "partial-trajectory-fraction=$PARTIAL")
+else
+  INPUTS=(--input "$SPEC" --input spec/target_her2_d4.cif --input spec/framework_vhh.cif)
+  EXTRA=()
+  PARTIAL_SETTING=()
+fi
+
 # Every flag that changes what is generated goes to the ledger, spelled as in the command without dashes.
 # --input is passed per file: the ledger only follows `input:` inside .yaml specs, and ours is JSON.
-LEDGER_FLAGS=(--method design --model "$DESIGN_IMG"
-  --input "$SPEC" --input spec/target_her2_d4.cif --input spec/framework_vhh.cif
+LEDGER_FLAGS=(--method design --model "$DESIGN_IMG" "${INPUTS[@]}"
   --seed "$SEED" --setting "num-replicates=$N" --setting "batch-size=1"
-  --setting "recycle-strategy=high/front_loaded")
+  --setting "recycle-strategy=high/front_loaded" "${PARTIAL_SETTING[@]}")
 
-# 1. Fail on a malformed spec before touching the GPU or the ledger.
-python3 check_spec.py "$SPEC" > /dev/null || { echo "check_spec.py failed for $SPEC" >&2; exit 2; }
+# 1. Fail on a malformed spec before touching the GPU or the ledger. (A refine spec has no contig or conditions
+#    to check: the parents carry them, and RFD4 prevalidates the inputs itself.)
+if [ -z "$PARTIAL" ]; then
+  python3 check_spec.py "$SPEC" > /dev/null || { echo "check_spec.py failed for $SPEC" >&2; exit 2; }
+fi
 
 # 2. Already run? (exit 3). Capture the code: set -e would otherwise hide the ledger's own message.
 set +e
@@ -63,7 +78,7 @@ python3 "$LEDGER" add-run "${LEDGER_FLAGS[@]}" --run-id "$NAME" --output "runs/$
 set +e
 $RUN "$DESIGN_IMG" module-run design \
   --input "$SPEC" --output "runs/$NAME/design" \
-  --num-replicates "$N" --seed "$SEED" --batch-size 1 --recycle-strategy high/front_loaded \
+  --num-replicates "$N" --seed "$SEED" --batch-size 1 --recycle-strategy high/front_loaded "${EXTRA[@]}" \
   2>&1 | tee "runs/$NAME/design.log"
 rc=${PIPESTATUS[0]}
 set -e

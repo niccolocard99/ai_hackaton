@@ -1,0 +1,22 @@
+{
+  "refine_fixedfw_48": {
+    "input": "refine/her2d4_vhh_fixedfw_48.cif",
+    "input_as_annotated_cif": true
+  },
+  "refine_fixedfw_89": {
+    "input": "refine/her2d4_vhh_fixedfw_89.cif",
+    "input_as_annotated_cif": true
+  },
+  "refine_freefw_0": {
+    "input": "refine/her2d4_vhh_freefw_0.cif",
+    "input_as_annotated_cif": true
+  },
+  "refine_fixedfw_42": {
+    "input": "refine/her2d4_vhh_fixedfw_42.cif",
+    "input_as_annotated_cif": true
+  },
+  "refine_fixedfw_18": {
+    "input": "refine/her2d4_vhh_fixedfw_18.cif",
+    "input_as_annotated_cif": true
+  }
+}

@@ -43,6 +43,7 @@ VHH_CHAIN = "H"
 # CDR length ranges are the ones the organisers encode in the placeholder residues of their own
 # VHH example (comp_id "13-13", "9-10", "12-21" at slots 23, 38, 76).
 CDR_LENGTHS = ("13-13", "9-10", "12-21")
+LONG_CDR_LENGTHS = ("13-13", "9-10", "17-21")  # the fixedfw_long variant: CDR3 17-21 only
 
 # Hotspots: HER2 atoms the VHH should contact. These are the four atoms the organisers use in
 # Data/12-her2/her2_cdrh3.yaml ("the HER2 atoms nearest CDRH3 in PDB 1N8Z"), same atoms, same order.
@@ -187,15 +188,15 @@ def sel(s):
     return {"select": f"sel('{s}')"}
 
 
-def make_spec(target_ranges, fw_positions, free, fw_segments):
+def make_spec(target_ranges, fw_positions, free, fw_segments, cdr_lengths=CDR_LENGTHS):
     fixed = [p for p in fw_positions if p not in set(free)]
     contig = [f"C{target_ranges['C'][0]}-{target_ranges['C'][1]}", "/0",
               f"D{target_ranges['D'][0]}-{target_ranges['D'][1]}", "/0"]
     parts = []
     for k, (a, b) in enumerate(fw_segments):
         parts.append(f"{VHH_CHAIN}{a}-{b}")
-        if k < len(CDR_LENGTHS):
-            parts.append(CDR_LENGTHS[k])
+        if k < len(cdr_lengths):
+            parts.append(cdr_lengths[k])
     contig_str = ", ".join(contig + parts)
     bb = "[N,CA,C,O]"
     return {
@@ -252,6 +253,12 @@ def main():
         "design_freefw.json": {"her2d4_vhh_freefw": {"input": ["target_her2_d4.cif", "framework_vhh.cif"],
                                                       **make_spec(target_ranges, positions, free, segments)}},
     }
+    # Third variant, added after scoring batch 1: fixed framework, CDR3 constrained to 17-21. In batch 1 every
+    # design with a CDR3 of 15 or fewer residues carried a HIGH estimated track risk (framework share of the
+    # whole VHH >= 70%), while 17-21 had the same epitope quality (see NOTES.md section 8).
+    specs["design_fixedfw_long.json"] = {"her2d4_vhh_fixedfw_long": {
+        "input": ["target_her2_d4.cif", "framework_vhh.cif"],
+        **make_spec(target_ranges, positions, [], segments, cdr_lengths=LONG_CDR_LENGTHS)}}
     for name, spec in specs.items():
         (OUT / name).write_text(json.dumps(spec, indent=2) + "\n", encoding="utf8", newline="\n")
 

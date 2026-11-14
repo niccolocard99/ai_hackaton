@@ -25,10 +25,13 @@ Rules (in the order they are applied):
              only, so it cannot see this. fw_identity_est = (83 fixed framework residues + 2 expected chance
              matches in the CDRs) / length. HIGH >= 0.70, MEDIUM >= 0.67, else LOW. It is arithmetic, not
              abguard's number; fixedfw designs only (freefw framework identity is lower and not modelled)
-  rank       eligible, then on_target, then lower track_risk, then more hotspots, then a larger share of
-             contacts inside the epitope, then larger epitope coverage
-  shortlist  walk the ranking and keep a design only if its CDRH3 is under 70% identical to every design
-             already kept (a few distinct molecules beat several near-copies)
+  strong_epitope  epitope_cov >= 0.60 and contacts_in_ep >= 0.70: the team's definition (EXP-011 and
+             NICCOLO/SCORED_DENOVO_VHH.md, which found epitope coverage the only axis with a usable signal for
+             these VHHs; binding is unpredicted and thermostability has no baseline)
+  rank       eligible, then strong_epitope, then on_target, then not-HIGH track_risk, then larger epitope
+             coverage, then larger share of contacts inside the epitope, then more hotspots
+  shortlist  walk the ranking, skip HIGH track_risk, and keep a design only if its CDRH3 is under 70%
+             identical to every design already kept (a few distinct molecules beat several near-copies)
 """
 import argparse
 import csv
@@ -98,6 +101,7 @@ def main():
         n_hot = int(e["n_hotspots_4p5"])
         in_ep = to_float(e["contacts_in_ep"])
         on_target = n_hot >= 3 and in_ep >= 0.60 and int(e["fv_pairs_3p0"]) > 0
+        strong = to_float(e["epitope_cov"]) >= 0.60 and in_ep >= 0.70
         rows.append({
             "sequence_id": sid, "variant": variant, "run": m["run"], "heavy_sequence": heavy, "length": len(heavy),
             "cdrh3": r["cdrh3"], "track_assigned": r["track_assigned"], "base_validation": "PASS" if r["passes"].lower() == "true" else "FAIL",
@@ -106,16 +110,16 @@ def main():
             "hotspot_obedience": m["hotspot_obedience"], "clash_frac": m["clash_frac_1p5A"],
             "hbond_pairs": m["hbond_pairs"], "saltbridge_pairs": m["saltbridge_pairs"], "hydrophobic_pairs": m["hydrophobic_pairs"],
             "n_hotspots_4p5": n_hot, "n_contacts": e["n_contacts"], "epitope_cov": e["epitope_cov"], "contacts_in_ep": e["contacts_in_ep"],
-            "fv_pairs_3p0": e["fv_pairs_3p0"], "eligible": eligible, "on_target": on_target})
+            "fv_pairs_3p0": e["fv_pairs_3p0"], "eligible": eligible, "on_target": on_target, "strong_epitope": strong})
 
-    rows.sort(key=lambda x: (not x["eligible"], not x["on_target"], RISK_ORDER[x["track_risk"]], -x["n_hotspots_4p5"],
-                             -to_float(x["contacts_in_ep"]), -to_float(x["epitope_cov"])))
+    rows.sort(key=lambda x: (not x["eligible"], not x["strong_epitope"], not x["on_target"], x["track_risk"] == "HIGH",
+                             -to_float(x["epitope_cov"]), -to_float(x["contacts_in_ep"]), -x["n_hotspots_4p5"]))
     for i, x in enumerate(rows, 1):
         x["rank"] = i
 
     keep = []
     for x in rows:
-        if not (x["eligible"] and x["on_target"]):
+        if not (x["eligible"] and x["on_target"]) or x["track_risk"] == "HIGH":
             continue
         if all(identity(x["cdrh3"], k["cdrh3"]) < 0.70 for k in keep):
             keep.append(x)
@@ -126,7 +130,7 @@ def main():
         x["shortlist"] = x["sequence_id"] in short
 
     cols = ["rank", "shortlist", "sequence_id", "variant", "length", "cdrh3", "base_validation", "track_assigned",
-            "identity_to_trastuzumab", "fw_identity_est", "track_risk", "eligible", "on_target", "n_hotspots_4p5",
+            "identity_to_trastuzumab", "fw_identity_est", "track_risk", "eligible", "strong_epitope", "on_target", "n_hotspots_4p5",
             "n_contacts", "epitope_cov", "contacts_in_ep", "fv_pairs_3p0", "hbond_pairs", "saltbridge_pairs",
             "hydrophobic_pairs", "hotspot_obedience", "clash_frac", "failures", "run", "heavy_sequence"]
     with open(a.out, "w", newline="", encoding="utf8") as f:
@@ -139,7 +143,8 @@ def main():
     print(f"{n} designs scored ({len(missing)} missing evidence)  ->  {a.out}")
     print(f"base validation PASS (de novo): {sum(x['base_validation'] == 'PASS' for x in rows)}   "
           f"eligible: {sum(x['eligible'] for x in rows)}   on_target: {sum(x['on_target'] for x in rows)}   "
-          f"eligible AND on_target: {sum(x['eligible'] and x['on_target'] for x in rows)}")
+          f"eligible AND on_target: {sum(x['eligible'] and x['on_target'] for x in rows)}   "
+          f"eligible AND strong_epitope: {sum(x['eligible'] and x['strong_epitope'] for x in rows)}")
     print("track_risk among eligible+on_target:", dict(Counter(x["track_risk"] for x in rows if x["eligible"] and x["on_target"])))
     fails = Counter(x["failures"][:90] for x in rows if x["base_validation"] == "FAIL")
     if fails:

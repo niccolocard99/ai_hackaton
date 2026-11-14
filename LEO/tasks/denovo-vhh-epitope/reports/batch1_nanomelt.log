@@ -1,0 +1,20 @@
+Loading ESM models
+ESM loading complete
+
+
+ anarci_alignments_of_Fv_sequences RUNNING PARALLEL
+myparallel.chunk_list_of_args on 2 cpus with 2 chunks of sizes [52, 52] type <class 'list'>
+
+
+ anarci_alignments_of_Fv_sequences Run_parallel FINISHED processed 104 sequences given as input
+ len(alH)=104 (100.00 %) len(alK)=0 (0.00 %) len(alL)=0 (0.00 %) len(failed)=0 (0.00 %) len(mischtype)=0 (0.00 %) [percents may not sum to 100 if check_duplicates (False)]
+
+Loading ESM data
+Loading ESM data
+
+
+---> NanoMelt prediction complete and results saved in batch1_nanomelt.csv
+
+
+
+

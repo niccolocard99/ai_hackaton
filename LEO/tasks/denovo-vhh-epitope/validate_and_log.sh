@@ -22,6 +22,9 @@ shift
 HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$HERE"
 export PATH="$HOME/.local/bin:$PATH"
+# The VM is CPU-saturated (team request, 14 Nov): at most 2 threads, low priority, one checker at a time.
+export OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2
+NICE="nice -n 10"
 LEDGER=${LEDGER:-"$HERE/../generation-ledger/ledger.py"}
 CHECKERS=${CHECKERS:-"$HERE/../../../NICCOLO/scripts"}
 PROVIDED=${PROVIDED:-"$HERE/../../../apheris/hackathon-data/her2-trastuzumab/trastuzumab_her2_spr_all_768.csv"}
@@ -44,9 +47,9 @@ echo "$fresh of $total designs are new to the ledger"
 [ "$fresh" -eq "$total" ] || echo "WARNING: $((total - fresh)) already logged; their earlier verdicts apply and they are skipped below" >&2
 
 echo "=== 3. base validation (de novo track) ==="
-python3 "$CHECKERS/check_denovo.py" "reports/$TAG-fresh.csv" -o "reports/$TAG-denovo.csv" 2>&1 | grep -v "DEBUG" | tail -n 3 || true
+$NICE python3 "$CHECKERS/check_denovo.py" "reports/$TAG-fresh.csv" -o "reports/$TAG-denovo.csv" 2>&1 | grep -v "DEBUG" | tail -n 3 || true
 echo "=== 3b. optimisation checker, for the record ==="
-python3 "$CHECKERS/check_optimisation.py" "reports/$TAG-fresh.csv" -o "reports/$TAG-optimisation.csv" --provided "$PROVIDED" 2>&1 | grep -v "DEBUG" | tail -n 1 || true
+$NICE python3 "$CHECKERS/check_optimisation.py" "reports/$TAG-fresh.csv" -o "reports/$TAG-optimisation.csv" --provided "$PROVIDED" 2>&1 | grep -v "DEBUG" | tail -n 1 || true
 
 echo "=== 4. log to the ledger, per run ==="
 python3 - "$TAG" "$@" <<'EOF'
