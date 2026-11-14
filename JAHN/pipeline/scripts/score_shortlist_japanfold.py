@@ -40,23 +40,30 @@ def _req(url: str, data=None, token: str | None = None, timeout: int = 120):
 
 
 def structure_lines() -> tuple[str, str]:
-    """The HER2 chain (C) and the VH backbone (chain B, first VH_LEN residues) as PDB ATOM lines."""
+    """The HER2 chain (C) and the VH backbone (chain B, first VH_LEN residues) as PDB ATOM lines.
+
+    Every ATOM record is kept (not just CA): the engine builds its chains from the records, and a
+    CA-only backbone makes one side parse as an empty chain (measured: af2_data _concat_chains
+    'index -1 ... size 0')."""
     cache = Path(os.environ.get("JF_CACHE", Path.home() / ".cache/japanfold"))
     cache.mkdir(parents=True, exist_ok=True)
     pdb = cache / "1n8z.pdb"
     if not pdb.exists():
         urllib.request.urlretrieve(PDB_1N8Z, pdb)
-    her2, vh, seen = [], [], set()
+    her2, vh, seen, vh_res = [], [], set(), 0
     for ln in pdb.read_text().splitlines():
         if not ln.startswith("ATOM"):
             continue
-        ch, resnum, atom = ln[21], int(ln[22:26]), ln[12:16].strip()
-        if atom != "CA" or (ch, resnum) in seen:
-            continue
-        seen.add((ch, resnum))
+        ch, resnum = ln[21], int(ln[22:26])
         if ch == "C":
             her2.append(ln)
-        elif ch == "B" and len(vh) < VH_LEN:
+        elif ch == "B" and (ch, resnum) not in seen:
+            seen.add((ch, resnum))
+            if len([r for r in seen]) <= VH_LEN:
+                vh_res = resnum
+    seen.clear()
+    for ln in pdb.read_text().splitlines():
+        if ln.startswith("ATOM") and ln[21] == "B" and int(ln[22:26]) <= vh_res:
             vh.append(ln)
     return "\n".join(her2), "\n".join(vh)
 
@@ -75,7 +82,7 @@ def main() -> int:
     df = pl.read_csv(a.shortlist)
     rank_col = a.rank_col if a.rank_col in df.columns else ("rank" if "rank" in df.columns else None)
     if rank_col:
-        df = df.sort(rank_col)
+        df = df.sort(rank_col, descending=(rank_col == "rank_score"))   # rank_score is higher-is-better
     top = df.head(a.top)
     if "heavy_sequence" not in df.columns:
         sys.exit("the shortlist needs a heavy_sequence column")
@@ -110,8 +117,8 @@ def main() -> int:
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     (out / "af2ig_raw.json").write_text(json.dumps(results, indent=2)[:200000])
-    keep = pl.DataFrame([{**{k: r.get(k) for k in ("name", "iptm", "plddt", "ptm", "interface_pae", "pae")},
-                          "sequence_id": r.get("name")} for r in rows])
+    keep = pl.DataFrame([{**{k: r.get(k) for k in ("iptm", "plddt", "ptm", "interface_pae", "pae")},
+                          "sequence_id": r.get("id") or r.get("name")} for r in rows])
     keep.write_csv(out / "af2ig_scores.csv")
     print(keep)
     return 0
