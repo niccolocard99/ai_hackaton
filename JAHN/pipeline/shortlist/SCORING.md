@@ -1,9 +1,22 @@
-# How the 32 submitted designs were scored, and why that scoring is justified
+# How the submitted designs were scored, and why that scoring is justified
 
-**Submission:** `submission.csv` — one CSV, both tracks' format, every row carrying its
-officially-assigned `track`. **Verdict:** 32/32 eligible on the optimisation track, 0/32 de novo
-(`optim_report.csv`, `denovo_report.csv`, the stock team checkers wrapping `abguard`). Composition:
-16 from the orchestrated loops, 16 from LEO's design-loop final 20, as instructed.
+**Submission:** `submission.csv` — one CSV, both tracks, every row carrying its officially-assigned
+`track`. **Verdicts:** 32/32 eligible optimisation (`optim_report.csv`) + **8/8 eligible de novo**
+(`denovo8_report.csv`) — the stock team checkers wrapping `abguard`. Composition: 16 loop designs +
+16 from LEO's design-loop final 20 (optimisation, per instruction), plus 8 de novo VHHs.
+
+## Why the de novo rows are separate designs, not mutated optimisation rows
+
+The track gate is a cliff, not a line: the closest optimisation design sits at **96.5% identity to
+trastuzumab** (d25, LEO's most framework-mutated variant) while de novo requires **under 70%** —
+a ~26-point gap over the Fv, i.e. ~70 framework substitutions. No minor, low-risk mutation set
+bridges that, and every framework change burns the very scaffold all our binding evidence rests on
+(the 768-variant SPR table is this framework). The low-risk route to de novo entries was the team's
+other engine: RFD4-designed VHHs on trastuzumab's epitope, **8/8 officially passing de novo**, chosen
+from LEO's ranked shortlist (`batch1-shortlist-v2.csv`) by his measured epitope geometry — epitope
+coverage 0.79, 94% of contacts inside the epitope, hotspot obedience 1.0, zero clashes, NanoMelt Tm
+in the descriptions. Their identity to trastuzumab is ~0.65 (safely under 0.70), they are `vhh` kind,
+and their `track` column comes from the official checker, not from us.
 
 ## The scoring, in one paragraph
 
