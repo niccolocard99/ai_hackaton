@@ -1,0 +1,13 @@
+rank,design,cdrh3_len,identity_tz,base_validation,track,epitope_cov,contacts_in_ep,n_contacts,n_hotspots,clash_frac,nanomelt_tm,fold_iptm,fold_min_ipae,fold_binder_plddt,fold_ptm
+1,her2d4_vhh_fixedfw_89,21,0.63,PASS,de_novo,0.68,0.87,15,4,0.0,69.69,0.575,7.0619,95.035,0.787
+2,her2d4_vhh_fixedfw_6,21,0.646,PASS,de_novo,0.58,0.65,17,4,0.0,73.52,0.961,0.4425,97.9508,0.961
+3,her2d4_vhh_fixedfw_13,21,0.638,PASS,de_novo,0.47,0.6,15,4,0.0,68.97,0.664,8.7131,93.464,0.776
+4,her2d4_vhh_fixedfw_5,21,0.654,PASS,de_novo,0.47,0.69,13,3,0.0,70.53,0.546,8.4096,94.2442,0.76
+5,her2d4_vhh_fixedfw_48,20,0.648,PASS,de_novo,0.79,0.94,16,4,0.0,65.63,0.437,15.0328,88.2679,0.627
+6,her2d4_vhh_freefw_0,17,0.683,PASS,de_novo,0.63,0.92,13,4,0.0,69.73,0.973,0.368,97.8355,0.968
+7,her2d4_vhh_fixedfw_42,20,0.651,PASS,de_novo,0.63,0.92,13,4,0.0,70.48,0.673,8.5486,97.0278,0.778
+8,her2d4_vhh_freefw_1,17,0.659,PASS,de_novo,0.58,0.92,12,4,0.0,71.62,0.546,11.3101,92.5158,0.722
+9,her2d4_vhh_fixedfw_0,17,0.659,PASS,de_novo,0.53,0.91,11,4,0.0,68.94,,,,
+10,her2d4_vhh_fixedfw_7,20,0.651,PASS,de_novo,0.53,0.91,11,4,0.0,67.7,,,,
+11,her2d4_vhh_fixedfw_3,18,0.65,PASS,de_novo,0.47,0.82,11,4,0.0,70.42,,,,
+12,her2d4_vhh_fixedfw_39,19,0.64,PASS,de_novo,0.37,0.78,9,4,0.0,70.14,,,,
