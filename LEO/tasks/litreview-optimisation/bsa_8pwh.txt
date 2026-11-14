@@ -1,0 +1,88 @@
+=== BSA by Shrake-Rupley, implemented here (no external SASA library) ===
+  file: C:/Users/LESCHI/AppData/Local/Temp/claude/1930a568568a7afc/ba84d58b-f299-47e8-b4f1-566233825871/scratchpad/pdb2/8PWH.cif
+  group A (antibody): ['A', 'B']   group B (antigen): ['E']
+  probe radius 1.4 A, 960 sample points/atom, heavy atoms only (united-atom radii)
+  self-test, isolated carbon: computed 120.76 A^2, analytic 4*pi*(1.70+1.40)^2 = 120.76 A^2, error 1.18e-16
+  self-test, two carbons 1.52 A apart: computed 149.95 A^2, exact spherical-cap 150.37 A^2, error 0.28%
+
+  atoms used: 8093 total (3299 in A, 4794 in B)
+    chain A: 214 residues, author numbering 1..214
+    chain B: 220 residues, author numbering 1..220
+    chain E: 624 residues, author numbering 1..624
+
+  running SASA on the complex ...
+  running SASA on group A alone ...
+  running SASA on group B alone ...
+
+=== TOTAL INTERFACE BSA (measured from structure) ===
+  buried on the antibody side (group A):    770.7 A^2
+  buried on the antigen  side (group B):    850.7 A^2
+  total area buried on assembly        :   1621.4 A^2
+  interface area (one face, = total/2) :    810.7 A^2
+
+=== BSA PER CHAIN ===
+  chain     BSA A^2   share of own side  residues buried >1 A^2
+  A           285.4               37.0%  10
+  B           485.3               63.0%  18
+  E           850.7              100.0%  23
+
+=== CDR LOCATIONS (this structure's author numbering) ===
+  CDR-H1: chain B 31-35  DTYIH
+  CDR-H2: chain B 50-65  RIYPTNGYTRYADSVK
+  CDR-H3: chain B 99-109  WGGDGFYAMDY
+  CDR-L1: chain A 24-34  RASQDVNTAVA
+  CDR-L2: chain A 50-56  SASFLYS
+  CDR-L3: chain A 89-97  QQHYTTPPT
+
+=== BSA PER CDR (antibody side) ===
+  CDR      BSA A^2   % of paratope BSA  res>1A^2  contributing residues (BSA A^2)
+  H3         242.3               31.4%         8  TYR105 62, GLY103 60, ASP102 59, PHE104 21, GLY100 18, TRP99 16, TYR109 4, ASP108 2
+  H2         170.8               22.2%         5  TYR57 61, ARG59 60, ARG50 44, TYR52 3, THR58 2
+  L3          96.9               12.6%         4  HIS91 35, TYR92 30, THR94 23, THR93 10
+  L2          84.6               11.0%         2  PHE53 68, SER50 16
+  L1          79.0               10.2%         3  ASN30 48, THR31 23, ALA32 9
+  H1          30.3                3.9%         2  TYR33 28, THR32 3
+  FRWK        66.8                8.7%            (framework / constant region)
+
+  heavy-chain CDRs 443.4 A^2 (63% of CDR BSA) | light-chain CDRs 260.5 A^2 (37%)
+  all six CDRs 703.9 A^2 = 91% of the antibody-side BSA
+
+=== BSA PER CDRH3 POSITION (WGGDGFYAMDY, chain B 99-109) ===
+    pos  aa   BSA A^2  free SASA   % of its SASA buried
+     99   W      16.4       18.0                  90.9%  <== buried
+    100   G      18.2       26.4                  68.8%  <== buried
+    101   G       0.9       24.8                   3.6%
+    102   D      58.6      121.3                  48.3%  <== buried
+    103   G      59.6       70.1                  84.9%  <== buried
+    104   F      21.1       44.5                  47.5%  <== buried
+    105   Y      61.7       88.5                  69.7%  <== buried
+    106   A       0.0        6.8                   0.0%
+    107   M       0.0        0.0                   0.0%
+    108   D       1.7       25.6                   6.5%  (trace)
+    109   Y       4.3       75.4                   5.7%  (trace)
+
+=== ANTIGEN-SIDE RESIDUES, BSA > 1 A^2 ===
+  23 residues; top by BSA:
+    E GLU558       92.5 A^2
+    E ASP585       87.7 A^2
+    E PHE573       79.1 A^2
+    E PRO572       76.7 A^2
+    E PRO571       70.1 A^2
+    E ASP560       56.1 A^2
+    E TRP592       55.9 A^2
+    E VAL582       48.5 A^2
+    E PRO603       40.0 A^2
+    E GLN602       38.6 A^2
+    E LYS593       30.4 A^2
+    E PRO557       28.8 A^2
+    E ASP570       27.6 A^2
+    E GLN561       26.4 A^2
+    E PRO579       21.5 A^2
+    E ALA600       19.0 A^2
+    E PRO605       17.9 A^2
+    E LYS583       11.6 A^2
+    E GLY581        7.2 A^2
+    E PRO584        5.4 A^2
+    E SER580        5.1 A^2
+    E CYS604        2.8 A^2
+    E LYS569        1.5 A^2

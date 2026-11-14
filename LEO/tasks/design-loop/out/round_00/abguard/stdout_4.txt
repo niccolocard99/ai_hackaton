@@ -1,0 +1,17 @@
+PASS  LEO-WWSEGFYEMF           assigned=novel   
+PASS  LEO-WYSEGFYEMY           assigned=novel   
+PASS  LEO-WWVQGFYAMI           assigned=novel   
+PASS  LEO-WKSYGFYEMY           assigned=novel   
+PASS  LEO-WYSEGFYHMI           assigned=novel   
+PASS  LEO-WGVQMFYEMI           assigned=novel   
+PASS  LEO-WTVQGFYWMI           assigned=novel   
+PASS  LEO-WWSQGFYAMY           assigned=novel   
+PASS  LEO-WGSEYFYEMD           assigned=novel   
+PASS  LEO-WKVQGFYAMG           assigned=novel   
+PASS  LEO-WWSDGFYEMF           assigned=novel   
+PASS  LEO-WTYDGFYEMF           assigned=novel   
+PASS  LEO-WYSDGFYWME           assigned=novel   
+PASS  LEO-WTSDGFYMMK           assigned=novel   
+PASS  LEO-WWVDGFYNMT           assigned=novel   
+
+optimisation track: 15/15 design(s) eligible

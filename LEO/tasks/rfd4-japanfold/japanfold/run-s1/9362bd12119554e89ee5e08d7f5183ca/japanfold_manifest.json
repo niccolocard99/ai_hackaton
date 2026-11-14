@@ -1,0 +1,84 @@
+{
+  "archive_url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/archive",
+  "artifacts": [
+    {
+      "path": "design_0_generated.cif",
+      "rank": 2,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_0_generated.cif"
+    },
+    {
+      "path": "design_1_generated.cif",
+      "rank": 1,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_1_generated.cif"
+    },
+    {
+      "path": "design_2_generated.cif",
+      "rank": 4,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_2_generated.cif"
+    },
+    {
+      "path": "design_3_generated.cif",
+      "rank": 3,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_3_generated.cif"
+    }
+  ],
+  "designs": [
+    {
+      "chains_expected": 4,
+      "designed_length": 336,
+      "designed_sequence": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKEVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRYGLGSFWEMDYWGQGTLVTVSSCHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSIWKFPDEEGACQPCPIN",
+      "final_rank": 2,
+      "id": "design_0",
+      "motif_rmsd": 0.329,
+      "num_chains": 4,
+      "runtime_s": 50.0,
+      "structure": "design_0_generated.cif",
+      "tokens": 336
+    },
+    {
+      "chains_expected": 4,
+      "designed_length": 336,
+      "designed_sequence": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKEVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRYGPYGFWEMDYWGQGTLVTVSSCHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSIWKFPDEEGACQPCPIN",
+      "final_rank": 1,
+      "id": "design_1",
+      "motif_rmsd": 0.321,
+      "num_chains": 4,
+      "runtime_s": 48.9,
+      "structure": "design_1_generated.cif",
+      "tokens": 336
+    },
+    {
+      "chains_expected": 4,
+      "designed_length": 336,
+      "designed_sequence": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKEVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRYRSLYDYEMDYWGQGTLVTVSSCHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSIWKFPDEEGACQPCPIN",
+      "final_rank": 4,
+      "id": "design_2",
+      "motif_rmsd": 0.49,
+      "num_chains": 4,
+      "runtime_s": 53.2,
+      "structure": "design_2_generated.cif",
+      "tokens": 336
+    },
+    {
+      "chains_expected": 4,
+      "designed_length": 336,
+      "designed_sequence": "DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAPKLLIYSASFLYSGVPSRFSGSRSGTDFTLTISSLQPEDFATYYCQQHYTTPPTFGQGTKVEIKEVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNGYTRYADSVKGRFTISADTSKNTAYLQMNSLRAEDTAVYYCSRSTSSVSWAFDYWGQGTLVTVSSCHQLCARGHCWGPGPTQCVNCSQFLRGQECVEECRVLQGLPREYVNARHCLPCHPECQPQNGSVTCFGPEADQCVACAHYKDPPFCVARCPSIWKFPDEEGACQPCPIN",
+      "final_rank": 3,
+      "id": "design_3",
+      "motif_rmsd": 0.459,
+      "num_chains": 4,
+      "runtime_s": 49.1,
+      "structure": "design_3_generated.cif",
+      "tokens": 336
+    }
+  ],
+  "engine": "rfd4",
+  "job_id": "9362bd12119554e89ee5e08d7f5183ca",
+  "kind": "design",
+  "object": "results",
+  "ready": true
+}

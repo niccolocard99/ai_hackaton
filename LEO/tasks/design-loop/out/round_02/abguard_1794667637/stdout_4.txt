@@ -1,0 +1,5 @@
+FAIL  LEO-WGSYGFYEMS           assigned=novel     <- CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRWGSYGFYMSGY); needs >= 3
+PASS  LEO-WKSSGFYSMI           assigned=novel   
+PASS  LEO-WTPEGFYEMY           assigned=novel   
+
+optimisation track: 2/3 design(s) eligible

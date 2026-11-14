@@ -1,0 +1,10 @@
+PASS  LEO-WKVEGFYEMI           assigned=novel   
+PASS  LEO-WWVEGFYEME           assigned=novel   
+PASS  LEO-WSSEGFYEMI           assigned=novel   
+FAIL  LEO-WPVEGFYEMI           assigned=novel     <- CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRWPVEGFYMIEY); needs >= 3
+PASS  LEO-WKSEGFYEME           assigned=novel   
+PASS  LEO-WYVEGFYSMI           assigned=novel   
+PASS  LEO-WKEEGFYEMI           assigned=novel   
+PASS  LEO-WKSEGFYEMT           assigned=novel   
+
+optimisation track: 7/8 design(s) eligible

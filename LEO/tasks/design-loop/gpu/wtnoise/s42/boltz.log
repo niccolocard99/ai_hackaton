@@ -1,0 +1,54 @@
+Predicting ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1/1 0:00:28 • 0:00:00 0.00it/s 
+
+--- stderr ---
+┌──────────────────────────────────────────────────────────────────────────────┐
+│                           APHERIS Boltz Prediction                           │
+│                        Run Boltz prediction pipeline                         │
+│                             apheris-boltz 1.3.0                              │
+└──────────────────────────────────────────────────────────────────────────────┘
+Reading input queries                                                           
+Read 4 entities from `_entity` table.                                           
+Read 4 polymer types from `_entity_poly` table.                                 
+Read 4 entities with a total of 326 residues from `_entity_poly_seq` block.     
+Read 4 chains from `_struct_asym` table.                                        
+Read 2509 atoms from `_atom_site` table.                                        
+Identified 326 resolved residue(s) from `_atom_site` table.                     
+Parsed molecule with 2513 atoms (2509 resolved), 2578 bonds, 326 residues, and 4
+chains.                                                                         
+Assigned templates to 4 entities across 1 queries                               
+Read 1 queries from /work/in/queries.json                                       
+Reading config                                                                  
+Inferred Boltz v2 from weights file /app/weights/boltz2_conf.ckpt               
+Creating inference module                                                       
+Seed set to 42                                                                  
+Creating trainer                                                                
+Using bfloat16 Automatic Mixed Precision (AMP)                                  
+GPU available: True (cuda), used: True                                          
+TPU available: False, using: 0 TPU cores                                        
+💡 Tip: For seamless cloud logging and experiment tracking, try installing      
+[litlogger](https://pypi.org/project/litlogger/) to enable LitLogger, which logs
+metrics and artifacts automatically to the Lightning Experiments platform.      
+Loading weights                                                                 
+Seed set to 42                                                                  
+Run prediction                                                                  
+Seed set to 42                                                                  
+💡 Tip: For seamless cloud uploads and versioning, try installing               
+[litmodels](https://pypi.org/project/litmodels/) to enable LitModelCheckpoint,  
+which syncs automatically with the Lightning model registry.                    
+LOCAL_RANK: 0 - CUDA_VISIBLE_DEVICES: [0]                                       
+/app/.pixi/envs/boltz-image/lib/python3.11/site-packages/pytorch_lightning/utilities/_pytree.py:21: `isinstance(treespec, LeafSpec)` is deprecated, use `isinstance(treespec, TreeSpec) and treespec.is_leaf()` instead.
+/app/.pixi/envs/boltz-image/lib/python3.11/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:434: The 'predict_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=15` in the `DataLoader` to improve performance.
+/app/.pixi/envs/boltz-image/lib/python3.11/site-packages/pytorch_lightning/utilities/data.py:123: Your `IterableDataset` has `__len__` defined. In combination with multi-process data loading (when num_workers > 1), `__len__` could be inaccurate if each worker is not configured independently to avoid having duplicate data.
+Read 4 entities from `_entity` table.                                           
+Read 4 polymer types from `_entity_poly` table.                                 
+Read 4 entities with a total of 326 residues from `_entity_poly_seq` block.     
+Read 4 chains from `_struct_asym` table.                                        
+Read 2509 atoms from `_atom_site` table.                                        
+Identified 326 resolved residue(s) from `_atom_site` table.                     
+Parsed molecule with 2513 atoms (2509 resolved), 2578 bonds, 326 residues, and 4
+chains.                                                                         
+/app/.pixi/envs/boltz-image/lib/python3.11/site-packages/pytorch_lightning/loops/prediction_loop.py:307: Couldn't infer the batch indices fetched from your dataloader: `DataLoader`
+/app/.pixi/envs/boltz-image/lib/python3.11/site-packages/torch/jit/_script.py:1488: DeprecationWarning: `torch.jit.script` is deprecated. Please switch to `torch.compile` or `torch.export`.
+  warnings.warn(
+/app/.pixi/envs/boltz-image/lib/python3.11/site-packages/cuequivariance_ops_torch/triangle_attention.py:623: UserWarning: Generic kernel expects bias to be float32 so it's going to be cast to torch.float32. Check if you can change your code for maximum performance.
+  warn_eager_only(

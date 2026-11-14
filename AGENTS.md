@@ -80,6 +80,42 @@ Caveats:
 - The bundled reference is abguard's own CDRH3 index. For the full check, sync `hackathon-data/` and pass `--reference-db` built from it.
 - Passing base validation says nothing about binding, epitope or thermostability. It is only the gate.
 
+## GENERATION LEDGER (mandatory, check before every run)
+
+Only 4 designs get tested and the H100 is shared, so the same generation must never be paid for twice. Every run that produces sequences (RFD4-Proteina, a Nebius or JapanFold job, ProteinMPNN, or a scripted or hand-made set of mutants) is logged in the CSV ledger in `LEO/tasks/generation-ledger/`: `runs.csv` (one row per run) and `variants.csv` (one row per sequence per run). `ledger.py` there needs nothing installed. The CSVs are append-only: **never edit or delete a row by hand**. A changed status or verdict is a new row, and the latest wins.
+
+Two runs are the same when method, model image, the **contents** of the input files, seed and settings all match. Two sequences are the same when heavy and light chain match, ignoring case and whitespace.
+
+1. **Before launching, `check-run`.** Exit code 3 means that exact run is already in the ledger: **do not launch it**, reuse the `output` it prints. Change the seed or a setting only when you want a different result. To repeat on purpose (outputs lost, nondeterminism check), add `--setting rerun=2` and say why in `--notes`. A run that only ever `failed` may be retried once its cause is fixed.
+2. **Register it with `add-run`** (same flags) before the job starts, so a teammate checking at the same moment sees it. When it ends, `set-status --status done|failed|empty`.
+3. **Log what came out** with `add designs.csv --run-id <id>`, using the BASE VALIDATION table. It also lists any sequence an earlier run already produced.
+4. **Before refolding, ranking or validating any table of designs, `check designs.csv --new-only fresh.csv`** and carry on with `fresh.csv`. A sequence already in the ledger is not regenerated, refolded or re-validated: reuse the earlier result (the ledger shows its last validation verdict).
+5. **After BASE VALIDATION,** add `base_validation` (`PASS` or `FAIL`, for the design's assigned track), `track_assigned` and `cdrh3` columns to the table and run `add` again.
+
+```bash
+cd ~/hackathon-team-3/apheris/rfd4             # the folder the model command runs from
+L=../../LEO/tasks/generation-ledger/ledger.py
+RUN=(--method design --model quay.io/apheris/oslo-hackathon:apheris-rfd4-proteina-v0.3.0-her2-novel-2026-11-09
+     --input Data/12-her2/her2_cdrh3.yaml --seed 1 --setting num-replicates=100)
+
+python3 $L check-run "${RUN[@]}"                    # exit 3 = already run, stop
+python3 $L add-run   "${RUN[@]}" --run-id leo-20261114-her2novel-s1 --output runs/leo-her2novel-s1
+#   ... docker run ... module-run design ...  (the same flags as above)
+python3 $L set-status --run-id leo-20261114-her2novel-s1 --status done
+python3 $L add   designs.csv --run-id leo-20261114-her2novel-s1
+python3 $L check other_designs.csv --new-only fresh.csv   # before refolding or ranking any table
+```
+
+How to fill the flags: `--setting name=value` for **every** flag that changes what is generated (`num-replicates`, `sequence-tsr-k`, `recycle-strategy`, and so on), spelled as in the command without the dashes, and never the output path. Pass the spec file as `--input`; the structure file its `input:` line points at is hashed automatically. Give `--model` the full image tag. For ProteinMPNN or a mutant script, use `--method` for what it is and `--model` for tool and version.
+
+Caveats:
+- The same seed on a GPU may not reproduce bit for bit. The ledger treats it as the same run anyway, because paying for it twice is the cost it exists to avoid.
+- Only runs logged here are known. Nothing before the ledger exists in it except `unknown-20261114-her2-smoke`, the HER2 smoke test, as a run row only; its sequences are on the VM and are not backfilled.
+- Log the shortlist, not the screen. The pre-filter in `NICCOLO/eda/` scores millions of enumerated CDRH3s, and the ledger is committed: log that as one run (`--method prefilter`, with its settings) and `add` only the designs that leave it.
+- `check` also notes when a new sequence shares its CDRH3 with a logged one. That is information, not a duplicate: the framework may differ on purpose.
+- The ledger is committed. Never put keys or credentials in `--setting` or `--notes`.
+- Tests: `python3 -m unittest test_ledger` in that folder.
+
 ## Only 4 designs are guaranteed to be tested
 
 This governs every ranking decision.
@@ -203,6 +239,7 @@ Checked on the VM on 14 Nov: Aggrescan 3D, SoluProt, NetSolP and ProteinMPNN are
 - Never print or echo a key; refer to `$JAPANFOLD_API_KEY` and `$NEBIUS_CREDS` by name. Never commit secrets or API keys, nor `apheris/hackathon-data/`, `apheris/rfd4/runs/` and `LEO/.venv/`.
 - Do not commit or push unless asked. End commit messages with a `Co-Authored-By:` line naming the model you are actually running as.
 - Record every design run: input spec, weight image, settings, seed, and resulting scores. Put run notes in the owner's folder, not in shared folders.
+- **Check the GENERATION LEDGER (above) before every generation run, and before refolding, ranking or validating a table of designs.** Log each run and its variants in it. A run or sequence it already holds is not regenerated: reuse the earlier output.
 - Keep each design's provenance and its **predicted** track (from its identity numbers) with the design. The real track assignment only comes from `abguard`, so treat local labels as predictions and verify them.
 - When something is blocked or unclear, record it in the progress log in `LEO/README.md` rather than guessing.
 - Prefer verifying a rule against `apheris/challenge/*.md` over trusting a summary, including this one. The documents contradict themselves in at least one place (the mutation count).

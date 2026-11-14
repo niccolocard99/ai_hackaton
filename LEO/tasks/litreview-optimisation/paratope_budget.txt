@@ -1,0 +1,44 @@
+=== CDR LOCATIONS (1N8Z auth numbering, sequential) ===
+  CDR-H1: chain B residues 31-35  len  5  DTYIH
+  CDR-H2: chain B residues 50-65  len 16  RIYPTNGYTRYADSVK
+  CDR-H3: chain B residues 99-109  len 11  WGGDGFYAMDY
+  CDR-L1: chain A residues 24-34  len 11  RASQDVNTAVA
+  CDR-L2: chain A residues 50-56  len  7  SASFLYS
+  CDR-L3: chain A residues 89-97  len  9  QQHYTTPPT
+
+=== PER-CDR SHARE OF THE HER2 INTERFACE (42 contact pairs) ===
+CDR        pairs   share  residues  contacting residues
+H3            11     26%         4  TRP99, GLY103, PHE104, TYR105
+H2            10     24%         5  ARG50, TYR52, TYR57, THR58, ARG59
+L3             8     19%         4  HIS91, TYR92, THR93, THR94
+L1             7     17%         4  ASP28, ASN30, THR31, ALA32
+L2             4     10%         2  SER50, PHE53
+H1             2      5%         1  TYR33
+
+  heavy-chain CDRs: 23 pairs (55%)
+  light-chain CDRs: 19 pairs (45%)
+
+=== CDRH3 POSITION-BY-POSITION (WGGDGFYAMDY, 99-109) ===
+  pos  aa  HER2 contact?  partners (min dist A)
+   99   W  CONTACT        PHE573 4.05, PRO572 4.14
+  100   G  free           -
+  101   G  free           -
+  102   D  free           -
+  103   G  CONTACT        LYS593 2.42, ASP570 3.66, ILE591 3.74, PRO579 4.50
+  104   F  CONTACT        LYS593 4.27
+  105   Y  CONTACT        PRO571 3.32, PHE573 3.44, ASP570 3.50, PRO572 4.00
+  106   A  free           -
+  107   M  free           -
+  108   D  free           -
+  109   Y  free           -
+
+  CDRH3 length 11; identity after k substitutions = (=11-k)/11
+  substitutions needed for <70% identity: 4 (gives 63.6%)
+  HER2-contacting positions: 4 -> W99, G103, F104, Y105
+  contact-free positions:    7 -> G100, G101, D102, A106, M107, D108, Y109
+
+  => <70% CDRH3 identity is reachable using contact-free positions ALONE (4 of 7 available).
+
+=== HER2 EPITOPE (19 residues) ===
+  PRO557, GLU558, ASP560, GLN561, LYS569, ASP570, PRO571, PRO572, PHE573, PRO579, ILE591, LYS593, ASP596, GLU598, ALA600, GLN602, PRO603, CYS604, PRO605
+  span: 557-605 (49 residues end to end, 19 in actual contact -> discontinuous)

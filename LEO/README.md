@@ -310,3 +310,8 @@ Goal: do interesting things with the data.
 | 2026-11-14 | Added submission/pitch/prize rules and developability tools (were missing) | Done |
 | 2026-11-14 | Sync `hackathon-data/` and `~/hackathon-team-3/apheris/rfd4` from S3 | **Done** |
 | 2026-11-14 | Pick a thermostability predictor | Open |
+| 2026-11-14 | Generation ledger added (`LEO/tasks/generation-ledger/`); rule added to `AGENTS.md` | Done |
+| 2026-11-14 | RFD4 via JapanFold + base validation (`LEO/tasks/rfd4-japanfold/`): 9 of 18 candidates eligible on optimisation, 0 on de novo | Done |
+| 2026-11-14 | Design loop with NanoMelt thermostability scoring (`LEO/tasks/design-loop/`) | In progress |
+| 2026-11-14 | Fixed-framework VHH batch `vhh-fixedfw-n100-s2` (100 designs) on the H100; only 4 smoke designs validated so far | In progress |
+| 2026-11-14 | Results of the live JapanFold loop and the 100-design VHH batch not yet scored or logged | Open |

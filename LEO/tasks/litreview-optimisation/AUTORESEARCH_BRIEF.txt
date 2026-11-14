@@ -1,0 +1,794 @@
+================================================================================
+AUTORESEARCH BRIEF - TRASTUZUMAB OPTIMISATION (HER2)
+Oslo AI x Antibodies hackathon, team 3. Written 2026-11-14 by Claude Opus 5.
+Branch: LEO-litreview-optimisation. Task folder: LEO/tasks/litreview-optimisation/
+================================================================================
+
+READ FIRST
+  - repo root AGENTS.md         : the hackathon rules, tracks, constraints
+  - LEO/AGENTS.md               : workflow, branching, WRITE SCOPE (you may only
+                                  write inside LEO/)
+  - findings/06-structural-paratope-measured.md : our strongest result
+  - findings/07-rule-verification.md            : rules checked against source
+Do not trust this file over those. It is a summary; they are the record.
+
+
+--------------------------------------------------------------------------------
+0. WHAT THE TASK IS
+--------------------------------------------------------------------------------
+Design trastuzumab variants that beat it on THREE measured properties:
+  (1) binding affinity        - measured by SPR
+  (2) epitope preservation    - competitive binding against trastuzumab
+  (3) thermostability         - directly measured (Tm)
+Only ~4 designs are guaranteed to be lab-tested, so RANK ORDER IS THE OUTPUT.
+Precision beats volume. Ten designs improving one property each lose to two
+that improve all three.
+
+
+--------------------------------------------------------------------------------
+1. HARD CONSTRAINTS (verified against apheris/challenge/*.md, not just summaries)
+--------------------------------------------------------------------------------
+Shared, every design:
+  - numbering confidence >= 0.1; format VHH, scFv or Fab
+  - total length <= 250 aa
+  - NO UNPAIRED CYSTEINES
+Optimisation track extra checks:
+  - CDRH3 identity to trastuzumab < 70%
+  - MORE THAN 2 point mutations from ANY provided data point (use 3 as minimum)
+  - CDRH3 must differ from all 525,063 CDRH3s in the HER2 novelty set
+
+Verified notes:
+  - Deck says "<=70%", task description and flowchart say "<70%". MOOT for an
+    11-residue CDRH3: k substitutions give (11-k)/11 identity, so k=3 -> 72.7%
+    (fails) and k=4 -> 63.6% (passes). Nothing lands on 70%. MINIMUM IS 4.
+  - Mutation count: 2 of 3 sources say "more than 2". Use 3 as the floor.
+  - Track is assigned on identity to NEAREST KNOWN ANTIBODY, not to trastuzumab.
+    Keeping trastuzumab's framework/light chain/5 CDRs means ~95% identity to a
+    known antibody, so designs route to OPTIMISATION. Correct and intended.
+  - A design is NEVER reclassified between tracks. Missing its track's criteria
+    means rejection.
+
+FORMAT ARITHMETIC (inference, verify):
+  VHH  ~120-130 aa  -> comfortable under the 250 aa cap
+  scFv ~245-255 aa  -> RIGHT AT the cap, tight
+  Fab  ~435-445 aa  -> CANNOT FIT. Do not propose a Fab.
+
+
+--------------------------------------------------------------------------------
+2. MEASURED FACTS - computed from PDB 1N8Z, not quoted from literature
+--------------------------------------------------------------------------------
+1N8Z = "Crystal structure of extracellular domain of human HER2 complexed with
+Herceptin Fab", 2.5 A. Chains: A = light, B = heavy, C = HER2 ECD (1-607).
+All residue numbers below are 1N8Z AUTHOR NUMBERING (sequential), NOT Kabat.
+
+Trastuzumab CDRs as deposited:
+  CDR-H3  chain B  99-109   11 aa  WGGDGFYAMDY
+  CDR-H2  chain B  50-65    16 aa  RIYPTNGYTRYADSVK
+  CDR-H1  chain B  31-35     5 aa  DTYIH
+  CDR-L1  chain A  24-34    11 aa  RASQDVNTAVA
+  CDR-L2  chain A  50-56     7 aa  SASFLYS
+  CDR-L3  chain A  89-97     9 aa  QQHYTTPPT
+
+Per-CDR share of the HER2 interface (42 heavy-atom contact pairs at 4.5 A):
+  H3  26%  (TRP99, GLY103, PHE104, TYR105)
+  H2  24%  (ARG50, TYR52, TYR57, THR58, ARG59)
+  L3  19%  (HIS91, TYR92, THR93, THR94)
+  L1  17%  (ASP28, ASN30, THR31, ALA32)
+  L2  10%  (SER50, PHE53)
+  H1   5%  (TYR33)
+  heavy-chain CDRs 55% / light-chain CDRs 45%
+=> CDRH3 carries only ~1/4 of the interface. The five unchanged CDRs are a
+   substantial anchor. A CDRH3 rewrite is not betting the whole paratope.
+
+CDRH3 POSITION-BY-POSITION - geometry PLUS the measured alanine scan.
+Kabat numbering in brackets (crosswalk verified via patent US-8840896-B2).
+Ala-scan = Kelley & O'Connell, Biochemistry 32:6828-35 (1993), K_D fold-effect.
+
+  1N8Z [Kabat] aa  HER2 contact (4.5 A)        Ala scan    VERDICT
+  99   [W95]   W   PHE573 4.05, PRO572 4.14    50-5000x    NEVER TOUCH (hotspot)
+  100  [G96]   G   free                        -           free
+  101  [G97]   G   free                        -           free
+  102  [D98]   D   free at 4.5, contact 5.5    only 1.5-2x PREFERRED TARGET (!)
+  103  [G99]   G   LYS593 2.42 (shortest)      -           NEVER TOUCH (structural)
+  104  [F100]  F   LYS593 4.27                 only 1.5-2x usable with care
+  105  [Y100a] Y   PRO571 3.32, PHE573 3.44,   50-5000x    NEVER TOUCH (hotspot)
+                   ASP570 3.50, PRO572 4.00
+  106  [A100b] A   free                        -           free
+  107  [M100c] M   free                        -           free
+  108  [D101]  D   free                        -           free
+  109  [Y102]  Y   free                        -           free
+
+*** THREE CORRECTIONS. THE 1N8Z-ONLY ANALYSIS WAS TOO GENEROUS. ***
+
+CORRECTION 1 - 1N8Z IS BLIND TO HER2 581-590.
+That unresolved loop sits directly under CDRH3's C-terminal half. Verified two
+ways: the chain C sequence has a 10-residue gap starting at 581, AND the
+organisers' own file says so -
+  apheris/rfd4/Data/12-her2/her2_cdrh3.yaml:
+  "HER2 is split at its unresolved loop (581-590) into chains C (489-580) and
+   D (591-607), because input validation rejects a numbering gap inside one
+   chain."
+So the 4.0-5.5 A cutoff sweep tested the wrong axis - every run used a
+structure missing part of the epitope. 8Q6J DOES resolve that loop, and there
+G100 contacts VAL582 and D102 contacts VAL582 3.42 / PRO579 3.43 / ASP570 3.86.
+
+CROSS-STRUCTURE CONTACT COUNTS (4 clean structures + 1N8Z).
+Clean = full-length trastuzumab H+L plus one intact HER2 chain:
+6BGT, 6OGE, 8PWH, 8Q6J. EXCLUDED: 7PKL (NO HER2 CHAIN AT ALL - it is an
+anti-idiotypic complex, so its "contacts" are to another antibody), 7MN8
+(CDRH3 partner auto-assigned "other", ambiguous), 22GC/22GE (HER2 fragmented
+across chains / trastuzumab H truncated to 103-121 residues).
+  pos  aa  HER2 contact in n of 5
+  99   W   4/5
+  100  G   2/5
+  101  G   1/5
+  102  D   4/5
+  103  G   5/5
+  104  F   2/5
+  105  Y   5/5
+  106  A   0/5   <-- never
+  107  M   0/5   <-- never
+  108  D   0/5   <-- never
+  109  Y   1/5
+=> ONLY THREE POSITIONS NEVER CONTACT HER2: A106, M107, D108.
+   Four substitutions are required, so AT LEAST ONE CONTACTING POSITION MUST
+   CHANGE. The earlier claim "<70% identity without disturbing a single
+   measured contact" DOES NOT HOLD.
+
+CORRECTION 2 - "CONTACT-FREE" IS NOT "FREE". MEASURED GEOMETRY (1N8Z):
+  G100  CANNOT CARRY A SIDE CHAIN. A modelled CB lands 1.73 A from R98.NH2.
+        Any side chain must displace R98, which anchors the D108 salt bridge.
+        UNUSABLE.
+  G101  phi = +107 deg (the epsilon region) - GLYCINE-SPECIFIC. A side chain
+        there points toward HER2 I591 but K593 stays 8.2-8.4 A away at every
+        side-chain length, so a charge buys no salt bridge. High risk, low gain.
+  D102  THE FREEST SIDE CHAIN IN THE LOOP (2.0 intramolecular neighbours per
+        atom). Its HER2 "contact" is made by the BACKBONE CARBONYL O - no
+        side-chain substitution can remove it. Excluding D102 while including
+        G100/G101 was backwards.
+  F104  F104->Y IS STERICALLY DEAD: the ring's para axis points AWAY from K593
+        and a modelled Tyr OH clashes at 2.90 A with VL L46 and 2.93 A with
+        VL Y55. Do not do it.
+  A106  3.08 A clearance in the best of 2000 sampled directions => SER ONLY.
+  M107  MOST LOAD-BEARING IN THE LOOP (18 neighbours per side-chain atom):
+        W110, W99, W47, H35, V37 + VL Y36, Q89, P96, F98. This is the
+        FR2<->CDR3 class whose loss caused the triple failure in 36153698.
+        0.0 A^2 solvent-accessible - a buried core residue.
+  D108  BIDENTATE SALT BRIDGE TO R98: OD2-NH2 2.69 A, OD1-NE 3.00 A. Near-
+        structural; substitute isoelectronically (D->E) or not at all.
+  Y109  Its OH is UNSATISFIED (nearest polar partner 4.12 A) => Y109F is the
+        cheapest substitution available.
+=> THE REAL RISK AXIS IS THE PER-POSITION INTRAMOLECULAR CONTACT BUDGET, NOT
+   THE HER2 CONTACT COUNT. All candidate designs preserve 100% of HER2
+   contacts, so that metric has ZERO resolving power between them. The
+   literature agrees this is the real failure mode: 34392800 (affinity varies
+   through H3 secondary-structure change, NOT contact loss), 36153698,
+   28928732 (gains were "generally NOT due to direct interactions involving
+   the mutated residues but indirect effects").
+
+CORRECTION 3 - W99 IS NOT THE CONSERVED BETA-BULGE TRYPTOPHAN.
+An earlier version of this file said it was (citing 38916527). Wrong: that
+conserved Trp is Kabat W103 = W110 here, in FR4, OUTSIDE CDRH3 and untouchable
+regardless. W99 is Kabat H95, the ceiling/class-switch residue of 20961619 -
+and that paper's ceiling effect VANISHED at 11 residues, which is our length,
+so that rationale is weaker than it looked. W99 stays untouchable anyway
+because it is a measured contact in 4/5 structures with ~150 intramolecular
+neighbours. Conclusion unchanged, stated reason corrected.
+
+*** THE IDENTITY-BOUNDARY TRAP - RESOLVE THIS BEFORE FREEZING ANY LIST ***
+The organisers' yaml designates the designable window B99-108 and pins
+B[1-98, 109-120], i.e. it treats Y109 AS FRAMEWORK and CDRH3 as a 10-mer.
+scripts/_track_common.py computes:
+    cdrh3_identity(a,b) = 1 - levenshtein(a,b) / max(len(a), len(b))
+On the 10-mer reading, 3 substitutions give EXACTLY 70.0%, which is NOT
+strictly under 70% and therefore FAILS. On the 11-mer reading 4 subs give
+63.6% and 5 give 54.5%.
+=> Within 99-108 the usable positions are {101, 102, 106, 107, 108} (100 is
+   sterically locked). Excluding BOTH G101 and A106 leaves only {102, 107,
+   108} = 3 subs = 70.0% = FAIL. So EVERY BOUNDARY-ROBUST DESIGN MUST SPEND A
+   SUBSTITUTION AT EITHER G101 (Ramachandran-penalised) OR A106 (forced to
+   Ser, uncertain sign). There is no way around this.
+=> RUN scripts/check_optimisation.py AND READ THE cdrh3 COLUMN abguard
+   REPORTS. One command. It settles the denominator.
+
+REVISED MUTABLE SET
+  FREE (0/5 HER2 contact)   A106 (Ser only), M107 (most load-bearing), D108
+                            (salt bridge - D->E only)
+  BEST SIDE CHAIN           D102 - contacts HER2 via BACKBONE only; Ala-scan
+                            effect just 1.5-2x; "most poorly conserved
+                            residue, mutated in 98% of selected phage clones";
+                            D98W MEASURED at 3-fold BETTER affinity by SPR
+  PRICED FALLBACK           Y109 (1/5, OH unsatisfied), G101 (1/5, Gly-locked)
+  NEVER                     W99, G103, Y105 (G103 and Y105 are 5/5 contacts;
+                            W99 and Y105 are Ala-scan hotspots at 50-5000x)
+  DO NOT USE                G100 (steric), F104->Y (clash)
+
+*** D102 [Kabat D98] IS THE BEST POSITION TO MUTATE, NOT ONE TO AVOID ***
+An earlier version of this brief said to avoid D102 because it contacts at a
+5.5 A cutoff. THAT WAS WRONG. The measured evidence says the opposite:
+  - Ala-scan effect only 1.5-2x: it is NOT a hotspot.
+  - US-8840896-B2: D98 was "the most poorly conserved residue", mutated in 98%
+    of selected phage clones, most frequent substitution Trp (23%).
+  - D98W gives a 3-FOLD IMPROVEMENT in affinity over WT hu4D5-8 Fab by SPR.
+  - D98F also gains affinity, removing repulsion with HER2 D586/E598 (31891584).
+  - It is at "the tip of variable loop 3" - the apex, exactly where the loop
+    literature says to concentrate change.
+  CAVEAT: D98W is PUBLISHED, so a design must stay >=3 mutations from that
+  single mutant. D102W combined with 3+ other substitutions is fine; a design
+  whose only change is D102W is invalid.
+
+The four critical paratope residues overall by Ala scan (50-5000x): heavy R50,
+W95, Y100a; light H91. Light H91->Ala alone costs 200-fold and is only 22%
+solvent-exposed - another reason to keep the light chain fixed.
+
+G103 [G99] is untouchable for TWO independent reasons: the 2.42 A contact with
+no side-chain room, AND "V_H99 was a highly conserved residue in variable loop
+3 ... position i+2 of a type II beta-turn which is most commonly a Gly ...
+likely to be a structure-stabilizing residue" (US-8840896-B2). One dissent:
+31891584 proposed G99D/R as a deliberate loop size increase to modulate
+electrostatics with HER2 D570 - high-risk/high-reward, not a default.
+
+HER2 EPITOPE (measured, 19 residues, span 557-605 = 49 aa end to end, so
+strongly discontinuous - this CONFIRMS by measurement a claim that previously
+rested on one conference abstract):
+  PRO557 GLU558 ASP560 GLN561 LYS569 ASP570 PRO571 PRO572 PHE573 PRO579
+  ILE591 LYS593 ASP596 GLU598 ALA600 GLN602 PRO603 CYS604 PRO605
+  - heavy chain engages 557-593; light chain engages 560-605
+  - ASP560, PRO571, PRO572 are contacted by BOTH chains (shared hot spots)
+  - epitope is PROLINE-RICH and CHARGE-DENSE -> preserve net charge and polar
+    character of any rewritten CDRH3 face
+
+*** KNOWN BAD DATA - DO NOT USE ***
+A conference abstract (doi 10.1096/fasebj.31.1_supplement.775.23) reports HER2
+contact loops at 991-995, 1004-1007, 1027-1037 and claims to analyse 1N8Z.
+These are INCOMPATIBLE: 1N8Z's HER2 chain is numbered 1-607 and residues 991+
+are intracellular in full-length HER2. Use the measured 557-605 set instead.
+
+
+--------------------------------------------------------------------------------
+3. THE RISK THAT THE ABOVE STRATEGY CREATES - READ BEFORE DESIGNING
+--------------------------------------------------------------------------------
+Provided data includes 524,346 CDRH3 variants WITH UP TO 10 MUTATED POSITIONS.
+The rule requires >2 mutations from ANY provided data point = Hamming distance
+>= 3 from all 524,346.
+
+Restricting changes to 6 contact-free positions SHRINKS the design space, and
+the binding-compatible corner of a small space is exactly where a
+binder-selected FACS library is dense. A candidate 1-2 mutations from any
+library variant is REJECTED, not reclassified.
+
+Mitigations (apply all four):
+  1. OVER-SHOOT: aim for 5 substitutions not 4, and Hamming >= 4 not 3. Both
+     thresholds are cliff edges and an extra contact-free substitution is cheap.
+  2. GENERATE A SURPLUS - some candidates will die at novelty validation.
+  3. The novelty check CANNOT RUN on a machine without
+     apheris/hackathon-data/her2-trastuzumab/. A locally clean candidate means
+     nothing until scripts/check_optimisation.py has run on the VM.
+  4. Weak argument in our favour (needs checking against the tables): a FACS
+     screen selected for BINDERS, so it had less reason to systematically
+     explore contact-free positions.
+
+
+--------------------------------------------------------------------------------
+4. DESIGN RULES FROM THE LITERATURE (pmid-cited; details in findings/01-04)
+--------------------------------------------------------------------------------
+SCIENTIFIC LICENSE FOR HEAVY REWRITING
+  - An anti-HER2 VHH with NO light chain and none of trastuzumab's CDRs binds
+    trastuzumab's OWN epitope at sub-nM affinity (37632647).
+  - bH1/bH1-44, radically re-engineered Herceptin paratopes, KEEP Herceptin-level
+    HER2 affinity; binding switches enthalpy-driven -> entropy-driven (21526167).
+  - Best published affinity gains come from 4-6 SIMULTANEOUS CDR mutations, and
+    the gains are mostly INDIRECT effects enhancing contacts of UNMUTATED
+    residues (28928732).
+  - A 20-aa CDRH3 split into 4 sub-libraries, randomised separately and
+    recombined, gave 1230-fold on HER2 (KD 13 pM) (8918938).
+
+WHERE TO SPEND SUBSTITUTIONS
+  - Apex and C-terminal half are contact-enriched (11335716, 25484051).
+  - Treat the H3 BASE as structural. Residue H95-equivalent sets a ~100-fold
+    "ceiling affinity" and acts as a class switch; mutations elsewhere have
+    RECIPROCAL effects between classes (20961619).
+  - Keep LOOP LENGTH CONSTANT at 11. Length change rewires the epistasis (the
+    H95 ceiling effect held at 9 residues and vanished at 11) (20961619), and
+    structure prediction degrades: RosettaAntibody median H3 RMSD 1.6 A (4-6 aa),
+    2.4 A (10-11), 3.1 A (12-14), 6.0 A (17-22) (19062174).
+  - Pick positions by contact/permissiveness, NOT by somatic-hypermutation
+    hotspot propensity (15777944).
+  - Changes OUTSIDE H3 are free against the identity budget (L3, H2, framework).
+  - Preserve the C-terminal kink (25579815, 24519881) and the base Trp (38916527).
+
+RESIDUE CHEMISTRY
+  - Preserve net charge / polar character (binding is electrostatics-dominant,
+    23955267; epitope is charge-dense per section 2).
+  - DO NOT add aromatics expecting gains: two interface tryptophans made a
+    design 6-fold WORSE (42909185).
+  - Arginine only in hydrophobic microenvironments, and affinity must not depend
+    on it (28778924); pair an introduced Arg with an Asp (26132144).
+  - Prefer natural-diversity substitutions - residues frequent at that position
+    in functional antibodies (28928732, 24116173).
+
+HARD PRE-SYNTHESIS FILTERS
+  - NO new N-glycosylation sequon (N-X-S/T, X != P) anywhere in or SPANNING the
+    loop junctions. Three otherwise-good variants were lost to a CDR glycan that
+    phage/bacterial screening could not see (24492299). The loop sits in context
+    ...YYCSR-[WGGDGFYAMDY]-WGQGT... so check across both junctions.
+  - No free cysteine (also a track rule). Never delete the canonical intradomain
+    disulfides (1736986). An odd Cys does its damage IN A CDR (24598312).
+  - Avoid engineered H3 disulfide staples - they form but over-constrain (11335716).
+
+THERMOSTABILITY
+  - FREE WIN, MEASURED ON TRASTUZUMAB scFv: VL-R66G gives Tm +5 C with
+    antigen-binding affinity UNCHANGED (37396255). Designed by rigidifying a
+    flexible region OUTSIDE the CDRs and OUTSIDE the VH-VL interface, so it is
+    orthogonal to a CDRH3 rewrite. Caveat: single paper, E. coli-expressed scFv,
+    effect measured on WT CDRs; additivity with a rewritten H3 is untested.
+  - Trastuzumab's own Fv (clone 4D5) is used in the literature as the GOLD-
+    STANDARD STABLE scFv framework (10582696, 10393549). So Tm gains must come
+    from format (VHH removes the VH-VL interface failure mode), an engineered
+    disulfide, or not wrecking the loops - NOT from a better framework.
+  - If CDR grafting costs stability, buy it back at FR2 and the framework
+    residues packing against CDR3 (36153698) - that paper is our exact failure
+    mode in a VHH.
+  - A pre-stabilised CDR-H3 ENABLES affinity optimisation; antibodies lacking H3
+    stabilisation showed NO affinity improvement from the same process (41613601).
+  - 4 mutations in CDR-L3 alone gave >18-fold affinity AND improved thermal
+    stability (23995618). CDR-L3 is not in our epitope-critical set -> cheap
+    place to recover both properties.
+  - VH44-VL100 is the standard interdomain disulfide: GdnHCl50 2.4 -> 4.2 M with
+    affinity unaffected (21339972).
+
+TOOLING - what to use and what to avoid
+  - Thermostability ranking: antibody-specific pLM / Rosetta-feature CNN
+    (36683173) for scFv - out-of-distribution rho 0.52/0.40 vs 0.15 for general
+    pLMs. TEMPRO (39154093) only for VHH; its RMSE 5.66 C is LARGER than the
+    +5 C effect of a real stabilising mutation, so use it to flag outliers, never
+    to rank two plausible designs.
+  - Aggregation/solubility: Aggrescan3D or A4D, plus DeepSP (38827232,
+    antibody-specific, r 0.76-0.96 vs MD). Protein-Sol is the only tool trained
+    on CELL-FREE solubility data (28575391).
+  - DO NOT rely on: SoluProt (AUC 0.62, near coin-flip, 33416864); raw Rosetta
+    Cartesian_ddG ("high false discovery rate", 40643334); TemStaPro or ESMStabP
+    (no antibody validation); "ProteinMPNN with soluble weights" (NO validation
+    record in 505 records examined - it appears only inside one abstract).
+  - Inverse folding: use an ANTIBODY-specific model. On nanobody CDR3, AntiBMPNN
+    reached 1.7 nM while AntiFold and vanilla ProteinMPNN gave NO detectable
+    activity (40576473). General-protein models "struggle with antibody-specific
+    nuances" (40465588).
+  - ProteinMPNN IS strong for FRAMEWORK-ONLY redesign with CDRs frozen: it
+    converted 19/26 antibody sequences into functional scFv intrabodies, 18 of
+    which had failed the standard approach (39975170).
+  - Honest ceiling: on 80 blinded clinical antibodies, the best of 113 teams got
+    Spearman rho 0.392 for thermostability, 0.310 for titer (41724677). Use
+    predictors to DROP OUTLIERS and BREAK TIES, not to fine-rank.
+  - ELISA signal is NOT affinity - two failed designs gave HIGHER ELISA signal
+    while being 2-6x worse by Biacore (42909185).
+
+CELL-FREE EXPRESSION (Adaptyv expresses cell-free; a design that does not
+express cannot be measured at all)
+  - Base rate: of 50 de novo CDR-designed scFvs, ROUGHLY HALF expressed
+    detectably and 4 bound (28860479). With 4 slots, expect 1-2 silent failures.
+  - Dominant failure mode is aggregation, not transcription - scFvs partition to
+    the insoluble fraction and need refolding (42697344).
+  - DsbC concentration was CRITICAL for soluble antibody fragments (29462206).
+  - ACTION ITEM: confirm with Adaptyv whether their lysate is BACTERIAL or
+    EUKARYOTIC. A signal peptide is MANDATORY in CHO-lysate CFPS (28931913) and
+    harmful otherwise.
+  - A single-chain format eliminates the HC:LC stoichiometry failure mode (36978695).
+
+
+--------------------------------------------------------------------------------
+5. BASELINE NUMBERS - what we have and what is still missing
+--------------------------------------------------------------------------------
+HAVE:
+  - Trastuzumab-HER2 parent KD 0.058 nM, with a computationally designed TRIPLE
+    mutant 32-fold better by SPR (28750054, ADAPT platform).
+  - Herceptin whole IgG thermal stability ~75 C by far-UV CD (31071101).
+  - 193 single-mutant trastuzumab affinity values exist, used to train an
+    epistasis-aware model; affinity variation traced to mutation-induced
+    SECONDARY-STRUCTURE CHANGE IN CDR-H3 (34392800).
+  - DSF reads on average 3 C LOWER than DSC (25385011) - do not mix methods.
+
+  *** THE FAB Tm BASELINE - FOUND (pmid 21526167, DSC) ***
+  - HERCEPTIN FAB T_M = 83 C. Conditions: DSC, 10 mM NaOAc pH 5 + 150 mM NaCl,
+    0.5 mg/mL, 1 C/min. THIS IS THE NUMBER TO BEAT.
+    Caveats: it is a FAB not an scFv, and pH 5 not physiological. DSF reads ~3 C
+    LOWER than DSC (25385011), so compare like with like.
+  - Same paper, same method, re-engineered Herceptin paratopes: bH1 77 C,
+    bH1-81 76 C, bH1-44 74 C. ALL THREE LOST 6-9 C versus the parent Fab.
+    That is the first real quantification of what rewriting this paratope costs
+    in stability, and it is substantial. Budget for it.
+
+  *** FULL THERMODYNAMICS - FOUND (pmid 21526167, ITC + SPR) ***
+    K_D   0.5 nM           SPR, BIAcore 3000, 30 C, 1:1 Langmuir
+    k_on  7e5 M-1 s-1      SPR, 30 C
+    k_off 4e-4 s-1         SPR, 30 C
+    dH    -13.5 kcal/mol   ITC, VP-ITC, PBS pH 7.4, 30 C
+    -TdS  +0.9 kcal/mol    from dG(SPR) and dH(ITC)
+    dCp   -370 cal/mol.K   ITC, dH vs T, 20-37 C
+    => BINDING IS ENTHALPY-DRIVEN; the entropy term is UNFAVOURABLE.
+       bH1's rewritten paratope switched to ENTROPY-driven binding, so a heavily
+       rewritten CDRH3 may bind by a different thermodynamic route. Not
+       necessarily worse, but different - do not assume the parent's signature.
+
+  *** INTERFACE SIZE - FOUND ***
+    1350 A^2 total BSA (crystal, 37569408); ~1675 A^2 from MD models (21600050)
+    910 A^2 buried APOLAR area; interface is ~60% APOLAR (21526167)
+    Binding is essentially RIGID-BODY (dCp-derived vs observed apolar area agree
+    to 3%) (21526167)
+
+  *** K_D DISCREPANCY TO RESOLVE BEFORE CLAIMING A BASELINE ***
+    0.058 nM (28750054, SPR) vs 0.5 nM (21526167, SPR 30 C) - about 10x apart,
+    both SPR. Likely IgG vs Fab and/or temperature/format. DECIDE WHICH BASELINE
+    WE CLAIM AGAINST AND STATE THE METHOD. For reference, 28750054's best triple
+    mutant reached K_D 1.9 pM, ~30x better than parent, via ~6x k_on and ~5x k_off.
+
+STILL MISSING:
+  - NO QUANTIFIED dTm COST per CDRH3 substitution. We know the bH1 series lost
+    6-9 C for a whole-paratope rewrite, but nothing gives per-mutation cost.
+  - No per-CDR BSA breakdown and no per-residue dG for the paratope. The Ala scan
+    gives BINNED FOLD-CHANGES, not dG values.
+  - No crystallographic H-bond / salt-bridge table or distance list. The only
+    explicit pairings (23955267) are MD on a TRUNCATED 18-MER PEPTIDE, not the
+    crystal contact list.
+  - No kink/bulge call or canonical-class assignment for trastuzumab's CDRH3.
+    Every corpus paper on H3 canonical clusters was checked individually and NONE
+    mentions trastuzumab, Herceptin, 4D5 or 1N8Z.
+  - pmid 12610629 (the 2.5 A primary structure) is NOT in the corpus, and 1N8Z's
+    resolution is never stated in any record we hold.
+  - pmid 42968171 / PDB 7PKL is absent from the corpus entirely.
+  - No published trastuzumab variant with >=4 CDRH3 substitutions and a measured
+    KD. The <70%-identity regime is literally unmapped for trastuzumab.
+
+
+--------------------------------------------------------------------------------
+6. NEXT ACTIONS, RANKED
+--------------------------------------------------------------------------------
+ 1. GET ONTO THE VM AND RUN COMPUTE. The VM shuts down at the end of Saturday
+    2026-11-14. No amount of analysis substitutes. From apheris/rfd4/:
+      bash Scripts/run-her2.sh all          # 4 designs, ~4 min smoke test
+    Use image her2-novel-2026-11-09 (best measured novelty pass rate 86%).
+    Check nvidia-smi and docker ps first - ONE H100 shared by the whole team,
+    one heavy job at a time, run in background and poll the log.
+ 2. Run BASE VALIDATION on every candidate before ranking it:
+      scripts/check_denovo.py       designs.csv -o reports/denovo.csv
+      scripts/check_optimisation.py designs.csv -o reports/optimisation.csv \
+        --provided apheris/hackathon-data/her2-trastuzumab/trastuzumab_her2_spr_all_768.csv
+    A design that has not passed is NOT a candidate.
+ 3. Mine fulltext/ for the two missing baselines (32380351 Tm, 28750054 positions).
+ 4. Compute a per-residue ENERGY budget on 1N8Z (FoldX / Rosetta / MM-GBSA) to
+    replace the geometric contact counts. The structure is already downloadable;
+    see section 7.
+ 5. Cross-check the interface against the newer cryo-EM coordinates (3.1-3.2 A,
+    pmid 41538393) and 7PKL. Disagreements matter more than confirmations.
+ 6. Confirm the Adaptyv lysate type (section 4, cell-free).
+ 7. Write the de novo track counterpart. This brief covers OPTIMISATION only.
+
+
+--------------------------------------------------------------------------------
+7. REPRODUCING WHAT EXISTS
+--------------------------------------------------------------------------------
+From LEO/tasks/litreview-optimisation/ :
+  amass_search.sh      30 cached AMASS queries. Re-runs are FREE (cache hits).
+                       Needs AMASS_API_KEY in the environment.
+                           AMASS_API_KEY=... bash amass_search.sh 20
+  digest.py            dedupes cache/ -> DIGEST.md (385+ unique records)
+  fetch_fulltext.py    per-record full text via include=fulltext ($0.01 each);
+                       patents via include=claims&description
+  interface_1n8z.py    mmCIF parser + heavy-atom contact finder, NO dependencies
+  paratope_budget.py   assigns contacts to CDRs by substring search on the
+                       deposited sequence, so no numbering scheme is assumed
+  findings/            01 affinity, 02 epitope, 03 thermostability,
+                       04 tools/developability, 05 prior art + clinical need,
+                       06 measured structure, 07 rule verification
+
+  curl -o 1n8z.cif https://files.rcsb.org/download/1N8Z.cif
+  python interface_1n8z.py 1n8z.cif 4.5 > interface_1n8z.txt
+  python paratope_budget.py interface_1n8z.txt
+
+AMASS API: base https://api.amass.tech/api/v1, header
+  "Authorization: Bearer $AMASS_API_KEY", 60 requests / 60 s,
+  search $0.05 per 20 results, get-by-id $0.01.
+Cores: biomedcore, trialcore, drugcore, regulatorycore, genecore, patentcore.
+
+
+--------------------------------------------------------------------------------
+8. RULES FOR YOU, THE AGENT
+--------------------------------------------------------------------------------
+  - WRITE SCOPE: only inside LEO/. Never write to the repo root, to ../JAHN/,
+    ../NICCOLO/, ../ANDERS/, or to apheris/. Reading outside LEO/ is fine.
+  - NEVER commit secrets. AMASS_API_KEY comes from the environment. LEO/.gitignore
+    covers *_key.txt, *.key, *.pem. An amass_key.txt exists in LEO/ and is ignored;
+    do not move it anywhere unignored and do not print it.
+  - AMASS credits are ONE SHARED $100 POT for the whole team. ~$3.45 spent so far
+    (~2,000 searches total budget). The cache makes re-runs free - check it before
+    querying. Do not fan out parallel agents that each hit the API.
+  - Branch per task. NOTE: LEO/AGENTS.md prescribes LEO/<task> branch names, but
+    git CANNOT create refs/heads/LEO/<task> while refs/heads/LEO exists. Use a
+    hyphen: LEO-<task>. This is a known bug in that file; Leo has been told.
+  - Keep LEO/tasks/<task>/STATE.md current. Record dead ends - a written-down
+    dead end saves the next agent from repeating it.
+  - Do not push or merge to main without explicit human instruction.
+  - Record the reasoning behind every design that makes the shortlist. Judgment is
+    40% of the pitch score and reproducibility is another 20%.
+
+EPISTEMIC RULES - these matter more than speed
+  - Distinguish MEASURED from COMPUTED from INFERRED in everything you write.
+  - Several load-bearing claims in the literature come from CONFERENCE ABSTRACTS
+    with no pmid and no peer review. Carry that caveat; do not launder it.
+  - VERIFY RESIDUE NUMBERS against a structure before using them. One published
+    list (section 2) did not survive that check.
+  - State the numbering scheme with every residue number you report.
+  - "Unknown" is a useful answer. A confident guess is not.
+  - Passing base validation says NOTHING about binding, epitope or thermostability.
+    It is only the gate.
+
+================================================================================
+STATUS AT TIME OF WRITING: five subagents were still running - two mining
+fulltext/ for the missing baselines, one computing buried surface area and
+cross-checking other structures, one drafting candidate CDRH3 sequences, one
+drafting the pitch. Their results are NOT in this brief. Check findings/ and
+STATE.md for anything added after 2026-11-14.
+================================================================================
+
+================================================================================
+APPENDIX - CANDIDATE DESIGNS (drafted 2026-11-14, NOT YET VALIDATED)
+================================================================================
+Parent CDRH3 WGGDGFYAMDY, net charge -2 (D102, D108). All candidates: 11 aa,
+net charge -2 preserved EXACTLY, ZERO Asn anywhere in the loop or flanks (so a
+new N-glycosylation sequon is IMPOSSIBLE, not merely absent), no new Cys,
+242 aa scFv (<=250). Identities computed with abguard's own Levenshtein formula.
+
+  ID   sequence       substitutions                     id(11mer) id(10mer)
+  A1   WGGEGFYSLEF    D102E A106S M107L D108E Y109F      54.5%     60.0%
+  A2   WGGEGFYSLEY    D102E A106S M107L D108E            63.6%     60.0%
+  F1   WGGEGFYALEF    D102E M107L D108E Y109F            63.6%  70.0% FAIL
+  C1   WGAEGFYSLDF    G101A D102E A106S M107L Y109F      54.5%     60.0%
+  C2   WGAEGFYSLDY    G101A D102E A106S M107L            63.6%     60.0%
+  D1   WGAEGFYSMEY    G101A D102E A106S D108E            63.6%     60.0%
+  E1   WGGEGFYSIEF    D102E A106S M107I D108E Y109F      54.5%     60.0%
+  B1   WGGEGFYSLDF    D102E A106S M107L Y109F            63.6%  70.0% FAIL
+
+RECOMMENDED RANKING (for "plausibly wins on all three properties", S-tier first)
+  1. A1  - passes under BOTH CDRH3 definitions; largest Levenshtein margin (5)
+           against the 525,063 novelty set and the 768 provided variants, which
+           are the two most likely causes of outright rejection; charge
+           preserved; two liabilities removed (Asp-Gly isomerisation, Met
+           oxidation), none added. Risk: D108E must re-form the R98 bidentate
+           salt bridge across +1.25 A of extra reach.
+  2. F1  - GATED. Lowest intramolecular damage, zero liability motifs. SUBMIT
+           ONLY IF abguard confirms the 11-mer CDRH3. If it reports the 10-mer
+           window, F1 is INELIGIBLE at exactly 70.0% and A2 takes this rank.
+  3. C1  - the portfolio slot: the ONLY candidate with a mechanism to EXCEED
+           parent affinity (a side chain at G101 reaching HER2 I591). Highest
+           single-design risk (phi +107 deg is Gly-specific). One deliberate
+           gamble is correct; two is not.
+  4. A2  - conservative twin of A1; promote to rank 2 if the F1 gate fails.
+  5-8. D1, E1, C2, B1 - margin-and-count variants. E1 is Levenshtein 1 from A1,
+           which no assay here can resolve. B1 is dominated by F1.
+
+*** ADD VL-R66G TO EVERY SUBMITTED DESIGN ***
+pmid 37396255: trastuzumab scFv VL-R66G, Tm +5 C, affinity UNCHANGED, designed
+under the rule "rigidify outside the CDRs and outside the VH-VL interface".
+VL residue 66 in the deposited light chain is confirmed Arg. Costs 0 aa.
+THE CDRH3 REWRITE WILL NOT WIN THERMOSTABILITY; THIS WILL.
+  CAVEATS: (a) 37396255 is ABSENT from the full-text corpus - a sweep for
+  "R66G" returned zero hits - so this rests on its ABSTRACT alone; (b) measured
+  on WT CDRs, so additivity with a rewritten H3 is untested; (c) our own
+  structure shows light-chain ARG66 sits 5.45 A from HER2 GLU598, so "orthogonal"
+  is not geometrically exact on a charge-dense interface. The paper's MEASURED
+  unchanged affinity outranks our geometric proximity, but carry the caveat.
+
+HONEST CEILING: these 8 are NOT 8 hypotheses. Pairwise Levenshtein is 1-4;
+there are really FOUR ideas (isosteric floor A1/A2/E1; minimum intramolecular
+damage F1/B1; new-contact probe C1/C2; protect the Met cage D1). That is a
+property of the target: after excluding the four HER2-contacting positions, the
+sterically locked G100 and the Ramachandran-locked G101, only four positions
+remain and one admits a single residue. The loop-design literature says
+"concentrate change at the apex" - UNSATISFIABLE HERE, because in this loop THE
+APEX *IS* THE PARATOPE (103-105 are the geometric middle and all three contact
+HER2). Every available substitution is on a shoulder or the backside. Worth
+saying in the pitch: it is a real structural finding, not a compromise.
+
+NO DESIGN HERE HAS A MECHANISM TO BEAT TRASTUZUMAB'S KD. Every contact-free
+position points away from HER2 or is buried. Treat the CDRH3 rewrite as the
+COMPLIANCE COST and buy the affinity and Tm wins OUTSIDE CDRH3, where findings
+01 says they are free against the identity budget. Caveat measured here: CDR-L3
+is 19% of the interface (H91, Y92, T93, T94 all contact HER2) and its Q89/P96
+are packing partners of M107, so only Q90, P95, T97 are genuinely free in L3.
+H2 is the better-value lever - 10 contact pairs across 5 residues of a 16-residue
+CDR, so far more non-contacting positions to spend. NEEDS ITS OWN PASS.
+
+MANDATORY DOWNSTREAM CHECKS - NONE CAN RUN WITHOUT THE VM
+  1. Novelty vs the 525,063 HER2-table CDRH3s. hackathon-data/ is ABSENT here.
+     This is the most likely rejection cause: if the tables include a deep
+     mutational scan or randomised CDRH3 library over 100-109 - exactly how such
+     libraries are built - a 4-substitution design could sit 1-2 Levenshtein
+     from a member. The 5-substitution designs (A1, C1, E1) have materially
+     better margin. INDEPENDENT ARGUMENT FOR A1 AS LEAD.
+  2. >=3 point mutations from every provided variant (trastuzumab_her2_spr_
+     all_768.csv, whole VH+VL). Same problem - file not here. If any provided
+     variant carries two of our substitutions, the 4-sub designs fail.
+  3. Resolve the CDRH3 boundary (above) - one command.
+  4. Confirm assignment to the `novel` class, not `de_novo`. Whole VH+VL identity
+     is ~97%, comfortably >=70%, so optimisation is expected - but local track
+     labels are predictions only.
+  5. Patent collision: US-2021388063-A1 (Fusion Antibodies) claims SHM-motif-
+     derived trastuzumab variants, product AND method, and we have no claim text.
+
+WHERE THE DESIGN REASONING IS ANALOGY, NOT EVIDENCE
+  - The "natural diversity" rule (28928732) is UNVERIFIED for every substitution
+    chosen: it needs position-specific residue frequencies in functional
+    antibodies and no frequency table is on this machine. HIGH-VALUE CHEAP FIX:
+    compute position-specific frequencies at Kabat H95-H102 from the HER2 NGS
+    tables or OAS. It would confirm or overturn several choices.
+  - Met oxidation liability, Asp-Gly isomerisation, residue volumes and
+    positive-phi being Gly/Asn-specific are general domain knowledge, not from
+    the findings files.
+  - M107L's CH/pi replacement for the lost Met S/pi contacts is inference.
+  - ALL geometry is from ONE crystal structure, ONE conformation. CDR loops
+    interconvert on us-ms timescales (32264741). Re-check every Ramachandran and
+    clearance argument on an ensemble - ideally the 3.1-3.2 A cryo-EM coordinates
+    (41538393); MD-cluster-seeded backbones gave 60% vs 30% stable designs over
+    static single-structure design (41473986).
+  - The cross-structure contact table was computed by crosscheck_structures.py,
+    written by a parallel task and NOT reviewed line by line. The 581-590 gap and
+    the organisers' chain split are directly verified; the per-structure calls
+    are not. Normalise the HER2 numbering offsets between constructs (6OGE/7MN8/
+    22GC/22GE appear to use a +22 offset) before reuse.
+
+================================================================================
+*** FINAL CONSENSUS - SUPERSEDES EVERY EARLIER POSITION TABLE IN THIS FILE ***
+From 8 deposited structures. BSA computed by Shrake-Rupley implemented from
+scratch (self-validated to 0.28% against exact spherical-cap geometry), plus
+geometric contact chemistry. HER2 numbering reconciled EMPIRICALLY by alignment
+to 1N8Z chain C - every offset came out at 100% sequence identity.
+22GC/22GE/6OGE/7MN8 use UniProt P04626 precursor numbering (+22);
+1N8Z/6BGT/8PWH/8Q6J use 1N8Z mature numbering. Everything below is 1N8Z mature.
+Scripts in the task folder: bsa_1n8z.py, crosscheck_structures.py,
+epitope_consensus.py, contact_chemistry.py (pure python + numpy).
+
+THE FREE SET IS EXACTLY FOUR POSITIONS, AND FOUR IS THE MINIMUM. ZERO MARGIN.
+
+  pos   HER2 contact (of 8)              BSA range   free SASA   status
+  A106  0/8                              0.0 all     2.2-11.3    FREE
+  M107  0/8                              0.0 all     0.00  (!)   FREE
+  D108  0/8                              0.0-1.7     19.0        FREE
+  Y109  1/8 (6OGE only - the 4.36 A      0.0-4.3     57.0        effectively
+        structure - L586 3.77 A)                                 FREE
+  G100  3/8  22GC P590 3.20, 6BGT        18-39       5.2         *** NOT FREE
+             Y588 3.44, 8Q6J V582 4.46
+  G101  2/8  22GC I591 3.01, 6BGT        9-35        30.6        *** NOT FREE
+             Y588 4.38
+  D102  6/8  buries 58.6 A^2 in 8PWH,    7.2-58.6    108.2       CONTACTS HER2
+             the only gap-free HER2
+             model. Partners D570, P579,
+             S580, V582, I591, P603
+  W99   5/8                              14-17       16-31       untouchable
+  G103  7/8                              44-67       50-73       untouchable
+  F104  4/8                              6-32        41-49       medium risk
+  Y105  7/8                              14-67       31-88       see Y105F below
+
+=> SUBSTITUTE A106, M107, D108, Y109 -> 63.6% identity, NO measured HER2
+   contact disturbed in ANY of 8 structures.
+=> DO NOT TOUCH G100 OR G101. Both appeared in an earlier recommended "free
+   set" in this file. Both make real, measured HER2 contacts in the structures
+   that resolve the 581-590 loop.
+=> THERE IS NO SPARE POSITION. Any design wanting a 5th substitution must take
+   a contacting one.
+
+FOLD RISK IS NOW THE BINDING CONSTRAINT, NOT CONTACT LOSS
+  M107 free SASA = 0.00 A^2 in 1N8Z, 8PWH and 6BGT alike - a fully buried Fv
+  core packer. A106 = 2.2-11.3 A^2. Substituting either cannot disturb a
+  contact but CAN disturb the loop fold. That is the distinction contact counts
+  could not make, and it is the documented failure mode: pmid 34392800 traced
+  trastuzumab affinity variation to H3 secondary-structure change, NOT contact
+  loss. Prefer small, uncharged substitutions at A106 and M107.
+
+*** NEW ANCHOR, INVISIBLE IN 1N8Z: HEAVY-CHAIN ARG98 BINDS HER2 ***
+R98 is the residue immediately N-terminal to CDRH3. Of the 5 structures that
+resolve HER2 585/588:
+  8PWH  SALT BRIDGE to D585, NH1-OD1 3.02 A, 11 atom contacts
+  8Q6J  SALT BRIDGE to D585, 2.95 A
+  6BGT  H-bond to Y588, NH1-OH 3.25 A, 21 atom contacts
+  6OGE  contact to L586, 3.52 A
+  22GC  models the loop, no R98 contact
+=> 4 of 5 informative structures show R98 engaging HER2, one as a salt bridge.
+   TREAT R98 AS A BOUNDARY THAT CDRH3 ENGINEERING MUST NOT CROSS.
+=> THIS DOWNGRADES D108E. D108 makes a bidentate salt bridge to R98 (OD2-NH2
+   2.69 A, OD1-NE 3.00 A), and R98 anchors HER2 D585. Lengthening D108 to Glu
+   could propagate into R98 and cost an HER2 contact that 1N8Z never showed.
+   The candidate appendix above puts D108E in its top pick (A1).
+   RE-EVALUATE A1 BEFORE COMMITTING.
+
+*** A NEW CHEMISTRY-PRESERVING OPTION: Y105F ***
+Y105 is a 7/8 contact and the largest single BSA contributor in 3 of 4
+structures - BUT ITS HYDROXYL MAKES NO H-BOND TO HER2. All four of its contacts
+are ring-carbon hydrophobic packing against the D570/P571/P572/F573 proline
+patch. So Y105->F is conservative and chemistry-preserving, while Y105->
+non-aromatic is not. This is a 5th-substitution option that contact counting
+could not identify.
+
+CDRH3's ONLY POLAR INTERACTION WITH HER2 IS A BACKBONE CARBONYL
+  G103 backbone O ... K593 NZ: 2.42 A (1N8Z), 2.57 (7MN8), 2.97 (6BGT),
+  3.21 (8Q6J), 3.26 (8PWH) - conserved in every informative structure.
+  It is BACKBONE, so it survives any side-chain substitution at 103 - but it
+  requires glycine's backbone conformation and leaves no side-chain room.
+  CDRH3 CONTRIBUTES NO SALT BRIDGE AT ALL. All three interface salt bridges are
+  CDR-H2 arginines: R50-D560 2.60 A, R50-E558 3.13 A, R59-D560 3.61 A.
+
+CORRECTED EPITOPE: 34 RESIDUES SPANNING 556-607, NOT 19 SPANNING 557-605
+  Core, contacted in EVERY structure that models the residue:
+    P557, E558, P571, D585, Q602, P603
+  D585 IS A CORE EPITOPE RESIDUE AND IS COMPLETELY INVISIBLE IN 1N8Z.
+  Also contacted where modelled: V582, L586, S587, Y588, M589, P590.
+  => DO NOT QUOTE "19 residues" as the epitope size.
+  => The "strongly discontinuous epitope" framing is PARTLY AN ARTIFACT of the
+     disordered loop: filling 582-590 makes 557-607 substantially more
+     continuous. The span claim survives (556-607 = 52 residues) but the
+     discontinuity argument is weaker than stated earlier in this file.
+
+INTERFACE AREA PER FACE, and why 1N8Z is the outlier
+  1N8Z 722 A^2  <  8PWH 811  <  22GC 822  <  6BGT 930
+  1N8Z gives the SMALLEST interface of the four - the missing loop.
+  CDRH3 share of paratope BSA: 23.5% (1N8Z), 31.4% (8PWH), 26.3% (6BGT),
+  26.4% (22GC) - ROBUST, always a minority. THE ANCHOR ARGUMENT SURVIVES.
+  Per-CDR BSA (1N8Z, antibody side 694.0 A^2 total):
+    H3 163.2 (23.5%), H2 154.0 (22.2%), L3 127.6 (18.4%), L1 125.5 (18.1%),
+    L2 84.5 (12.2%), H1 27.0 (3.9%). All six CDRs = 98% of paratope BSA.
+
+PER-STRUCTURE CAVEATS - DO NOT AVERAGE BLINDLY
+  8PWH (3.17 A) and 8Q6J (3.3 A): NO GAPS AT ALL, the most complete HER2
+    models. PREFER THESE OVER 1N8Z for any interface claim.
+  6BGT (2.7 A X-ray): largest interface (930 A^2/face), most contacts (52) -
+    BUT IT IS A DOUBLE MUTANT (light S52D in CDR-L2, heavy K30D). Its CDRH3 is
+    wild type, so its CDRH3 contacts remain informative.
+  22GC (3.2 A): LOW CONFIDENCE. CDRH3 register is shifted - it contacts
+    G100-F104, reports W99 and Y105 as FREE, and loses D560/D570/P572/F573.
+    Its trastuzumab is an Fv-only model with internal gaps (103 heavy residues
+    over range 1-117, missing 8-19). Read as a poor fit, NOT a second binding
+    mode. Do not let it drive a conclusion.
+  22GE (3.1 A): HER2 modelled only to mature 575, so the C-terminal half of the
+    epitope is ABSENT. Uninformative beyond 575 - not a disagreement.
+  7MN8 and 1N8Z: 581-590 not modelled.
+  7PKL (2.35 A): NO HER2 CHAIN. It is an anti-idiotypic VHH FUSED TO THE
+    TRASTUZUMAB LIGHT CHAIN (one polymer: chain L res 2-123 = VHH, light chain
+    from auth 155, offset +154), so its 62 contacts are to the VHH, not HER2.
+    USEFUL ANYWAY: the dAb buries CDR-L2 heavily plus CDRH3 G100, G101, D102,
+    G103, F104, D108, Y109 - and does NOT touch W99 or Y105. So D108 and Y109
+    never contact HER2 but DO sit on a bindable face: safe for affinity, unsafe
+    if any assay or purification step uses an anti-idiotypic reagent.
+  H-bond COUNTS are resolution-dependent: 7 (6BGT 2.7 A), 6 (1N8Z 2.52 A),
+    2 (8PWH 3.17 A). Compare PRESENCE of specific H-bonds, never counts,
+    across X-ray vs cryo-EM.
+  Heavy:light BSA is 50:50 (1N8Z) but 63:37 in BOTH 8PWH and 6BGT, 49:51 in
+    22GC. DROP THE "light chain carries 45%" FIGURE - the real range is 37-51%.
+
+REVISED RISK RANKING OF THE CONTACTING POSITIONS
+  Binding risk alone:  G103 > Y105 > F104 > W99
+  Fold risk alone:     W99 > G103 > F104 > Y105
+  W99's BINDING contribution is the SMALLEST of the four - 14-17 A^2, two weak
+  edge-on hydrophobic contacts at 3.66-4.26 A, no H-bond, no salt bridge. But a
+  tryptophan with 16 A^2 free SASA is 85-91% buried in the UNBOUND Fab, i.e. a
+  structural keystone of the H3 base. Risk is loop collapse, not lost contacts.
+  Verdict unchanged, stated reason corrected.
+  F104 is WORSE than stated earlier in this file: with the 581-590 loop present
+  it buries 21-32 A^2 (versus 6.2 in 1N8Z) and its side chain packs M589/Y588.
+  Still the least bad of the four to change, but NOT nearly free.
+
+STILL TRUE, HAVING SURVIVED ALL CROSS-CHECKING
+  - CDRH3 is never a majority of the interface: 20-34% of BSA in every
+    structure. The five unchanged CDRs always carry the rest. ANCHOR ARGUMENT
+    HOLDS.
+  - A106, M107 and D108 contact HER2 in NONE of the 8 structures.
+  - G103 and Y105 are 7/8 contacts; W99 and Y105 are alanine-scan hotspots
+    (50-5000x fold effect on K_D). The untouchable calls were right.
+  - The rejected MM-GBSA abstract numbers (991-995 / 1004-1007 / 1027-1037)
+    remain rejected. Nothing rehabilitates them.
+
+NO ENERGY CALCULATION WAS PERFORMED, AND NONE IS REPORTED.
+  Verified absent, not assumed: no Bio, no freesasa, no scipy, no pyrosetta, no
+  openmm, no foldx or rosetta_scripts on PATH. Python 3.13.7 + numpy only.
+  BSA and contact chemistry are GEOMETRY. The chemistry classification uses no
+  hydrogens, no angle criterion and no desolvation term - it says "compatible
+  with", never "proven". A real per-residue ddG budget remains the top open
+  computation, and it runs on coordinates already downloaded.

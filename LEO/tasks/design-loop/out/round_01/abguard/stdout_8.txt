@@ -1,0 +1,40 @@
+PASS  LEO-WYSQGFYEMI           assigned=novel   
+PASS  LEO-WTVEGFYEMT           assigned=novel   
+PASS  LEO-WWSQGFYEMD           assigned=novel   
+PASS  LEO-WYVQGFYAMI           assigned=novel   
+PASS  LEO-WGSHGFYEMI           assigned=novel   
+PASS  LEO-WWYEGFYEMD           assigned=novel   
+PASS  LEO-WYSYGFYEMD           assigned=novel   
+PASS  LEO-WWGEAFYEMI           assigned=novel   
+PASS  LEO-WSVEGFYHMI           assigned=novel   
+PASS  LEO-WKDEGFYEMD           assigned=novel   
+PASS  LEO-WKSEGFYSMG           assigned=novel   
+PASS  LEO-WYVEGFYMMT           assigned=novel   
+PASS  LEO-WGSYGFYHMI           assigned=novel   
+PASS  LEO-WGSEYFYEMD           assigned=novel   
+PASS  LEO-WWVQGFYSME           assigned=novel   
+PASS  LEO-WWSEGPYAMI           assigned=novel   
+PASS  LEO-WWDQGFYEMT           assigned=novel   
+PASS  LEO-WGSEGWYEMI           assigned=novel   
+PASS  LEO-WGSHGFYEME           assigned=novel   
+PASS  LEO-WGSYAFYEMV           assigned=novel   
+PASS  LEO-WGYQGFYVMI           assigned=novel   
+PASS  LEO-WGDYGFYEMT           assigned=novel   
+PASS  LEO-WGSYSFYEMD           assigned=novel   
+PASS  LEO-WKSQGFYNMD           assigned=novel   
+PASS  LEO-WWYDGFYEMI           assigned=novel   
+PASS  LEO-WKSDGFYEME           assigned=novel   
+PASS  LEO-WWVDGFYMMG           assigned=novel   
+PASS  LEO-WKYDGFYSMI           assigned=novel   
+PASS  LEO-WWYDGFYVMY           assigned=novel   
+PASS  LEO-WYYDGFYVME           assigned=novel   
+PASS  LEO-WWNDGFYEMQ           assigned=novel   
+FAIL  LEO-WWSDGFYSYY           assigned=novel     <- CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRWSDGRFYSYYY); needs >= 3
+PASS  LEO-WWEDGFYMMS           assigned=novel   
+PASS  LEO-WKSDGFYYMQ           assigned=novel   
+PASS  LEO-WWPDGFYNME           assigned=novel   
+PASS  LEO-WSYDGFYEMR           assigned=novel   
+PASS  LEO-WKVDGFYTMN           assigned=novel   
+PASS  LEO-WSGQGWYMMT           assigned=novel   
+
+optimisation track: 37/38 design(s) eligible

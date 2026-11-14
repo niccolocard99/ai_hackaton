@@ -1,0 +1,58 @@
+[
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_2_generated.cif",
+    "name": "design_2",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 50.1
+  },
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_4_generated.cif",
+    "name": "design_4",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 50.0
+  },
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_0_generated.cif",
+    "name": "design_0",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 50.2
+  },
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_1_generated.cif",
+    "name": "design_1",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 50.3
+  },
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_3_generated.cif",
+    "name": "design_3",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 50.2
+  },
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_5_generated.cif",
+    "name": "design_5",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 49.5
+  },
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_7_generated.cif",
+    "name": "design_7",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 49.8
+  },
+  {
+    "cif": "/home/ubuntu/japanfold/state/agent/jobs/6935da54ef4b98348ae8a048a3f6f658/out/design_6_generated.cif",
+    "name": "design_6",
+    "example_id": "design",
+    "tokens": 336,
+    "runtime_s": 50.2
+  }
+]

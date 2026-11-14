@@ -1,0 +1,274 @@
+
+==============================================================================
+=== 22GC   cutoff 4.5 A ===
+==============================================================================
+  chain E   tras_H   103 res  auth 1..117  EVQLVESLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIYPTNG...
+  chain D   tras_L   108 res  auth 1..108  DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAP...
+  chain A   HER2     300 res  auth 297..629  TACPYNYLSTDVGSCTLVCPLHNQEVTAEDGTQRCEKCSKPCAR...
+  chain C   HER2     176 res  auth 23..215  TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLP...
+  chain B   other    212 res  auth 1..218  GAPDIQMTQSPASLSASVGETVTITCRASENIYSFLAWYQQKQG...
+  chain G   other    205 res  auth 4..222  IQLVQSGPELKKPGETVKIACKASGYTFTTYGMSWVKQAPGKGV...
+
+  --- trastuzumab <-> A (HER2): 43 residue pairs, 27 paratope res, 21 partner res ---
+      partner contact residues (21): PRO579, GLU580, ALA581, GLN583, LYS591, PRO593, ASP607, LEU608, SER609, TYR610, MET611, PRO612, ILE613, ALA622, CYS623, GLN624, PRO625, CYS626, PRO627, ILE628, ASN629
+      partner span: 579-629
+      CDR         pairs   share  contacting residues
+      L2             13     30%  SER50, ALA51, PHE53, LEU54, TYR55, SER56
+      H3             11     26%  GLY100, GLY101, ASP102, GLY103, PHE104
+      framework       6     14%  GLU1, VAL2, GLY26, PHE27, TYR49
+      H2              6     14%  GLY56, TYR57, THR58, ARG59, TYR60
+      L3              5     12%  HIS91, TYR92, THR93, THR94
+      L1              2      5%  ASN30, ALA32
+      CDRH3 WGGDGFYAMDY (chain E 99-109) vs A (HER2):
+           99 W  free
+          100 G  CONTACT   PRO612 3.20
+          101 G  CONTACT   ILE613 3.01, PRO612 3.82
+          102 D  CONTACT   PRO625 4.04, ILE613 4.10
+          103 G  CONTACT   TYR610 3.30, MET611 3.38, PRO612 3.79, ILE613 3.91
+          104 F  CONTACT   TYR610 3.60, SER609 4.21
+          105 Y  free
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  free
+
+==============================================================================
+=== 22GE   cutoff 4.5 A ===
+==============================================================================
+  chain E   tras_H   121 res  auth 1..191  EVQLVESGGLRLSCAASGFNIKDTYIHWVRQAPGKGLEWVARIY...
+  chain D   tras_L   142 res  auth 1..176  DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAP...
+  chain A   HER2     562 res  auth 23..597  TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLP...
+  chain B   other    179 res  auth 1..214  DIQMTQSPSSLSAVTITCKASQDVSIGVAWYQQKPGKAPKLLIY...
+  chain C   other    188 res  auth 1..216  EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKG...
+  chain G   other    223 res  auth 1..229  QQLEQSGGGAEGGLVKPGGSLELCCSASGFAFNSYWICWVRQAP...
+  chain H   other    217 res  auth 1..217  GTAAVLTQTPSPVSAAVGGTVTISCQSSQSVYSNNFLSWYQQKP...
+
+  --- trastuzumab <-> A (HER2): 17 residue pairs, 9 paratope res, 7 partner res ---
+      partner contact residues (7): GLY578, PRO579, GLU580, ALA581, ASP582, PRO593, PRO594
+      partner span: 578-594
+      CDR         pairs   share  contacting residues
+      H2              8     47%  THR58, ARG59, TYR60
+      L3              5     29%  HIS91, TYR92, THR94
+      H3              2     12%  TYR105
+      L1              1      6%  ALA32
+      framework       1      6%  GLY66
+      CDRH3 WGGDGFYAMDY (chain E 99-109) vs A (HER2):
+           99 W  free
+          100 G  free
+          101 G  free
+          102 D  free
+          103 G  free
+          104 F  free
+          105 Y  CONTACT   PRO593 4.35, PRO594 4.50
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  free
+
+==============================================================================
+=== 6BGT   cutoff 4.5 A ===
+==============================================================================
+  chain B   tras_H   210 res  auth 1..218  EVQLVESGGGLVQPGGSLRLSCAASGFNIDDTYIHWVRQAPGKG...
+  chain A   tras_L   211 res  auth 1..211  DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAP...
+  chain C   HER2     589 res  auth 1..607  TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLP...
+
+  --- trastuzumab <-> C (HER2): 52 residue pairs, 30 paratope res, 20 partner res ---
+      partner contact residues (20): PRO557, GLU558, ASP560, GLN561, LYS569, ASP570, PRO571, PRO572, PHE573, PRO579, TYR588, MET589, ILE591, LYS593, ASP596, ALA600, GLN602, PRO603, CYS604, PRO605
+      partner span: 557-605
+      CDR         pairs   share  contacting residues
+      H3             15     29%  TRP99, GLY100, GLY101, ASP102, GLY103, PHE104, TYR105
+      framework      12     23%  VAL2, GLY26, PHE27, ASN28, TYR49, SER50, PHE53, TYR55, SER56, ARG98
+      H2             10     19%  ARG50, TYR52, TYR57, THR58, ARG59
+      L3              8     15%  HIS91, TYR92, THR93, THR94
+      L1              5     10%  ASN30, THR31, ALA32
+      H1              2      4%  TYR33
+      CDRH3 WGGDGFYAMDY (chain B 99-109) vs C (HER2):
+           99 W  CONTACT   PHE573 3.66, PRO572 4.05
+          100 G  CONTACT   TYR588 3.44
+          101 G  CONTACT   TYR588 4.38
+          102 D  CONTACT   PRO579 4.10, ASP570 4.46
+          103 G  CONTACT   LYS593 2.97, ILE591 3.42, ASP570 3.70, PRO579 4.40
+          104 F  CONTACT   MET589 3.44
+          105 Y  CONTACT   PRO571 3.26, PHE573 3.56, ASP570 3.59, PRO572 3.80
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  free
+
+==============================================================================
+=== 6OGE   cutoff 4.5 A ===
+==============================================================================
+  chain E   tras_H   220 res  auth 1..220  EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKG...
+  chain D   tras_L   214 res  auth 1..214  DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAP...
+  chain A   HER2     619 res  auth 23..644  TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLP...
+  chain B   other    214 res  auth 1..214  DIQMTQSPSSLSASVGDRVTITCKASQDVSIGVAWYQQKPGKAP...
+  chain C   other    216 res  auth 1..216  EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKG...
+
+  --- trastuzumab <-> A (HER2): 40 residue pairs, 25 paratope res, 18 partner res ---
+      partner contact residues (18): PRO579, GLU580, ASP582, GLN583, LYS591, ASP592, PRO593, PRO594, PHE595, ASP607, LEU608, TYR610, LYS615, ASP618, GLN624, PRO625, CYS626, PRO627
+      partner span: 579-627
+      CDR         pairs   share  contacting residues
+      H2              9     22%  ARG50, TYR57, THR58, ARG59
+      L3              8     20%  HIS91, TYR92, THR93, THR94
+      H3              8     20%  ASP102, GLY103, TYR105, TYR109
+      L2              6     15%  SER50, PHE53, TYR55, SER56
+      framework       5     12%  VAL2, GLY26, PHE27, ASN28, ARG98
+      L1              3      8%  ASN30, THR31, ALA32
+      H1              1      2%  TYR33
+      CDRH3 WGGDGFYAMDY (chain E 99-109) vs A (HER2):
+           99 W  free
+          100 G  free
+          101 G  free
+          102 D  CONTACT   ASP592 2.97
+          103 G  CONTACT   LYS615 3.33, ASP592 4.10
+          104 F  free
+          105 Y  CONTACT   PRO593 3.11, PHE595 3.34, PRO594 3.66, ASP592 3.74
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  CONTACT   LEU608 3.77
+
+==============================================================================
+=== 7MN8   cutoff 4.5 A ===
+==============================================================================
+  chain D   tras_H   220 res  auth 1..220  EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKG...
+  chain C   tras_L   214 res  auth 1..214  DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAP...
+  chain B   HER2     579 res  auth 24..629  QVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLPT...
+  chain A   other    599 res  auth 28..630  VCPGTLNGLSVTGDAENQYQTLYKLYERCEVVMGNLEIVLTGHN...
+  chain H   other     49 res  auth 177..227  SHLVKCAEKEKTFCVNGGECFMVKSNPSRYLCKCPNEFTGDRCQ...
+
+  --- trastuzumab <-> A (other): 1 residue pairs, 1 paratope res, 1 partner res ---
+      partner contact residues (1): ASP349
+      partner span: 349-349
+      CDR         pairs   share  contacting residues
+      framework       1    100%  LYS213
+      CDRH3 WGGDGFYAMDY (chain D 99-109) vs A (other):
+           99 W  free
+          100 G  free
+          101 G  free
+          102 D  free
+          103 G  free
+          104 F  free
+          105 Y  free
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  free
+
+  --- trastuzumab <-> B (HER2): 41 residue pairs, 22 paratope res, 17 partner res ---
+      partner contact residues (17): PRO579, GLU580, ASP582, GLN583, LYS591, ASP592, PRO593, PRO594, PHE595, PRO601, SER602, ILE613, LYS615, GLU620, ALA622, GLN624, PRO625
+      partner span: 579-625
+      CDR         pairs   share  contacting residues
+      H3             12     29%  TRP99, ASP102, GLY103, PHE104, TYR105
+      H2              9     22%  ARG50, TYR52, ASN55, TYR57, ARG59
+      L3              8     20%  HIS91, TYR92, THR93, THR94
+      L1              6     15%  ASN30, THR31, ALA32
+      framework       3      7%  TYR49, ARG66
+      L2              2      5%  SER50, PHE53
+      H1              1      2%  TYR33
+      CDRH3 WGGDGFYAMDY (chain D 99-109) vs B (HER2):
+           99 W  CONTACT   PHE595 3.89, PRO594 4.06
+          100 G  free
+          101 G  free
+          102 D  CONTACT   PRO601 3.61, SER602 4.41
+          103 G  CONTACT   LYS615 2.57, PRO601 3.85, ASP592 4.33
+          104 F  CONTACT   ILE613 3.53
+          105 Y  CONTACT   ASP592 2.73, PRO593 2.85, PHE595 3.43, PRO594 3.85
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  free
+
+==============================================================================
+=== 7PKL   cutoff 4.5 A ===
+==============================================================================
+  chain H   tras_H   221 res  auth 1..221  EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKG...
+  chain L   tras_L   335 res  auth 2..368  VQLVESGGGLVQAGDSLTLSCAASGTFSSVAMGWFRQAPGKERK...
+  chain L is a FUSION: author residues 2-123 (121 res) are NOT trastuzumab; trastuzumab L chain starts at author 155
+
+  --- trastuzumab <-> L:2-123 (FUSED non-trastuzumab domain): 62 residue pairs, 23 paratope res, 22 partner res ---
+      partner contact residues (22): ALA33, PHE47, ASN50, ILE51, SER52, TRP53, ASN54, ASP56, SER57, THR58, TYR59, TYR60, THR61, ASP62, VAL100, ARG101, TRP102, THR103, GLY104, ASP105, HIS107, ARG108
+      partner span: 33-108
+      CDR         pairs   share  contacting residues
+      L2             23     37%  SER204, SER206, PHE207, LEU208, TYR209, SER210
+      framework      19     31%  VAL2, ARG98, TYR203, GLY211, VAL212, SER217, GLY218, SER219, ARG220
+      H3             18     29%  GLY100, GLY101, ASP102, GLY103, PHE104, ASP108, TYR109
+      L1              2      3%  THR185
+      CDRH3 WGGDGFYAMDY (chain H 99-109) vs L:2-123 (FUSED non-trastuzumab domain):
+           99 W  free
+          100 G  CONTACT   TRP102 3.92
+          101 G  CONTACT   TRP102 3.30
+          102 D  CONTACT   THR61 2.86, TYR59 3.12, PHE47 3.24, TRP102 3.86, HIS107 4.01, ASP62 4.28
+          103 G  CONTACT   TYR59 3.21, TYR60 3.36, ASP62 4.07
+          104 F  CONTACT   TRP102 3.28, TYR59 3.50, HIS107 4.22
+          105 Y  free
+          106 A  free
+          107 M  free
+          108 D  CONTACT   TRP102 2.79, GLY104 3.44
+          109 Y  CONTACT   THR103 3.58, GLY104 3.80
+
+==============================================================================
+=== 8PWH   cutoff 4.5 A ===
+==============================================================================
+  chain B   tras_H   220 res  auth 1..220  EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKG...
+  chain A   tras_L   214 res  auth 1..214  DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAP...
+  chain E   HER2     624 res  auth 1..624  TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLP...
+  chain C   other    214 res  auth 1..214  DIQMTQSPSSLSASVGDRVTITCKASQDVSIGVAWYQQKPGKAP...
+  chain D   other    216 res  auth 1..216  EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKG...
+
+  --- trastuzumab <-> E (HER2): 38 residue pairs, 21 paratope res, 18 partner res ---
+      partner contact residues (18): PRO557, GLU558, ASP560, GLN561, ASP570, PRO571, PRO572, PHE573, PRO579, VAL582, ASP585, TRP592, LYS593, ALA600, GLN602, PRO603, CYS604, PRO605
+      partner span: 557-605
+      CDR         pairs   share  contacting residues
+      H3             11     29%  TRP99, ASP102, GLY103, TYR105
+      H2              9     24%  ARG50, TYR57, THR58, ARG59
+      L2              5     13%  SER50, PHE53
+      L3              5     13%  HIS91, TYR92, THR93, THR94
+      framework       4     11%  VAL2, PHE27, TYR49, ARG98
+      L1              3      8%  ASN30, THR31
+      H1              1      3%  TYR33
+      CDRH3 WGGDGFYAMDY (chain B 99-109) vs E (HER2):
+           99 W  CONTACT   PHE573 3.87, PRO572 4.26
+          100 G  free
+          101 G  free
+          102 D  CONTACT   VAL582 3.18, ASP570 4.01, PRO579 4.07
+          103 G  CONTACT   LYS593 3.26, ASP570 4.28
+          104 F  free
+          105 Y  CONTACT   PHE573 3.30, ASP570 3.58, PRO571 3.79, PRO572 4.42
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  free
+
+==============================================================================
+=== 8Q6J   cutoff 4.5 A ===
+==============================================================================
+  chain B   tras_H   220 res  auth 1..220  EVQLVESGGGLVQPGGSLRLSCAASGFNIKDTYIHWVRQAPGKG...
+  chain A   tras_L   214 res  auth 1..214  DIQMTQSPSSLSASVGDRVTITCRASQDVNTAVAWYQQKPGKAP...
+  chain E   HER2     624 res  auth 1..624  TQVCTGTDMKLRLPASPETHLDMLRHLYQGCQVVQGNLELTYLP...
+  chain C   other    214 res  auth 1..214  DIQMTQSPSSLSASVGDRVTITCKASQDVSIGVAWYQQKPGKAP...
+  chain D   other    216 res  auth 1..216  EVQLVESGGGLVQPGGSLRLSCAASGFTFTDYTMDWVRQAPGKG...
+
+  --- trastuzumab <-> E (HER2): 38 residue pairs, 21 paratope res, 19 partner res ---
+      partner contact residues (19): PRO557, GLU558, ASP560, GLN561, ASP570, PRO571, PRO572, PHE573, PRO579, GLY581, VAL582, ASP585, TRP592, LYS593, ALA600, GLN602, PRO603, CYS604, PRO605
+      partner span: 557-605
+      CDR         pairs   share  contacting residues
+      H3             13     34%  TRP99, GLY100, ASP102, GLY103, TYR105
+      H2              8     21%  ARG50, TYR57, THR58, ARG59
+      L2              5     13%  SER50, PHE53
+      framework       4     11%  VAL2, PHE27, TYR49, ARG98
+      L3              4     11%  HIS91, THR93, THR94
+      L1              3      8%  ASN30, THR31
+      H1              1      3%  TYR33
+      CDRH3 WGGDGFYAMDY (chain B 99-109) vs E (HER2):
+           99 W  CONTACT   PHE573 3.91, PRO572 4.41
+          100 G  CONTACT   VAL582 4.46
+          101 G  free
+          102 D  CONTACT   VAL582 3.42, PRO579 3.43, ASP570 3.86
+          103 G  CONTACT   LYS593 3.21, ASP570 4.18, GLY581 4.32
+          104 F  free
+          105 Y  CONTACT   ASP570 2.66, PRO571 3.15, PHE573 3.27, PRO572 4.16
+          106 A  free
+          107 M  free
+          108 D  free
+          109 Y  free
