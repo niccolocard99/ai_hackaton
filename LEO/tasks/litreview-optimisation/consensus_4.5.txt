@@ -1,0 +1,92 @@
+-- 7PKL.cif: no trastuzumab/HER2 pair, skipped
+
+=== STRUCTURES USED (cutoff 4.5 A, heavy atoms) ===
+  PDB    HER2 ch   numbering   seq identity to 1N8Z  pairs  HER2 modelled range (1N8Z numbering)
+  1N8Z         C      1N8Z+0                581/581     42  1-607   GAPS: 102-110, 303-305, 361-364, 581-590
+  22GC         A     1N8Z+22                290/290     43  275-607   GAPS: 360-366, 451-453, 478-488, 576-583, 594, 596-598
+  22GE         A     1N8Z+22                549/549     17  1-575   GAPS: 105-107, 250-252, 259-265
+  6BGT         C      1N8Z+0                579/579     52  1-607   GAPS: 100-110, 581-587
+  6OGE         A     1N8Z+22                581/581     40  1-622   GAPS: 105-107
+  7MN8         B     1N8Z+22                574/575     41  2-607   GAPS: 99-112, 303-305, 581-590
+  8PWH         E      1N8Z+0                581/581     38  1-624   (no gaps)
+  8Q6J         E      1N8Z+0                581/581     38  1-624   (no gaps)
+
+=== HER2 EPITOPE CONSENSUS (34 residues contacted in >=1 structure), 1N8Z mature numbering ===
+  X = contact   . = modelled, no contact   ? = NOT MODELLED (uninformative)
+
+  res    aa   1N8Z  22GC  22GE  6BGT  6OGE  7MN8  8PWH  8Q6J   n_X/n_informative
+  556    G       .     .     X     .     .     .     .     .     1/8
+  557    P       X     X     X     X     X     X     X     X     8/8
+  558    E       X     X     X     X     X     X     X     X     8/8
+  559    A       .     X     X     .     .     .     .     .     2/8
+  560    D       X     .     X     X     X     X     X     X     7/8
+  561    Q       X     X     .     X     X     X     X     X     7/8
+  569    K       X     X     .     X     X     X     .     .     5/8
+  570    D       X     .     .     X     X     X     X     X     6/8
+  571    P       X     X     X     X     X     X     X     X     8/8
+  572    P       X     .     X     X     X     X     X     X     7/8
+  573    F       X     .     .     X     X     X     X     X     6/8
+  579    P       X     ?     ?     X     .     X     X     X     5/6
+  580    S       .     ?     ?     .     .     X     .     .     1/6
+  581    ?       ?     ?     ?     ?     .     ?     .     X     1/3
+  582    ?       ?     ?     ?     ?     .     ?     X     X     2/3
+  585    ?       ?     X     ?     ?     X     ?     X     X     4/4
+  586    ?       ?     X     ?     ?     X     ?     .     .     2/4
+  587    ?       ?     X     ?     ?     .     ?     .     .     1/4
+  588    ?       ?     X     ?     X     X     ?     .     .     3/5
+  589    ?       ?     X     ?     X     .     ?     .     .     2/5
+  590    ?       ?     X     ?     .     .     ?     .     .     1/5
+  591    I       X     X     ?     X     .     X     .     .     4/7
+  592    W       .     .     ?     .     .     .     X     X     2/7
+  593    K       X     .     ?     X     X     X     X     X     6/7
+  596    D       X     ?     ?     X     X     .     .     .     3/6
+  598    E       X     ?     ?     .     .     X     .     .     2/6
+  600    A       X     X     ?     X     .     X     X     X     6/7
+  601    C       .     X     ?     .     .     .     .     .     1/7
+  602    Q       X     X     ?     X     X     X     X     X     7/7
+  603    P       X     X     ?     X     X     X     X     X     7/7
+  604    C       X     X     ?     X     X     .     X     X     6/7
+  605    P       X     X     ?     X     X     .     X     X     6/7
+  606    I       .     X     ?     .     .     .     .     .     1/7
+  607    N       .     X     ?     .     .     .     .     .     1/7
+
+  CORE EPITOPE (contact in EVERY structure that models it, 6 residues):
+    P557, E558, P571, ?585, Q602, P603
+  PERIPHERAL (contact in some, not others, 20):
+    A559, D560, Q561, K569, D570, P572, F573, P579, ?582, ?586, ?588, ?589, I591, W592, K593, D596, E598, A600, C604, P605
+  SINGLE-STRUCTURE ONLY (contact in exactly one of >2 informative, 8):
+    G556, S580, ?581, ?587, ?590, C601, I606, N607
+
+=== CDRH3 WGGDGFYAMDY POSITION CONSENSUS (trastuzumab numbering 99-109, identical in every structure) ===
+  X = contacts HER2   . = modelled, no HER2 contact   ? = position not modelled
+
+  pos aa   1N8Z  22GC  22GE  6BGT  6OGE  7MN8  8PWH  8Q6J   n_X/n_informative   HER2 partners (union, 1N8Z numbering)
+  99  W      X     .     .     X     .     X     X     X     5/8          PRO572, PHE573
+  100 G      .     X     .     X     .     .     .     X     3/8          VAL582, TYR588, PRO590
+  101 G      .     X     .     X     .     .     .     .     2/8          TYR588, PRO590, ILE591
+  102 D      .     X     .     X     X     X     X     X     6/8          ASP570, PRO579, SER580, VAL582, ILE591, PRO603
+  103 G      X     X     .     X     X     X     X     X     7/8          ASP570, PRO579, GLY581, TYR588, MET589, PRO590, ILE591, LYS593
+  104 F      X     X     .     X     .     X     .     .     4/8          SER587, TYR588, MET589, ILE591, LYS593
+  105 Y      X     .     X     X     X     X     X     X     7/8          ASP570, PRO571, PRO572, PHE573
+  106 A      .     .     .     .     .     .     .     .     0/8          
+  107 M      .     .     .     .     .     .     .     .     0/8          
+  108 D      .     .     .     .     .     .     .     .     0/8          
+  109 Y      .     .     .     .     X     .     .     .     1/8          LEU586
+
+  CDRH3 positions contacting HER2 in EVERY structure that models them:
+    
+  CDRH3 positions contacting HER2 in NO structure (the only safe free set):
+    A106, M107, D108
+  CDRH3 positions contacting HER2 in SOME structures only (1N8Z alone would call these free or occupied - the disagreements):
+    W99, G100, G101, D102, G103, F104, Y105, Y109
+
+=== PER-CDR CONTACT SHARE BY STRUCTURE ===
+  PDB             H1         H2         H3         L1         L2         L3  framework
+  1N8Z      2    5%  10   24%  11   26%   7   17%   4   10%   8   19%         - 
+  22GC            -    6   14%  11   26%   2    5%  13   30%   5   12%   6   14%
+  22GE            -    8   47%   2   12%   1    6%         -    5   29%   1    6%
+  6BGT      2    4%  10   19%  15   29%   5   10%         -    8   15%  12   23%   [CDR motif mutated/unmodelled, not located: L2]
+  6OGE      1    2%   9   22%   8   20%   3    8%   6   15%   8   20%   5   12%
+  7MN8      1    2%   9   22%  12   29%   6   15%   2    5%   8   20%   3    7%
+  8PWH      1    3%   9   24%  11   29%   3    8%   5   13%   5   13%   4   11%
+  8Q6J      1    3%   8   21%  13   34%   3    8%   5   13%   4   11%   4   11%

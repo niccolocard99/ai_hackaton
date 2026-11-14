@@ -6,6 +6,15 @@ model to use, how it works, what it is validated to do, and the four mistakes th
 **Scope.** 10-residue CDRH3 variants on trastuzumab's VH/VL framework. Nothing here applies to de novo
 designs (<70% identity to known antibodies) — we have no labelled data for those.
 
+**Running the whole screen?** Stage 1 of the pipeline is frozen as
+`JAHN/pipeline/configs/stage1_frozen.yaml` — generate, filter, score and rank in one config, with these
+models wired in. Use that rather than calling `prefilter.py` by hand, unless you only want to score a list of
+windows. See `NICCOLO/PIPELINE.md`.
+
+**If you change `prefilter.py`,** run `pytest tests/test_prefilter_contract.py` in `JAHN/pipeline` first. It
+asserts the output columns abpipe reads, and it needs only the SPR table — no `abguard`. Removing a column
+once broke the scorer, the gate filter and `emit_facs` while the test suite still reported green.
+
 **This is a pre-filter, not evidence of binding.** Survivors still go through BASE VALIDATION
 (`NICCOLO/scripts/check_denovo.py`, `NICCOLO/scripts/check_optimisation.py`, `abguard`) before they are candidates.
 

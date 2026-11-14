@@ -1,0 +1,5 @@
+PASS  LEO-YWSEGFYEMA           assigned=novel   
+PASS  LEO-WWSESFYSMI           assigned=novel   
+PASS  LEO-WWVGGFYEMV           assigned=novel   
+
+optimisation track: 3/3 design(s) eligible

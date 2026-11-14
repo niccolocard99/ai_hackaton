@@ -1,0 +1,96 @@
+=== CONTACT CHEMISTRY - GEOMETRIC CLASSIFICATION, NOT AN ENERGY ===
+  file C:/Users/LESCHI/AppData/Local/Temp/claude/1930a568568a7afc/ba84d58b-f299-47e8-b4f1-566233825871/scratchpad/pdb2/6BGT.cif, cutoff 4.5 A, heavy atoms, first model
+  FoldX / Rosetta / PyRosetta / OpenMM: none installed, none used.
+  thresholds: salt bridge <4.0 A between opposite formal charges; H-bond-compatible <3.5 A donor-acceptor;
+              hydrophobic <4.5 A C/S-C/S; no angles, no hydrogens, no desolvation.
+
+  52 residue pairs within 4.5 A
+
+  antibody        antigen         min d atoms  class                justifying atom pair
+  B ARG50         C ASP560         2.62     7  SALT BRIDGE          NH1...OD2 2.62 A
+  B ARG50         C GLU558         3.36     5  SALT BRIDGE          NH1...OE1 3.36 A
+  A THR94         C ASP560         2.59     8  H-BOND(compatible)   OG1...OD2 2.59 A
+  A THR31         C GLN602         2.83     7  H-BOND(compatible)   OG1...OE1 2.83 A
+  B ARG98         C TYR588         2.92    21  H-BOND(compatible)   NH1...OH 3.25 A
+  B GLY103        C LYS593         2.97     4  H-BOND(compatible)   O...NZ 2.97 A
+  A ASN30         C GLN602         3.06     5  H-BOND(compatible)   OD1...NE2 3.06 A
+  A HIS91         C PRO571         3.34     7  H-BOND(compatible)   ND1...O 3.34 A
+  A TYR92         C LYS569         3.41     7  H-BOND(compatible)   OH...NZ 3.41 A
+  B PHE27         C TYR588         2.71     9  HYDROPHOBIC          CB...CZ 3.60 A
+  A HIS91         C PRO572         3.14     9  HYDROPHOBIC          C...CD 4.33 A
+  A TYR92         C PRO572         3.20     7  HYDROPHOBIC          C...CB 3.88 A
+  B TYR105        C PRO571         3.26     5  HYDROPHOBIC          CD1...C 4.06 A
+  B TYR33         C PHE573         3.29    11  HYDROPHOBIC          CZ...CZ 3.45 A
+  B ARG59         C GLN561         3.39     9  HYDROPHOBIC          CD...CD 4.32 A
+  B GLY103        C ILE591         3.42     4  HYDROPHOBIC          CA...CD1 3.42 A
+  B PHE104        C MET589         3.44     3  HYDROPHOBIC          CE1...CE 3.44 A
+  A TYR49         C MET589         3.44     5  HYDROPHOBIC          CZ...CE 3.56 A
+  B TYR105        C PHE573         3.56    11  HYDROPHOBIC          CE1...CD1 3.56 A
+  A SER50         C PRO603         3.56     4  HYDROPHOBIC          CB...CG 3.76 A
+  A ASN30         C ALA600         3.56     3  HYDROPHOBIC          CG...CB 3.86 A
+  B TYR105        C ASP570         3.59     7  HYDROPHOBIC          CE1...CG 4.04 A
+  B TYR57         C GLU558         3.61    11  HYDROPHOBIC          CD1...CG 3.62 A
+  A TYR92         C PRO571         3.63     9  HYDROPHOBIC          CD1...CB 3.63 A
+  B TRP99         C PHE573         3.66     4  HYDROPHOBIC          CZ3...CE1 3.66 A
+  B TYR57         C PRO557         3.67    12  HYDROPHOBIC          CZ...CB 3.67 A
+  B VAL2          C TYR588         3.71     2  HYDROPHOBIC          CG2...CE2 3.71 A
+  A PHE53         C CYS604         3.79     3  HYDROPHOBIC          CE2...C 4.37 A
+  A PHE53         C PRO603         3.79    11  HYDROPHOBIC          CZ...CB 3.80 A
+  B TYR105        C PRO572         3.80     5  HYDROPHOBIC          CD1...CD 3.80 A
+  A ALA32         C PRO571         3.83     2  HYDROPHOBIC          CB...CB 3.83 A
+  B TRP99         C PRO572         4.05     2  HYDROPHOBIC          CH2...CG 4.05 A
+  B ARG50         C PHE573         4.07     4  HYDROPHOBIC          CZ...CZ 4.34 A
+  A THR93         C PRO572         4.08     4  HYDROPHOBIC          C...CB 4.08 A
+  A TYR55         C MET589         4.34     2  HYDROPHOBIC          CE1...SD 4.34 A
+  A PHE53         C PRO605         4.40     1  HYDROPHOBIC          CE2...CA 4.40 A
+  B GLY103        C PRO579         4.40     1  HYDROPHOBIC          CA...CG 4.40 A
+  B GLY100        C TYR588         3.44     6  polar/vdW            O...CD1 3.44 A
+  B ARG59         C GLU558         3.49     2  polar/vdW            CG...OE2 3.49 A
+  A ASN30         C ASP596         3.68     3  polar/vdW            ND2...OD1 3.68 A
+  B GLY103        C ASP570         3.70     3  polar/vdW            CA...OD2 3.70 A
+  A THR94         C PRO572         3.70     3  polar/vdW            OG1...CB 3.70 A
+  B TYR33         C GLU558         3.89     1  polar/vdW            CE2...OE1 3.89 A
+  B ASP102        C PRO579         4.10     2  polar/vdW            OD2...CB 4.10 A
+  B THR58         C GLU558         4.11     1  polar/vdW            O...OE2 4.11 A
+  B ASN28         C TYR588         4.14     1  polar/vdW            N...OH 4.14 A
+  A SER56         C MET589         4.22     1  polar/vdW            OG...SD 4.22 A
+  B ARG59         C ASP560         4.23     2  polar/vdW            NH2...OD1 4.23 A
+  B GLY26         C TYR588         4.36     1  polar/vdW            O...CE2 4.36 A
+  B GLY101        C TYR588         4.38     1  polar/vdW            CA...N 4.38 A
+  B TYR52         C GLU558         4.42     1  polar/vdW            CB...OE1 4.42 A
+  B ASP102        C ASP570         4.46     1  polar/vdW            O...OD2 4.46 A
+
+  class totals: SALT BRIDGE 2, H-BOND(compatible) 7, HYDROPHOBIC 28, polar/vdW 15
+
+=== PER-PARATOPE-RESIDUE CHEMISTRY ROLL-UP ===
+  residue           salt  hbond  phobic   vdW   partners
+  A ASN30              0      1       1     1   ASP596, ALA600, GLN602
+  A THR31              0      1       0     0   GLN602
+  A ALA32              0      0       1     0   PRO571
+  A TYR49              0      0       1     0   MET589
+  A SER50              0      0       1     0   PRO603
+  A PHE53              0      0       3     0   PRO603, CYS604, PRO605
+  A TYR55              0      0       1     0   MET589
+  A SER56              0      0       0     1   MET589
+  A HIS91              0      1       1     0   PRO571, PRO572
+  A TYR92              0      1       2     0   LYS569, PRO571, PRO572
+  A THR93              0      0       1     0   PRO572
+  A THR94              0      1       0     1   ASP560, PRO572
+  B VAL2               0      0       1     0   TYR588
+  B GLY26              0      0       0     1   TYR588
+  B PHE27              0      0       1     0   TYR588
+  B ASN28              0      0       0     1   TYR588
+  B TYR33              0      0       1     1   GLU558, PHE573
+  B ARG50              2      0       1     0   GLU558, ASP560, PHE573
+  B TYR52              0      0       0     1   GLU558
+  B TYR57              0      0       2     0   PRO557, GLU558
+  B THR58              0      0       0     1   GLU558
+  B ARG59              0      0       1     2   GLU558, ASP560, GLN561
+  B ARG98              0      1       0     0   TYR588
+  B TRP99              0      0       2     0   PRO572, PHE573
+  B GLY100             0      0       0     1   TYR588
+  B GLY101             0      0       0     1   TYR588
+  B ASP102             0      0       0     2   ASP570, PRO579
+  B GLY103             0      1       2     1   ASP570, PRO579, ILE591, LYS593
+  B PHE104             0      0       1     0   MET589
+  B TYR105             0      0       4     0   ASP570, PRO571, PRO572, PHE573

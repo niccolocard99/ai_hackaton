@@ -1,0 +1,95 @@
+=== BSA by Shrake-Rupley, implemented here (no external SASA library) ===
+  file: C:/Users/LESCHI/AppData/Local/Temp/claude/1930a568568a7afc/ba84d58b-f299-47e8-b4f1-566233825871/scratchpad/pdb2/22GC.cif
+  group A (antibody): ['D', 'E']   group B (antigen): ['A']
+  probe radius 1.4 A, 960 sample points/atom, heavy atoms only (united-atom radii)
+  self-test, isolated carbon: computed 120.76 A^2, analytic 4*pi*(1.70+1.40)^2 = 120.76 A^2, error 1.18e-16
+  self-test, two carbons 1.52 A apart: computed 149.95 A^2, exact spherical-cap 150.37 A^2, error 0.28%
+
+  atoms used: 2516 total (1038 in A, 1478 in B)
+    chain A: 300 residues, author numbering 297..629
+    chain D: 108 residues, author numbering 1..108
+    chain E: 103 residues, author numbering 1..117
+
+  running SASA on the complex ...
+  running SASA on group A alone ...
+  running SASA on group B alone ...
+
+=== TOTAL INTERFACE BSA (measured from structure) ===
+  buried on the antibody side (group A):    816.6 A^2
+  buried on the antigen  side (group B):    827.2 A^2
+  total area buried on assembly        :   1643.8 A^2
+  interface area (one face, = total/2) :    821.9 A^2
+
+=== BSA PER CHAIN ===
+  chain     BSA A^2   share of own side  residues buried >1 A^2
+  A           827.2              100.0%  30
+  D           375.6               46.0%  14
+  E           441.0               54.0%  20
+
+=== CDR LOCATIONS (this structure's author numbering) ===
+  CDR-H1: chain E 31-35  DTYIH
+  CDR-H2: chain E 50-65  RIYPTNGYTRYADSVK
+  CDR-H3: chain E 99-109  WGGDGFYAMDY
+  CDR-L1: chain D 24-34  RASQDVNTAVA
+  CDR-L2: chain D 50-56  SASFLYS
+  CDR-L3: chain D 89-97  QQHYTTPPT
+
+=== BSA PER CDR (antibody side) ===
+  CDR      BSA A^2   % of paratope BSA  res>1A^2  contributing residues (BSA A^2)
+  H3         215.8               26.4%         7  GLY103 44, ASP102 40, GLY100 39, GLY101 35, PHE104 27, TRP99 17, TYR105 14
+  L2         177.8               21.8%         6  ALA51 46, SER50 39, LEU54 37, PHE53 28, TYR55 17, SER56 11
+  L3         130.9               16.0%         4  THR94 49, TYR92 41, HIS91 25, THR93 16
+  H2         129.6               15.9%         6  TYR60 47, ARG59 26, TYR57 22, GLY56 15, THR58 14, ALA61 5
+  L1          63.5                7.8%         3  ALA32 31, ASN30 20, THR31 12
+  H1           5.3                0.6%         2  TYR33 3, THR32 2
+  FRWK        93.7               11.5%            (framework / constant region)
+
+  heavy-chain CDRs 350.7 A^2 (49% of CDR BSA) | light-chain CDRs 372.2 A^2 (51%)
+  all six CDRs 722.9 A^2 = 89% of the antibody-side BSA
+
+=== BSA PER CDRH3 POSITION (WGGDGFYAMDY, chain E 99-109) ===
+    pos  aa   BSA A^2  free SASA   % of its SASA buried
+     99   W      16.9       30.8                  54.7%  <== buried
+    100   G      39.1       48.2                  81.1%  <== buried
+    101   G      34.8       71.0                  49.0%  <== buried
+    102   D      40.3       61.1                  66.0%  <== buried
+    103   G      44.3       49.9                  88.8%  <== buried
+    104   F      26.6       48.9                  54.3%  <== buried
+    105   Y      13.7       30.6                  44.8%  <== buried
+    106   A       0.0       11.3                   0.0%
+    107   M       0.0       49.3                   0.0%
+    108   D       0.0       23.3                   0.0%
+    109   Y       0.0       61.6                   0.0%
+
+=== ANTIGEN-SIDE RESIDUES, BSA > 1 A^2 ===
+  30 residues; top by BSA:
+    A PRO593       72.0 A^2
+    A ASP607       65.4 A^2
+    A ALA622       57.9 A^2
+    A ASN629       51.9 A^2
+    A GLU580       50.6 A^2
+    A TYR610       50.1 A^2
+    A PRO625       44.9 A^2
+    A LEU608       41.2 A^2
+    A PRO627       39.3 A^2
+    A GLN583       38.2 A^2
+    A ALA581       33.7 A^2
+    A PRO612       29.8 A^2
+    A ILE613       28.6 A^2
+    A PRO594       27.1 A^2
+    A PRO579       26.8 A^2
+    A ILE628       26.4 A^2
+    A GLN624       23.1 A^2
+    A LYS591       20.5 A^2
+    A CYS623       17.2 A^2
+    A CYS626       12.8 A^2
+    A ASP582       11.7 A^2
+    A ASP592       10.9 A^2
+    A PRO606        8.6 A^2
+    A LYS615        7.3 A^2
+    A SER609        6.9 A^2
+    A PHE595        6.6 A^2
+    A MET611        6.5 A^2
+    A PHE577        5.3 A^2
+    A PRO617        3.8 A^2
+    A GLY578        2.1 A^2

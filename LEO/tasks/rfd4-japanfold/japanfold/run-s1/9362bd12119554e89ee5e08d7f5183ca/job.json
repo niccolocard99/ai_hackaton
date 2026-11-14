@@ -1,0 +1,59 @@
+{
+  "artifacts": [
+    {
+      "path": "design_0_generated.cif",
+      "rank": 2,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_0_generated.cif"
+    },
+    {
+      "path": "design_1_generated.cif",
+      "rank": 1,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_1_generated.cif"
+    },
+    {
+      "path": "design_2_generated.cif",
+      "rank": 4,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_2_generated.cif"
+    },
+    {
+      "path": "design_3_generated.cif",
+      "rank": 3,
+      "type": "structure",
+      "url": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_3_generated.cif"
+    }
+  ],
+  "created_at": "2026-11-14T13:47:03.911031+00:00",
+  "done": 1,
+  "download": "curl -fsSL -H \"Authorization: Bearer $JAPANFOLD_API_KEY\" --create-dirs -o design_0_generated.cif https://api.japanfold.aiand.com/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_0_generated.cif -o design_1_generated.cif https://api.japanfold.aiand.com/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_1_generated.cif -o design_2_generated.cif https://api.japanfold.aiand.com/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_2_generated.cif -o design_3_generated.cif https://api.japanfold.aiand.com/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/artifacts/design_3_generated.cif",
+  "error": null,
+  "finished_at": "2026-11-14T13:48:37.201170+00:00",
+  "id": "9362bd12119554e89ee5e08d7f5183ca",
+  "kind": "design",
+  "links": {
+    "archive": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/archive",
+    "logs": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/logs",
+    "results": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/results",
+    "self": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca",
+    "usage": "/v1/jobs/9362bd12119554e89ee5e08d7f5183ca/usage"
+  },
+  "model": "rfd4",
+  "name": "leo-cdrh3-rfd4-s1",
+  "object": "job",
+  "params": {
+    "nsteps": 60,
+    "num_designs": 4,
+    "recipe": "high/front_loaded",
+    "seed": 1
+  },
+  "progress": 1.0,
+  "protocol": "rfd4-scaffold",
+  "residues": 336,
+  "results_ready": true,
+  "stage": "done",
+  "started_at": "2026-11-14T13:47:04.000258+00:00",
+  "status": "succeeded",
+  "total": 1
+}

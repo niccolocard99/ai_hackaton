@@ -1,0 +1,3 @@
+sequence_id,kind,track_assigned,identity_to_trastuzumab,cdrh3,cdrh3_min_distance,cdrh3_identity_to_trastuzumab,passes,failures
+LEO-WSAEGFYEMI,paired,novel,0.9779735682819384,SRWSAEGFYEMIY,3,0.6153846153846154,true,""
+LEO-WGVSSFYEMI,paired,novel,0.9779735682819384,SRWGVSSFYEMIY,3,0.6153846153846154,true,""

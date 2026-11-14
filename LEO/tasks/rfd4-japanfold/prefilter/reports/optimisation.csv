@@ -1,0 +1,19 @@
+sequence_id,kind,track_assigned,identity_to_trastuzumab,cdrh3,cdrh3_min_distance,cdrh3_identity_to_trastuzumab,passes,failures
+TRASTUZUMAB-PARENT,paired,novel,1.0,SRWGGDGFYAMDY,0,1.0,false,CDRH3 identity to trastuzumab 100%; needs < 70%; CDRH3 only 0 mutation(s) from trastuzumab (SRWGGDGFYAMDY); needs >= 3; only 0 mutation(s) from a provided antibody; needs >= 3
+LEO-01,paired,novel,0.9823788546255506,SRWGGEGFYSLEY,1,0.6923076923076923,false,CDRH3 only 1 mutation(s) from tz_her2_facs_3classes_524346 (SRWGGDGFYSLEY); needs >= 3
+LEO-02,paired,novel,0.9823788546255506,SRWGAEGFYSLDY,1,0.6923076923076923,false,CDRH3 only 1 mutation(s) from tz_her2_facs_3classes_524346 (SRWGARGFYSLDY); needs >= 3; only 2 mutation(s) from a provided antibody; needs >= 3
+LEO-03,paired,novel,0.9823788546255506,SRWGAEGFYSMEY,1,0.6923076923076923,false,CDRH3 only 1 mutation(s) from tz_her2_facs_3classes_524346 (SRWGAVGFYSMEY); needs >= 3
+LEO-04,paired,novel,0.9823788546255506,SRWGGEGFYSIEY,1,0.6923076923076923,false,CDRH3 only 1 mutation(s) from tz_her2_facs_3classes_524346 (SRWGGGGFYSIEY); needs >= 3
+RFD4-01,paired,novel,0.9779735682819384,SRYGPYGFWEMDY,3,0.6153846153846154,true,""
+RFD4-02,paired,novel,0.9779735682819384,SRYGLYGFWEMDY,3,0.6153846153846154,true,""
+RFD4-03,paired,novel,0.9691629955947136,SRYRSLYDYEMDY,3,0.46153846153846156,true,""
+RFD4-04,paired,novel,0.973568281938326,SRYGPYGFWEFDY,2,0.5384615384615384,false,CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRYHPYGFYEFDY); needs >= 3
+RFD4-05,paired,novel,0.973568281938326,SRYGLGSFWEMDY,3,0.5384615384615384,true,""
+RFD4-06,paired,novel,0.9823788546255506,SRYGLYGFWAMDY,2,0.6923076923076923,false,CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRYGGYGFYAMDY); needs >= 3
+RFD4-07,paired,novel,0.9823788546255506,SRYGLHGFWAMDY,2,0.6923076923076923,false,CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRYGLHSFYAMDY); needs >= 3
+RFD4-08,paired,novel,0.9779735682819384,SRWDPFGTWAMDY,3,0.6153846153846154,true,""
+RFD4-09,paired,novel,0.973568281938326,SRYSLSGHYAFDY,2,0.5384615384615384,false,CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRYDLSGVYAFDY); needs >= 3; only 2 mutation(s) from a provided antibody; needs >= 3
+RFD4-10,paired,novel,0.9647577092511013,SRSTSSVSWAFDY,4,0.3846153846153846,true,""
+RFD4-11,paired,novel,0.9647577092511013,SRYGLHSAWYFDY,3,0.3846153846153846,true,""
+RFD4-12,paired,novel,0.9647577092511013,SRNASRYDGYFDY,3,0.3846153846153846,true,""
+RFD4-13,paired,novel,0.960352422907489,SRNFTRYEGYFDY,4,0.3076923076923077,true,""

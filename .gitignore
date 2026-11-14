@@ -10,3 +10,6 @@ participant-*/
 # Large / generated (also covered in apheris/.gitignore)
 apheris/hackathon-data/
 apheris/rfd4/runs/
+
+# Other sessions' git worktrees: never commit these
+.claude/worktrees/

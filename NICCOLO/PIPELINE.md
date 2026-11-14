@@ -13,16 +13,63 @@ VH/VL framework. No part of it is validated for de novo designs (<70% identity t
 
 | Stage | What it does | Status | Validated on |
 |---|---|---|---|
-| 0. Hard rules | novelty vs 525,063 CDRH3s; ≥4 substitutions | **ready** | rule-derived, verified against `check_optimisation.py` |
-| 1. Binder classifier | P(measurable KD) | **ready** | 620 measured SPR outcomes, grouped CV |
-| 2. Affinity ranker | predicted log10 KD | **ready, with a hard limit** | 179 measured KDs, grouped CV + bootstrap |
-| 3. BASE VALIDATION | `abguard` + per-track checks | **ready** (not mine) | `NICCOLO/scripts/` |
-| 4. Thermostability | NanoMelt Tm prediction | **tool works, no actionable lever** | NanoMelt's 639 measured nanobody Tm |
-| 5. Epitope preservation | — | **not built** | nothing |
-| 6. Refold for provenance | Boltz-2 / Protenix structure | **ready, not a filter** | 240 folded structures |
+| **1. Generate → filter → rank** | the whole sequence pre-screen, as one runnable config | **FROZEN 2026-11-14** | 179 measured KDs, out-of-fold; see below |
+| 2. Thermostability | NanoMelt Tm prediction | tool works, no actionable lever | NanoMelt's 639 measured nanobody Tm |
+| 3. Epitope preservation | — | **not built** | nothing |
+| 4. Refold for provenance | Boltz-2 / Protenix structure | ready, not a filter | 240 folded structures |
 
-**One-line summary:** stages 0–3 screen sequences fast and are honestly validated; stage 4 says CDRH3
-cannot move thermostability; stage 5 does not exist; stage 6 earns its place only as provenance.
+**One-line summary:** stage 1 is frozen and honestly validated; stage 2 says CDRH3 cannot move
+thermostability; stage 3 does not exist; stage 4 earns its place only as provenance.
+
+---
+
+## Stage 1 is frozen
+
+**Run it:**
+
+```bash
+cd JAHN/pipeline
+abpipe iterate configs/stage1_frozen.yaml --rounds 3 --select 60 --out runs/stage1
+```
+
+**Frozen means:** do not edit `configs/stage1_frozen.yaml` to try an idea. Copy it, change the copy, and
+measure the change against the numbers below with `NICCOLO/eda/p18_jahn_eval.py` and `p19_agg_bootstrap.py`.
+Those rank the 179 variants with a measured KD using out-of-fold pre-filter scores, so a candidate change is
+judged on real affinity rather than on a surrogate agreeing with itself.
+
+**What is in it, in order:**
+
+| Step | Component | Why |
+|---|---|---|
+| generate | `scored_evolution`, 20k per round, 4–8 substitutions | ≥4 because the 70% identity rule binds before ">2 mutations" |
+| filter | `framework_integrity` → `window_novelty(3)` → `prefilter_gate(0.8)` → `abguard_hard` → `dedupe` → `new_liabilities` → `track_check` | cheap first, expensive last; `track_check` is BASE VALIDATION |
+| score | `niccolo_prefilter` (`p_binder`, `pred_log10_kd`) | the only components trained on measured affinity |
+| rank | `borda` on **both** pre-filter columns | +0.729 vs +0.680 for `pred_log10_kd` alone |
+| select | `select_diverse`, `pool_frac` 0.10 | picks a median 3.2x tighter than the pre-fix version |
+
+**Validated performance** (out-of-fold, sequence clusters held out):
+
+| | all 179 | legal band (≥4 subs, n=131) |
+|---|---|---|
+| classifier AUROC | 0.927 | 0.913 |
+| ranker Spearman | +0.687 | +0.628 |
+| **combined ranking Spearman** | **+0.729** | **+0.659** |
+| median true KD of 20 selected | 0.6 nM | **4.6 nM** (band median 116 nM) |
+
+**What the freeze guarantees, and what guards it.** `tests/test_prefilter_contract.py` asserts that
+`prefilter.py` keeps emitting the columns abpipe reads. It needs only the SPR table — no `abguard`, no FACS
+splits — so unlike the `needs_data` group it runs almost everywhere. That group is gated on `abguard` and
+skips silently, which is how a change of mine removed the `p_facs_high` column and broke the scorer, the gate
+filter and `emit_facs` while the suite still reported green.
+
+**What is deliberately excluded:** `nearest_known_binder`. Its `score__neighbor_binder_frac` does not work
+(Spearman 0.100, p=0.18) and dilutes — ranker plus it scores 0.508 against 0.680 alone. Its sibling
+`score__binder_distance` is a decent KD-blind signal (0.595) and the best option for designs outside the
+ranker's range, but it adds nothing on top of the ranker.
+
+**What would justify unfreezing:** more measured KDs in the ≥5-substitution band (the ranker's blind spot),
+any epitope-preservation signal, or a thermostability lever that clears NanoMelt's 4.1 °C error bar. Not
+feature engineering: the T0 ddG features and all fold-confidence metrics were measured and rejected.
 
 ---
 

@@ -1,0 +1,209 @@
+cached already: 0   to fetch: 195   est cost: $1.95
+ok   AMBC_WmtBzq2RjHzm8Je6TTa7VPtXqx4 [ 22599 chars] SoluProt: prediction of soluble protein expression in Escherichia coli
+ok   AMBC_U0T68ipIcSv6YlmTiW7Q6WOK5xC [  4389 chars] A3D database: structure-based predictions of protein aggregation for t
+ok   AMBC_XVi2U5ckgDZs37dqWJoSg5IXDx6 [ 16929 chars] Solubility of proteins
+ok   AMBC_7Csd5qILxbNjFcM7iE1G9TSHhYk [  9411 chars] Protein-Sol: a web tool for predicting protein solubility from sequenc
+Traceback (most recent call last):
+  File "c:\Users\LESCHI\hackathon\LEO\tasks\litreview-optimisation\fetch_fulltext.py", line 116, in <module>
+    main()
+    ~~~~^^
+  File "c:\Users\LESCHI\hackathon\LEO\tasks\litreview-optimisation\fetch_fulltext.py", line 109, in main
+    print(f"ok   {aid} [{n:>6} chars] {label}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\LESCHI\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u03b2' in position 82: character maps to <undefined>
+cached already: 5   to fetch: 190   est cost: $1.90
+ok   AMBC_Gt0yOjnYRkYOWeRk7zg6kdHwPqd [ 49531 chars] A review on computational models for predicting protein solubility
+ok   AMBC_PF9T5D5adruRM2X3FLtqf8sbnJU [ 35537 chars] Affinity profiling of monoclonal antibody and antibody-drug-conjugate 
+ok   AMBC_5zsAcx6wI52YMRUcEFVES2llPMT [ 34771 chars] Assisted Design of Antibody and Protein Therapeutics (ADAPT)
+ok   AMBC_FoXTCXMuai9zMa1P3wT1AjeV4rm [ 60965 chars] Binding and functional profiling of antibody mutants guides selection 
+ok   AMBC_B8fWxL8oMPmGiT52sD3PuMX7Ote [ 34185 chars] A high affinity and specificity anti-HER2 single-domain antibody (VHH)
+ok   AMBC_FUPqy7uANxF0HHPcl9laZRH7aTW [ 33871 chars] High affinity antigen recognition of the dual specific variants of her
+ok   AMBC_Vw0xIRusFckOyRMvoqbmUxmlzfK [ 29258 chars] Affinity Maturation of Monoclonal Antibody 1E11 by Targeted Randomizat
+ok   AMBC_Eu24yJx9yr0M50c5KxpWg3uIvJD [ 44462 chars] Development of a High-Affinity Antibody against the Tumor-Specific and
+ok   AMBC_GBAfmrlrVYWzFk4qwXkKH21PhiL [ 34838 chars] Anti-tumor activity and toxicokinetics analysis of MGAH22, an anti-HER
+ok   AMBC_QBcCgzPh8BL97TN5mES1xZAUAZ4 [ 41231 chars] Structure-guided computational design and mechanistic understanding of
+ok   AMBC_GmwOY3AL2laTzkccjcm7R5KUXox [ 41477 chars] Stability Enhancement of a Dimeric HER2-Specific Affibody Molecule thr
+ok   AMBC_8yFWQQblsRUsYJF6QYZV4BY3104 [ 35911 chars] TEMPRO: nanobody melting temperature estimation model using protein em
+ok   AMBC_GNYZd9uRWKZmj0HrAJ9skFidu4s [ 19966 chars] Conformational characterization of a novel anti-HER2 candidate antibod
+ok   AMBC_HfQBmdJyKcM5TZ8mGM9sqDri1dt [ 48270 chars] Role of simple descriptors and applicability domain in predicting chan
+ok   AMBC_HkdzWdjkzIlJvfzbXwxckaGImQa [ 22740 chars] Computer-based Engineering of Thermostabilized Antibody Fragments
+ok   AMBC_ZFfZ6Oz0JqxXOsjRgAqxYYgdHZO [ 29736 chars] Protein thermostability prediction within homologous families using te
+ok   AMBC_EbEZxTACyaGqqHBuX6pDovDOfuH [ 15893 chars] Design and characterization of a SYBR Green I-based melting curve meth
+ok   AMBC_OR8D1qsp2aJpC6kT6NBNMU9klfw [ 15613 chars] NbThermo: a new thermostability database for nanobodies
+ok   AMBC_SJqnXISSkXxKtVBMzvlJ4hqCswY [ 53414 chars] High thermostability improves neutralizing antibody responses induced 
+ok   AMBC_9dZ67qHnZS5qPga1wZ1aarzA8G6 [ 34276 chars] Stabilisation of the Fc fragment of human IgG1 by engineered intradoma
+ok   AMBC_Uegjfy2JnatgeIWxZY1hfjCrxRV [ 42826 chars] Thermostable designed ankyrin repeat proteins (DARPins) as building bl
+ok   AMBC_VNtxoDzb060sPMsdpKFeu765oGq [ 30293 chars] Understanding and overcoming trade-offs between antibody affinity, spe
+ok   AMBC_UjTLaBUjDzBiBb1IJM2KHmj6FNh [ 50232 chars] Facile Affinity Maturation of Antibody Variable Domains Using Natural 
+ok   AMBC_CIOVHW74TxIH0cq0WtA2VVwrvPk [ 49969 chars] Unveiling the affinity-stability relationship in anti-measles virus an
+ok   AMBC_Ept1YihUddbypIrHsCXS17uFBnm [ 53805 chars] Tuning antibody stability and function by rational designs of framewor
+ok   AMBC_DWgBzEfZ79aTx2QjsUTK86BRPPj [ 24224 chars] Improving antibody affinity through in vitro mutagenesis in complement
+ok   AMBC_HgaSHHJC05JG7dGLsSBl733gq8E [ 59728 chars] Determinants of the assembly and function of antibody variable domains
+ok   AMBC_YYK7xs00GImboQuX9BxZOHbXiJV [ 31350 chars] Elucidation of potential sites for antibody engineering by fluctuation
+ok   AMBC_RGPiB4pypBRTwWs9zk2CLtMT7d9 [ 29763 chars] Molecular basis for thermal stability and affinity in a VHH: Contribut
+ok   AMBC_JsLraAXyo8xJ80f7B3jPo65JtFL [ 66439 chars] Co-optimization of therapeutic antibody affinity and specificity using
+ok   AMBC_5qsewT4PgYBmbbFEl44h0wnO3YY [ 31729 chars] High-affinity optimization potential of the virus neutralizing antibod
+ok   AMBC_AzcoPK5aLsOzDRcDHfikjY72uS5 [ 38605 chars] Effective Optimization of Antibody Affinity by Phage Display Integrate
+ok   AMBC_9ZjdqihfdIcHbBzICEsYiwfEZBJ [ 33735 chars] Optimizing Antibody Affinity and Developability Using a Framework-CDR 
+ok   AMBC_J27FcmcKP4CwVRNuTwOpuN7qBCb [ 57777 chars] Repertoire Analysis of Antibody CDR-H3 Loops Suggests Affinity Maturat
+ok   AMBC_EfPTYlbSR87pYLOg1eyrdBfbQLY [ 44266 chars] Multi-objective antibody design and optimization using machine learnin
+ok   AMBC_Rp9hiPl5X2FCEjbzv9OULpxsSAm [ 45144 chars] Rigidity Emerges during Antibody Evolution in Three Distinct Antibody 
+ok   AMBC_I06WGWh4zwjkPXfber9HKK6b9Dy [ 40811 chars] A novel heavy domain antibody library with functionally optimized comp
+ok   AMBC_SocUA7oGSkI5sa9kTokG9ngl2xo [ 29207 chars] A large human domain antibody library combining heavy and light chain 
+ok   AMBC_Och0cLxThpw9LvHF2qWBdzqzrri [ 34264 chars] Construction of a synthetic phage-displayed Nanobody library with CDR3
+ok   AMBC_T4LlbvTG4df6hSCWgNEPACu8WSy [ 34125 chars] Construction of a large phage-displayed human antibody domain library 
+ok   AMBC_CbPmbuFS7r9HzqdPaiTwMZJPbRl [ 10761 chars] Isolation and characterization of camelid single-domain antibodies aga
+ok   AMBC_DBJhx1GJGLU5c0yoWnej1XjQnFW [ 14122 chars] Structure-based design and construction of a synthetic phage display n
+ok   AMBC_IWeXqPxg4pxvoy2BmqZ5eXhXA4m [ 50414 chars] High affinity, developability and functional size: the holy grail of c
+ok   AMBC_9BVQajo1hEZ9xjNkZKeju9Vts34 [ 15583 chars] Next-Generation Sequencing of Antibody Display Repertoires
+ok   AMBC_SSSgQPLk4PXXVOAOECIGsKIhBH6 [ 35761 chars] Construction and characterization of single-chain variable fragment an
+ok   AMBC_SutBx7GIiI7IgYRdxsgN6RV744p [ 33685 chars] The origin of CDR H3 structural diversity
+ok   AMBC_NPoG2PTOadvlevp7FzQOw4byFcl [ 23974 chars] Transitions of CDR-L3 Loop Canonical Cluster Conformations on the Micr
+ok   AMBC_9oho4FMsdSMSWWaNgSxTtJ6l2vb [ 27310 chars] Structural Diversity of Ultralong CDRH3s in Seven Bovine Antibody Heav
+ok   AMBC_IXWVFsT7ryabDMfwcYjibCt0y71 [ 44205 chars] Specific attributes of the VL domain influence both the structure and 
+ok   AMBC_QpbUWOb98zoEGuitKOcV1qh2BEw [ 42848 chars] Structure-guided alterations of the gp41-directed HIV-1 broadly neutra
+ok   AMBC_8g8PzroUZhwlzKR97XKEIrPphE [ 54975 chars] Toward high-resolution homology modeling of antibody Fv regions and ap
+ok   AMBC_FpDLSalD8fFwsW1yOajMiY2534q [  5696 chars] A Designer Quest for the Achilles' Heel of Influenza
+ok   AMBC_PeJ2YTyozGJ3ewMyDGnHFy1C4qO [ 29739 chars] Modeling and docking of antibody structures with Rosetta
+ok   AMBC_KrBxxsAhj013vL4Ehpvfb92HBFn [ 64719 chars] A new clustering of antibody CDR loop conformations
+ok   AMBC_ZZCgmeCfAMG0ecaO8Uf4Tf9zA7n [ 29157 chars] Lessons learned from merging wet lab experiments with molecular simula
+ok   AMBC_NkBGhbaq8Q8X1LRB8A6H11z1ScL [ 46660 chars] Antibody CDR loops as ensembles in solution vs. canonical clusters fro
+ok   AMBC_Ee9iwloaNwuqHx6X591ZKzdnWe5 [ 39590 chars] Computationally Designed Cyclic Peptides Derived from an Antibody Loop
+ok   AMBC_GLD0Vm9rybDuOL5cuYhTZTPF3iI [ 20542 chars] An ultralong CDRH2 in HCV neutralizing antibody demonstrates structura
+ok   AMBC_ON0NktuswVn5IIeHqJtrr28Rg2p [ 40998 chars] Identification of CDRH3 loops in the B cell receptor repertoire that c
+ok   AMBC_AgYcJeAr7x0f256uENEdg5kyfr2 [ 46214 chars] Co-evolution of HIV Envelope and Apex-Targeting Neutralizing Antibody 
+ok   AMBC_NheUcPCgeDxx3IZnWhpUoCKrOrT [ 61033 chars] Cell-free synthesis of functional antibodies using a coupled in vitro 
+ok   AMBC_NW67yPz0T72l7Z3uL2hslkZCjYx [ 27562 chars] Cell-free protein synthesis: the state of the art
+ok   AMBC_5agRSsniiN0aXhE2OBn0fz2krCt [ 78802 chars] A User's Guide to Cell-Free Protein Synthesis
+ok   AMBC_H3YTQneGHBc1rS4XZ7EDwUcPwbR [ 33782 chars] Cell-free protein synthesis: applications come of age
+ok   AMBC_SEBOJYLyysJilbWNWvh2hPZ5Fe9 [ 62000 chars] High-yield production of "difficult-to-express" proteins in a continuo
+ok   AMBC_DYPKgZMlGJvylRILztp0QrbSkB [ 36562 chars] An Integrated In Vivo/In Vitro Protein Production Platform for Site-Sp
+ok   AMBC_SkFBZ1gbrfQhQioZiM9Asndf5mW [ 42965 chars] Tuning the Cell-Free Protein Synthesis System for Biomanufacturing of 
+ok   AMBC_Yw9dr9HXkkNRI33NhdOirXLhigD [ 45216 chars] Development and comparison of cell-free protein synthesis systems deri
+ok   AMBC_VxsTSLPvrgWfukLh99RcvhQupVl [ 17243 chars] Overview of cell-free protein synthesis: historic landmarks, commercia
+ok   AMBC_D3K8mToRKzsN8rZdY0wqrVOrivR [ 23621 chars] IRES-mediated Pichia pastoris cell-free protein synthesis
+ok   AMBC_JKNMzdQ1HwVnViJmbxz9c3WXQie [ 33498 chars] Cell-free synthesis of functional antibody fragments to provide a stru
+ok   AMBC_7jG7OzE7Nahmmdp62pWOs80Bdig [ 41582 chars] Cell-Free Systems Based on CHO Cell Lysates: Optimization Strategies, 
+ok   AMBC_3I9F4HViGcwWfvfNpgYAowhY3pW [ 48728 chars] Cell-free protein synthesis and vesicle systems for programmable thera
+ok   AMBC_4TGptCwKUVv4jiUfvqUCBh08l1k [ 14249 chars] Cell-free Protein Expression Using the Rapidly Growing Bacterium Vibri
+ok   AMBC_DJWgt65hGSsliwVOya6iOWGU4t9 [ 13958 chars] Cell-free expression, purification and immunoreactivity assessment of 
+ok   AMBC_P6e304fLdzxeytjyMAyP6r5rdxS [ 33306 chars] Optimising protein synthesis in cell-free systems, a review
+ok   AMBC_AhvFj3eHFUUNht10d7YghEAK8JP [ 40465 chars] Fully automated antibody structure prediction using BIOVIA tools: Vali
+ok   AMBC_ZRRBjznCXj6eA5mahe1UEFAlSB8 [ 83180 chars] Artificial intelligence advancements in monoclonal antibody developmen
+ok   AMBC_N6f2zbiRxaetbTCvAkdMAypZlcM [ 83345 chars] Current advances in biopharmaceutical informatics: guidelines, impact 
+ok   AMBC_PrwocY7xXYsCf9OVjWYVGvIVIgh [ 14821 chars] ESMStabP: A Regression Model for Protein Thermostability Prediction
+ok   AMBC_PMTdcOP2OG1T4joq7dMCMexG6ro [ 44567 chars] DDGWizard: Integration of feature calculation resources for analysis a
+ok   AMBC_3ZCfytc48nKkMMzRqDnpl9nhZo [ 27938 chars] TemStaPro: protein thermostability prediction using sequence represent
+ok   AMBC_IdlU110n10IeuVnxXiDr71LGYAp [ 40965 chars] Benchmarking antibody modeling tools across structure prediction, dock
+ok   AMBC_M95qctBrt0I219lI5nmugbHo0vi [ 37154 chars] DeepSP: Deep learning-based spatial properties to predict monoclonal a
+ok   AMBC_K3a0dIUO9gRzC87LWNzQeudDSuv [ 85097 chars] The Evolution of Artificial Intelligence in Antibody Design: From Stru
+ok   AMBC_SQybalaAQpeBbfEZ0ROg0XDNy27 [ 49669 chars] Integrating Computational Design and Experimental Approaches for Next-
+ok   AMBC_Lz5g8lDFUMBXhqq8lelbAEJfmVH [ 44051 chars] Atomically accurate de novo design of antibodies with RFdiffusion
+ok   AMBC_V9pvV02G1BjyGr9tefzFoT6uAv9 [ 37098 chars] Atomically accurate de novo design of antibodies with RFdiffusion
+ok   AMBC_IRErEoBGMTZSRrUA0JFQj8kPmd0 [ 49118 chars] De novo design of protein structure and function with RFdiffusion
+ok   AMBC_FNwBVGoBypRpMIhmSPs5W4PF7SG [ 48372 chars] De novo design of high-affinity binders of bioactive helical peptides
+ok   AMBC_ShEIdQXCEfrhDIPzqIoSWJ0RcJ8 [ 45071 chars] De novo design of antibody complementarity determining regions binding
+ok   AMBC_G3TdgxAKCZQD3wqPLZMsYdzemne [ 59102 chars] Fragment-based computational design of antibodies targeting structured
+ok   AMBC_68V2GG9S23jSssmXXh6myA5VfIH [ 40465 chars] De Novo Design of High-Affinity HER2-Targeting Protein Minibinders
+ok   AMBC_ZBClaeDzSuKoASBfDdcuEQyEOcK [ 30255 chars] De Novo Synthesis and Structural Elucidation of CDR-H3 Loop Mimics
+ok   AMBC_OuCAdDiu1gwcSSNJkyo3gbZDBG5 [ 56210 chars] NanoDeNovo: De Novo Design of Anti-Poliovirus I Sabin Strain Nanobodie
+ok   AMBC_LDRqzxZIaTJ5mupmoGctUbQD50B [ 33541 chars] Blind prediction performance of RosettaAntibody 3.0: grafting, relaxat
+ok   AMBC_JwIYHpe9Ps6Qg4BEUnmUuaWuSFd [ 31364 chars] Binding Affinity of Trastuzumab and Pertuzumab Monoclonal Antibodies t
+ok   AMBC_JUi13Pd0sVgWdO9BvXQXLImbPjD [ 21675 chars] Comparative analysis of evolutionarily conserved motifs of epidermal g
+ok   AMBC_EsuxDT0fSVGPZwXjYp1QuAAqryb [ 13019 chars] Cryo-EM Structure of HER2-trastuzumab-pertuzumab complex
+ok   AMBC_WOZ2BMI2jLUzhfNPijr7IAFqfbJ [ 42039 chars] ELISA assay employing epitope-specific monoclonal antibodies to quanti
+ok   AMBC_49SgkxAkB1fZsyscorKaEYtfONP [ 25397 chars] Exploring the Combined Action of Adding Pertuzumab to Branded Trastuzu
+ok   AMBC_aWDlR6F2aWdUytkBKcqK8G96kmK [  9314 chars] Dual targeting of HER2-positive breast cancer with trastuzumab emtansi
+ok   AMBC_NJt3cKRixfrsSG9KhH0GuWdx9bK [ 26073 chars] Human Domain Antibodies to Conserved Epitopes on HER2 Potently Inhibit
+ok   AMBC_9juVgDFw1QnBQyhCNTs5nBvQaYt [  9911 chars] Pertuzumab in metastatic breast cancer
+ok   AMBC_B7VTDamQ9rHP0mPkzO4JJSQH80U [ 30241 chars] Mechanisms Underlying the Action and Synergism of Trastuzumab and Pert
+ok   AMBC_5b8VtG89R6QbI0S0xsdX5XXfIm3 [ 21921 chars] Synergy between trastuzumab and pertuzumab for human epidermal growth 
+ok   AMBC_F6rGvoWgDpqsqtlfMiN7C7MJbV1 [ 37091 chars] Benchmarking inverse folding models for antibody CDR sequence design
+ok   AMBC_HqwGPz7c1qj2f3GAIT8igspWJUR [ 24883 chars] A probabilistic view of protein stability, conformational specificity,
+ok   AMBC_YxHA0B36JStIQPHtgF5iSGZZnXB [ 10230 chars] AntiFold: improved structure-based antibody design using inverse foldi
+ok   AMBC_9NgGoQQhqkXuge9ayZdZTNvwxrs [ 41709 chars] Peptide binder design with inverse folding and protein structure predi
+ok   AMBC_AeEpqA5wxRczdJkKAtkY0EbXWwt [ 59881 chars] AntiBMPNN: Structure-Guided Graph Neural Networks for Precision Antibo
+ok   AMBC_NRAZxI6vlSfXB1NylKXwVSbmUkn [ 24338 chars] Robust deep learning-based protein sequence design using ProteinMPNN
+ok   AMBC_Eg20XCcC0RjdpQbZqBCo5RBR8O9 [ 17050 chars] Improving Protein Expression, Stability, and Function with ProteinMPNN
+ok   AMBC_YQpG0wBEvne4gPQqqPw6VVcnGdS [ 46198 chars] Discriminator-Guided Inverse Folding for Multi-Property Protein Design
+ok   AMBC_6LgGs336gi6wsTzlYifwlmoexis [ 29160 chars] GRACE: Generative Redesign in Artificial Computational Enzymology
+ok   AMBC_8Uj8KjJwXcRNbosdqtVGMWUDVlD [ 34064 chars] Exploration and Modulation of Antibody Fragment Biophysical Properties
+ok   AMBC_Slx1OFDuLyKNHSFQjFJJfuJInT7 [ 12747 chars] ProtDataTherm: A database for thermostability analysis and engineering
+ok   AMBC_401sEAbYpsGOcE7slTVGzkBUr7q [ 43035 chars] Optimizing enzyme thermostability by combining multiple mutations usin
+ok   AMBC_OHZFZoOE9y364k3Q5tNAgsqTgg5 [ 17261 chars] Stabilization of the single-chain fragment variable by an interdomain 
+ok   AMBC_6b9CpKIHpGYzdIW3lBNMZSufpkw [ 64545 chars] A 33-residue peptide tag increases solubility and stability of Escheri
+ok   AMBC_A9TiT5Bzf1RYUoIXO3LDkplyHvn [ 40677 chars] Integrated mimicry of B cell antibody mutagenesis using yeast homologo
+ok   AMBC_TD7q8ko0FjFIV2Y9pHlUYXa7Sjo [ 20970 chars] T-Cell Receptor Variable β Domains Rigidify During Affinity Maturation
+ok   AMBC_Sr9pNe4equDoKLStMVDc48M81Qd [ 44768 chars] Extensive sequence and structural evolution of Arginase 2 inhibitory a
+ok   AMBC_9dnqJvRzyIyliUSBgH11KzsDpTY [ 28645 chars] Local and Global Rigidification Upon Antibody Affinity Maturation
+ok   AMBC_2UvGjT1cdQzcBLssBGIbxncHvDr [ 25030 chars] Trastuzumab Blocks the Receiver Function of HER2 Leading to the Popula
+ok   AMBC_KkJzBmBj8sb2mgXg5HD4JvjGsbO [ 36281 chars] The effects of trastuzumab on HER2-mediated cell signaling in CHO cell
+ok   AMBC_Wkkn8Nd95V2Qs1HHtYDGOUrY4bt [ 32268 chars] Engineering HER2-targeted biparatopic antibodies to promote receptor i
+ok   AMBC_W0vK5kBx4tu8bcoJi21Jyz5q1Oq [ 63926 chars] Caveolin-1 mediates cellular distribution of HER2 and affects trastuzu
+ok   AMBC_ScrOdEWbMTmeLlCkwEKcOtlyC2G [ 27150 chars] Effect of VH-VL Families in Pertuzumab and Trastuzumab Recombinant Pro
+ok   AMBC_IyC1rV08XYykhKURdhH7ZEZzL3p [ 37920 chars] Trastuzumab does not bind rat or mouse ErbB2/neu: implications for sel
+ok   AMBC_HrpMUNSVnUZ5VAtOwlyUNykBGQP [ 50630 chars] Functional and Nonclinical Similarity of ABP 980, a Biosimilar of Tras
+ok   AMBC_TCt4e6wWzZGZwA4TXHEEdmH5u3S [ 40179 chars] Biparatopic HER2-targeted nanobody binder synergizes with trastuzumab 
+ok   AMBC_YHRzXGhnhMzMmwNGvpLCEGBgMBj [  9452 chars] Targeting HER2 by Combination Therapies
+ok   AMBC_KIGAoOArOlXh1W6CpUXyiFgIPih [ 33648 chars] Trastuzumab Mechanism of Action; 20 Years of Research to Unravel a Dil
+ok   AMBC_aGYNqSMKRUC0GhcUcHnmwwvBcVi [ 38502 chars] A novel anti-HER2 antibody GB235 reverses Trastuzumab resistance in HE
+ok   AMBC_a87A1UhMkY2qJUNL7uPswXWEUpN [ 40165 chars] Development and clinical application of anti-HER2 monoclonal and bispe
+ok   AMBC_RucPmooNA94i5f0ln24hT8IOhcO [ 18438 chars] In Silico Study: Combination of α-Mangostin and Chitosan Conjugated wi
+ok   AMBC_L58lyfP4wBoMt8dUWVOpLcfIix [ 51748 chars] Computational blueprint and stereochemical validation of a small pepti
+ok   AMBC_R2j78aZAcFpeeT6wF1vMWKDq2Bo [  6087 chars] Molecular explorations of cancer biology and therapeutics at PDB-101
+ok   AMBC_JqDBKfaokCAu38vFcLJbR8oZejy [ 22598 chars] Backbone and methyl side-chain resonance assignments of the single cha
+ok   AMBC_56FTRttbHTtHko2JajJUnLLl9Bl [ 32495 chars] Structural insights into the mechanism of action of a biparatopic anti
+ok   AMBC_DOGr2EL9nMivF6hONoe8GRIOgzB [ 27698 chars] Structural Characterization of Linker Shielding in ADC Site-Specific C
+ok   AMBC_C5bjvuz7s6SFvT10zgLjEDLS61p [ 25720 chars] Structural Characterization of Monoclonal Antibodies and Epitope Mappi
+ok   AMBC_ABDp2AOzT8qHem0rY8Cl9cbzryn [ 25810 chars] Trastuzumab-Peptide interactions: mechanism and application in structu
+ok   AMBC_DgJ8wZcFXC8RaYUvuJPjX6eeoZX [ 27936 chars] Nano Differential Scanning Fluorimetry-Based Thermal Stability Screeni
+ok   AMBC_IqUnCndHdaQ2sDTx7xmBvxLD9qU [ 22280 chars] Intrinsic Differential Scanning Fluorimetry for Protein Stability Asse
+ok   AMBC_DOVD7odM0h2vIiVdElvJSurwMTZ [ 44858 chars] Recent developments in the use of differential scanning fluorometry in
+ok   AMBC_CJ75IQT3i2BR5mDLJQi1ywv5g99 [ 37270 chars] nanoDSF: In vitro Label-Free Method to Monitor Picornavirus Uncoating 
+ok   AMBC_aEhHPLrCqZwI2T9RzgKrDYVpfGv [ 51313 chars] Nano Differential Scanning Fluorimetry as a Rapid Stability Assessment
+ok   AMBC_KfYoS0tINLE1WYqQ43mLYn9Ddcy [ 44665 chars] Novel anti-HER2 monoclonal antibodies: synergy and antagonism with tum
+ok   AMBC_GHQoTTYJw3luWVhPT3wjOo1xNGr [ 43302 chars] Inhibition of HER2 signaling and breast cancer cell growth with a nove
+ok   AMBC_6TiRUhBZsLolrxDgIm4jy8BOhmT [ 45209 chars] Dual targeting non-overlapping epitopes in HER2 domain IV substantiall
+ok   AMPC_GF5vxHlt1UERW9h4xHZMPZMjinX [     0 chars] High-affinity fully-humanized anti-Her 2 monoclonal antibody, and prep
+ok   AMPC_aBuqIb7Kktf9HPDjGEDYn4Wxb7c [263932 chars] Anti-HER2 antibody variants
+ok   AMPC_JyIlyDrP9IIcVTRb517KCOt7M4g [268333 chars] Method for making humanized antibodies
+ok   AMPC_NMYwLlcDmraSyiFzNAYRlUdejqy [ 36314 chars] Production of hersintuzumab: a new humanized antibody against HER2 for
+ok   AMPC_UFbWzWymUAXFjfBmUsw4ignTZXH [188378 chars] Anti-her2 antibodies and their uses
+ok   AMPC_QuVC3cSGlDKxNwIghlzEepSm52Y [132786 chars] Monoclonal antibodies against HER2 antigens, and uses therefor
+ok   AMPC_WbnFcwRXAwpssj9NwBwh3tjeJqC [190156 chars] Methods of treatment using anti-erbb antibody-maytansinoid conjugates
+ok   AMPC_VEUDRLIbK9OwqpmiyEhnXPl2iOR [189411 chars] Methods of treatment using anti-erbb antibody-maytansinoid conjugates
+ok   AMPC_D7c5FcTku9YkHNvaURWObYJzVJ8 [216287 chars] Humanized or affinity-matured anti ang-2 antibody and uses thereof
+ok   AMPC_SqTVpKukptjLHpZk3INgAcAKBSR [141517 chars] Anti-HER2 and anti-IGF-IR BI-specific antibodies and uses thereof
+ok   AMPC_NFrbJ4TWJ0yI3nMTo5v8tDDWrJA [ 87711 chars] Humanized and affinity-matured anti-c-met antibody and uses thereof
+ok   AMPC_AnsALdgKjcwAL13cydgiAuIBxSR [311497 chars] Anti-HER antibodies
+ok   AMPC_3QsYSEHp0HBiQNnDIcyg3dI0Kq9 [ 83741 chars] Combination Therapy Using Anti-EGFR and Anti-HER2 Antibodies
+ok   AMPC_EeouTchcgGz19pE652nED61BD8q [     0 chars] Affinity matured cd47-specific humanized antibody
+ok   AMPC_PB4WttFngr8UHkowb802ZFuYpGS [249690 chars] HER2 antibody composition
+ok   AMPC_MXtFBvup3vFuyyDWZ49XZyQSXaD [198647 chars] Therapeutic anti-her2 antibody fusion polypeptides
+ok   AMPC_VZOfKOSiXtXSaFq916moN112Sew [     0 chars] Affinity matured humanized antibody specific for CD47
+ok   AMPC_A1XU62ep2a9f7SLh1PIfHWyDqtH [543599 chars] Bispecific HER2 antibodies and methods of use
+ok   AMPC_7idQAJ2ze220zlKc5UTuMMkv4wc [300415 chars] Antibody formulations
+ok   AMPC_6wTEURnGIWwT4v2oWd9ti6Qhwbi [129228 chars] Methods and materials for treating cancer
+ok   AMPC_Lfu8nE90d0f0A1ESvlN0rycfaNG [136865 chars] Antibody specifically binding to her2
+ok   AMPC_ZmDvVbyyxHM9wYolsD0cQu8KLgK [ 86558 chars] Combination of her2 antibodies
+ok   AMPC_EfZYG4bWC0i82aTrTsDBEbmzIZ2 [ 88322 chars] HER-2 binding antibodies
+ok   AMPC_LQJ9zwhaFAj5DfHROw7VmfhdYMb [540661 chars] Anti-her2 antibodies
+ok   AMPC_6Mj3RBjZttUEP1xNJuYtwNKoYNN [244636 chars] Monoclonal antibodies against her2/neu and uses thereof
+ok   AMPC_FGInVcvzYAdc52b74AtjQW9Klc9 [188336 chars] Anti-HER2 antibodies and their uses
+ok   AMPC_E5ye2CBTe6yAssEcxUZDI1DRacA [ 98354 chars] Anti-HER2 antibody or antigen-binding fragment thereof, and chimeric a
+ok   AMPC_ZekvomOiQINCxZ2T3Q80GadpHxW [274216 chars] Treatment of metastatic breast cancer
+ok   AMPC_RPNCuM2y7TYUt1GOvQCJTm5sJDD [ 87831 chars] Antibody Library and Method
+ok   AMPC_N9mOn7ILJGZgAPPfTx42Ztjrevy [357108 chars] ErbB2 antibodies and uses therefore
+ok   AMPC_Brc6oe3Zv2DTtrwPVYR1XdBixPg [129258 chars] Monoclonal antibodies against HER2 antigens, and uses therefor
+ok   AMPC_FJLp4j1Lv7sHL2MNmFPGevnNuwi [ 75242 chars] Anti-her2/neu antibodies and methods of use
+ok   AMPC_AGWnn7ZSoGYCVyQZfzbo3M6n2QE [545546 chars] Trispecific antibodies specific for her2 and a blood brain barrier rec
+ok   AMPC_PYzExzC2JQjmBkwC65sgEgeflqJ [515774 chars] Bispecific HER2 antibodies
+ok   AMPC_VKBT4Tfy0mnA7NhVe1yO645CSDe [100597 chars] Binding molecules specific to human epidermal growth factor receptor 2
+ok   AMPC_4cRdnu8zLEtLTIU30cLQJAOr8rD [704161 chars] Methods of using bispecific antigen-binding constructs targeting her2
+ok   AMPC_BNx6aG7BtWHX52JrPCUiLi5ySk3 [1050394 chars] Antigen-binding constructs targeting HER2
+ok   AMPC_Ika36OYQJK6EqmAgBRrh1BKOPBa [210175 chars] Biparatopic and multiparatopic antibodies with common light chain and 
+
+fetched=190 failed=0 cost=~$1.90

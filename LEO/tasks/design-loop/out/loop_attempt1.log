@@ -1,0 +1,25 @@
+[14:38:30] novelty index: 525,042 unique reference loops (8s)
+[14:38:31] bootstrap: 100 cluster-resampled refits
+[14:38:31] imported 244 10-mer windows chosen by Jahn abpipe (read-only) as an independent arm; pool on disk: 0
+[14:38:31] ledger check-run: NEW  run_id leo-dl-r01-a687ed
+[14:38:31] === round 1: broad ===
+[14:38:32]   arm conservative space    30,046,752  alphabet sizes [1, 17, 17, 1, 1, 19, 1, 19, 18, 16]  kept 800,000
+[14:38:32]   arm balanced     space    53,144,100  alphabet sizes [9, 9, 10, 10, 1, 9, 1, 9, 9, 9]  kept 800,000
+[14:38:38]   arm affinity     space   421,654,016  alphabet sizes [7, 7, 8, 8, 7, 7, 7, 7, 7, 8]  kept 800,000
+[14:38:45]   arm shell3       seeds 120  enumerated    70,727,216  kept 720,000
+[14:38:45]   arm abpipe       imported 244 windows
+[14:39:00]   conservative in   800,000 -> novel  461,300 -> scope  303,914 -> clf   7,348 -> picked 150   best WWSDGFYEMY R -0.02 (-0.49+/-0.47) epi 0.62
+[14:39:13]   balanced     in   800,000 -> novel  558,074 -> scope  192,691 -> clf  47,179 -> picked 150   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:39:22]   affinity     in   800,000 -> novel  672,050 -> scope  152,986 -> clf  30,210 -> picked 150   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:39:34]   shell3       in   720,000 -> novel  315,003 -> scope  315,003 -> clf  57,370 -> picked 150   best WGSYGFYEMI R -0.40 (-0.96+/-0.56) epi 1.00
+[14:39:34]   abpipe       in       244 -> novel      244 -> scope      180 -> clf      40 -> picked  36   best WKSEGFYEMI R -0.52 (-1.15+/-0.63) epi 1.38
+[14:39:34]   round 1: 575,572,328 enumerated -> 529 shortlisted in 63s
+[14:39:34] ledger check: 529 designs: 529 new, 0 already in the ledger, 0 repeated within the file
+[14:39:41] abguard (real, optimisation track): 529 designs in 7s, 527 PASS, 0 assigned off-track; fast novelty index agrees on 527/529
+[14:39:41]   DISAGREEMENT, first rows:
+     cdrh3  abg_min_dist  fast
+WTVYGFYEMI             2     3
+WWSDGFYSYY             2     3
+[14:39:41] ledger add: logged 529 rows for leo-dl-r01-a687ed (0 unchanged) in variants.csv
+[14:40:11] NanoMelt: 527 designs + control in 30s; control Tm 66.74 C
+[14:40:11] GPU busy (8463 MiB used by another job); waiting for it to free up

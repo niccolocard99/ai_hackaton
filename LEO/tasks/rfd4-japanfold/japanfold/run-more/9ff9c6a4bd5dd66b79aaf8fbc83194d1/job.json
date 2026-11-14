@@ -1,0 +1,83 @@
+{
+  "artifacts": [
+    {
+      "path": "design_0_generated.cif",
+      "rank": 3,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_0_generated.cif"
+    },
+    {
+      "path": "design_1_generated.cif",
+      "rank": 2,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_1_generated.cif"
+    },
+    {
+      "path": "design_2_generated.cif",
+      "rank": 7,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_2_generated.cif"
+    },
+    {
+      "path": "design_3_generated.cif",
+      "rank": 6,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_3_generated.cif"
+    },
+    {
+      "path": "design_4_generated.cif",
+      "rank": 1,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_4_generated.cif"
+    },
+    {
+      "path": "design_5_generated.cif",
+      "rank": 5,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_5_generated.cif"
+    },
+    {
+      "path": "design_6_generated.cif",
+      "rank": 8,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_6_generated.cif"
+    },
+    {
+      "path": "design_7_generated.cif",
+      "rank": 4,
+      "type": "structure",
+      "url": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_7_generated.cif"
+    }
+  ],
+  "created_at": "2026-11-14T13:49:13.550658+00:00",
+  "done": 1,
+  "download": "curl -fsSL -H \"Authorization: Bearer $JAPANFOLD_API_KEY\" --create-dirs -o design_0_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_0_generated.cif -o design_1_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_1_generated.cif -o design_2_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_2_generated.cif -o design_3_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_3_generated.cif -o design_4_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_4_generated.cif -o design_5_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_5_generated.cif -o design_6_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_6_generated.cif -o design_7_generated.cif https://api.japanfold.aiand.com/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/artifacts/design_7_generated.cif",
+  "error": null,
+  "finished_at": "2026-11-14T13:51:04.426156+00:00",
+  "id": "9ff9c6a4bd5dd66b79aaf8fbc83194d1",
+  "kind": "design",
+  "links": {
+    "archive": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/archive",
+    "logs": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/logs",
+    "results": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/results",
+    "self": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1",
+    "usage": "/v1/jobs/9ff9c6a4bd5dd66b79aaf8fbc83194d1/usage"
+  },
+  "model": "rfd4",
+  "name": "leo-cdrh3-rfd4-s6",
+  "object": "job",
+  "params": {
+    "nsteps": 60,
+    "num_designs": 8,
+    "recipe": "high/front_loaded",
+    "seed": 6
+  },
+  "progress": 1.0,
+  "protocol": "rfd4-scaffold",
+  "residues": 336,
+  "results_ready": true,
+  "stage": "done",
+  "started_at": "2026-11-14T13:49:13.741013+00:00",
+  "status": "succeeded",
+  "total": 1
+}

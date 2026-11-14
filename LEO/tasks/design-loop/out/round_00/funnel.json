@@ -1,0 +1,65 @@
+{
+ "round": 0,
+ "cfg": {
+  "name": "smoke",
+  "product_arms": [
+   "conservative",
+   "balanced",
+   "affinity"
+  ],
+  "m_balanced": 6,
+  "m_affinity": 5,
+  "keep": 150000,
+  "shell_seeds": 30,
+  "shell_radii": [
+   3
+  ],
+  "m_shell": 6,
+  "keep_per_seed": 4000,
+  "per_arm": 60
+ },
+ "funnel": {
+  "conservative": {
+   "in": 150000,
+   "unique": 150000,
+   "identity_ok": 150000,
+   "novel": 78375,
+   "in_scope": 66201,
+   "enumerated": 30046752,
+   "classifier_ok": 8759,
+   "selected": 60
+  },
+  "balanced": {
+   "in": 150000,
+   "unique": 150000,
+   "identity_ok": 150000,
+   "novel": 101400,
+   "in_scope": 41572,
+   "enumerated": 3111696,
+   "classifier_ok": 27679,
+   "selected": 60
+  },
+  "affinity": {
+   "in": 150000,
+   "unique": 150000,
+   "identity_ok": 150000,
+   "novel": 124212,
+   "in_scope": 36709,
+   "enumerated": 20250000,
+   "classifier_ok": 23418,
+   "selected": 60
+  },
+  "shell3": {
+   "in": 120000,
+   "unique": 112215,
+   "identity_ok": 112215,
+   "novel": 47939,
+   "in_scope": 47939,
+   "enumerated": 17676604,
+   "classifier_ok": 32305,
+   "selected": 60
+  }
+ },
+ "total_enumerated": 71085052,
+ "seconds": 13.4
+}

@@ -1,0 +1,4 @@
+sequence_id,kind,track_assigned,identity_to_trastuzumab,cdrh3,cdrh3_min_distance,cdrh3_identity_to_trastuzumab,passes,failures
+LEO-WGSYGFYEMS,paired,novel,0.9823788546255506,SRWGSYGFYEMSY,2,0.6923076923076923,false,CDRH3 only 2 mutation(s) from tz_her2_facs_3classes_524346 (SRWGSYGFYMSGY); needs >= 3
+LEO-WKSSGFYSMI,paired,novel,0.9779735682819384,SRWKSSGFYSMIY,3,0.6153846153846154,true,""
+LEO-WTPEGFYEMY,paired,novel,0.9779735682819384,SRWTPEGFYEMYY,3,0.6153846153846154,true,""

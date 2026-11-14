@@ -1,0 +1,86 @@
+=== BSA by Shrake-Rupley, implemented here (no external SASA library) ===
+  file: C:/Users/LESCHI/AppData/Local/Temp/claude/1930a568568a7afc/ba84d58b-f299-47e8-b4f1-566233825871/scratchpad/pdb2/6BGT.cif
+  group A (antibody): ['A', 'B']   group B (antigen): ['C']
+  probe radius 1.4 A, 960 sample points/atom, heavy atoms only (united-atom radii)
+  self-test, isolated carbon: computed 120.76 A^2, analytic 4*pi*(1.70+1.40)^2 = 120.76 A^2, error 1.18e-16
+  self-test, two carbons 1.52 A apart: computed 149.95 A^2, exact spherical-cap 150.37 A^2, error 0.28%
+
+  atoms used: 7763 total (3216 in A, 4547 in B)
+    chain A: 211 residues, author numbering 1..211
+    chain B: 210 residues, author numbering 1..218
+    chain C: 589 residues, author numbering 1..607
+
+  running SASA on the complex ...
+  running SASA on group A alone ...
+  running SASA on group B alone ...
+
+=== TOTAL INTERFACE BSA (measured from structure) ===
+  buried on the antibody side (group A):    874.0 A^2
+  buried on the antigen  side (group B):    984.9 A^2
+  total area buried on assembly        :   1858.9 A^2
+  interface area (one face, = total/2) :    929.5 A^2
+
+=== BSA PER CHAIN ===
+  chain     BSA A^2   share of own side  residues buried >1 A^2
+  A           391.2               44.8%  13
+  B           482.8               55.2%  20
+  C           984.9              100.0%  23
+
+=== CDR LOCATIONS (this structure's author numbering) ===
+  CDR-H1: chain B 31-35  DTYIH
+  CDR-H2: chain B 50-65  RIYPTNGYTRYADSVK
+  CDR-H3: chain B 99-109  WGGDGFYAMDY
+  CDR-L1: chain A 24-34  RASQDVNTAVA
+  CDR-L3: chain A 89-97  QQHYTTPPT
+
+=== BSA PER CDR (antibody side) ===
+  CDR      BSA A^2   % of paratope BSA  res>1A^2  contributing residues (BSA A^2)
+  H3         230.0               26.3%         8  GLY103 66, TYR105 64, PHE104 32, ASP102 21, GLY100 19, TRP99 16, GLY101 9, ASP108 1
+  H2         156.6               17.9%         5  TYR57 68, ARG59 49, ARG50 33, TYR52 3, THR58 3
+  L3         136.0               15.6%         4  TYR92 73, THR94 34, HIS91 25, THR93 4
+  L1         114.6               13.1%         4  ASN30 64, THR31 28, ASP28 12, ALA32 11
+  H1          42.5                4.9%         2  TYR33 31, ASP31 12
+  FRWK       194.3               22.2%            (framework / constant region)
+
+  heavy-chain CDRs 429.1 A^2 (63% of CDR BSA) | light-chain CDRs 250.6 A^2 (37%)
+  all six CDRs 679.7 A^2 = 78% of the antibody-side BSA
+
+=== BSA PER CDRH3 POSITION (WGGDGFYAMDY, chain B 99-109) ===
+    pos  aa   BSA A^2  free SASA   % of its SASA buried
+     99   W      16.0       18.4                  86.8%  <== buried
+    100   G      19.3       20.0                  96.4%  <== buried
+    101   G       8.6       18.9                  45.3%  (trace)
+    102   D      21.2      127.4                  16.6%  <== buried
+    103   G      66.5       70.8                  93.8%  <== buried
+    104   F      32.3       48.2                  67.1%  <== buried
+    105   Y      64.4       87.6                  73.5%  <== buried
+    106   A       0.0        2.9                   0.0%
+    107   M       0.0        0.0                   0.0%
+    108   D       1.5       21.4                   6.8%  (trace)
+    109   Y       0.4       72.5                   0.5%
+
+=== ANTIGEN-SIDE RESIDUES, BSA > 1 A^2 ===
+  23 residues; top by BSA:
+    C TYR588      140.3 A^2
+    C MET589       96.1 A^2
+    C GLU558       90.1 A^2
+    C PHE573       75.6 A^2
+    C PRO571       75.0 A^2
+    C PRO572       72.0 A^2
+    C PRO603       65.4 A^2
+    C ASP560       44.2 A^2
+    C ILE591       43.4 A^2
+    C GLN602       40.8 A^2
+    C PRO557       38.8 A^2
+    C LYS569       36.0 A^2
+    C ASP570       29.2 A^2
+    C GLN561       27.4 A^2
+    C LYS593       23.4 A^2
+    C GLU598       19.9 A^2
+    C ALA600       16.6 A^2
+    C PRO579       14.6 A^2
+    C PRO605       12.7 A^2
+    C ASP596        9.6 A^2
+    C CYS604        8.1 A^2
+    C CYS601        2.8 A^2
+    C VAL575        2.3 A^2

@@ -1,0 +1,84 @@
+[14:44:50] novelty index: 525,042 unique reference loops (10s)
+[14:45:07] bootstrap: 100 cluster-resampled refits
+[14:45:07] imported 244 10-mer windows chosen by Jahn abpipe (read-only) as an independent arm; pool on disk: 0
+[14:45:08] ledger check-run: SEEN (exit 3)  run_id leo-dl-r01-a687ed
+[14:45:08] this exact run is already in the ledger and its output exists: reusing it, not regenerating
+[14:45:08] ledger check: 529 designs: 0 new, 529 already in the ledger, 0 repeated within the file
+[14:45:08] abguard: reusing 529 earlier real verdicts, validating 0 new
+[14:45:08] abguard (real, optimisation track): 529 designs in 0s, 527 PASS, 0 assigned off-track; fast novelty index agrees on 527/529
+[14:45:08]   DISAGREEMENT, first rows:
+     cdrh3  abg_min_dist  fast
+WTVYGFYEMI             2     3
+WWSDGFYSYY             2     3
+[14:45:08] ledger add: logged 0 rows for leo-dl-r01-a687ed (529 unchanged) in variants.csv
+[14:45:08] NanoMelt: reused 527 earlier predictions
+[14:45:08] round 1 done in 1s: shortlist 529, new to the pool 529, pool 529, abguard PASS in pool 527
+[14:45:08] portfolio after round 1: 20 designs; lead WWVEGFYEMI
+[14:45:08] ledger check-run: NEW  run_id leo-dl-r02-37c56c
+[14:45:08] === round 2: wide ===
+[14:45:11]   arm balanced     space   121,000,000  alphabet sizes [10, 10, 11, 11, 1, 10, 1, 10, 10, 10]  kept 1,000,000
+[14:45:36]   arm affinity     space 1,358,954,496  alphabet sizes [8, 8, 9, 9, 8, 8, 8, 8, 8, 8]  kept 1,000,000
+[14:45:52]   arm shell3       seeds 179  enumerated   105,471,018  kept 895,000
+[14:46:04]   arm shell4       seeds 179  enumerated    68,731,979  kept 895,000
+[14:46:21]   balanced     in 1,000,000 -> novel  712,008 -> scope  252,121 -> clf  53,635 -> picked 150   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:46:38]   affinity     in 1,000,000 -> novel  837,573 -> scope  194,088 -> clf  42,982 -> picked 150   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:46:58]   shell3       in   895,000 -> novel  417,072 -> scope  417,072 -> clf  58,645 -> picked 150   best WGSYGFYEMI R -0.40 (-0.96+/-0.56) epi 1.00
+[14:47:17]   shell4       in   895,000 -> novel  387,551 -> scope  387,551 -> clf  70,333 -> picked 150   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:47:17]   round 2: 1,654,157,493 enumerated -> 364 shortlisted in 129s
+[14:47:17] ledger check: 364 designs: 34 new, 330 already in the ledger, 0 repeated within the file
+[14:47:22] abguard (real, optimisation track): 34 designs in 5s, 33 PASS, 0 assigned off-track; fast novelty index agrees on 33/34
+[14:47:22]   DISAGREEMENT, first rows:
+     cdrh3  abg_min_dist  fast
+WGSYGFYEMS             2     3
+[14:47:22] ledger add: logged 364 rows for leo-dl-r02-37c56c (0 unchanged) in variants.csv
+[14:47:52] NanoMelt: 33 designs + control in 29s; control Tm 66.74 C
+[14:47:52] round 2 done in 164s: shortlist 364, new to the pool 34, pool 563, abguard PASS in pool 560
+[14:47:52] portfolio after round 2: 20 designs; lead WWVEGFYEMI
+[14:47:52] ledger check-run: NEW  run_id leo-dl-r03-5e7ffd
+[14:47:52] === round 3: refine-3 ===
+[14:47:52]   arm refine       from top 60 pool designs  moves 10,200
+[14:47:53]   refine       in    10,200 -> novel    8,340 -> scope    4,429 -> clf   2,613 -> picked 120   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:47:53]   round 3: 10,200 enumerated -> 120 shortlisted in 0s
+[14:47:53] ledger check: 120 designs: 104 new, 16 already in the ledger, 0 repeated within the file
+[14:47:53] abguard: reusing 3 earlier real verdicts, validating 101 new
+[14:48:00] abguard (real, optimisation track): 104 designs in 7s, 103 PASS, 0 assigned off-track; fast novelty index agrees on 103/104
+[14:48:00]   DISAGREEMENT, first rows:
+     cdrh3  abg_min_dist  fast
+WPVEGFYEMI             2     3
+[14:48:00] ledger add: logged 120 rows for leo-dl-r03-5e7ffd (0 unchanged) in variants.csv
+[14:48:31] NanoMelt: 103 designs + control in 31s; control Tm 66.74 C
+[14:48:31] round 3 done in 40s: shortlist 120, new to the pool 104, pool 667, abguard PASS in pool 663
+[14:48:32] portfolio after round 3: 20 designs; lead WWVEGFYEMI
+[14:48:32] ledger check-run: NEW  run_id leo-dl-r04-59c28a
+[14:48:32] === round 4: refine-4 ===
+[14:48:32]   arm refine       from top 60 pool designs  moves 10,200
+[14:48:32]   refine       in    10,200 -> novel    7,535 -> scope    3,121 -> clf   2,010 -> picked 120   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:48:32]   round 4: 10,200 enumerated -> 120 shortlisted in 0s
+[14:48:32] ledger check: 120 designs: 1 new, 119 already in the ledger, 0 repeated within the file
+[14:48:34] abguard (real, optimisation track): 1 designs in 1s, 1 PASS, 0 assigned off-track; fast novelty index agrees on 1/1
+[14:48:34] ledger add: logged 120 rows for leo-dl-r04-59c28a (0 unchanged) in variants.csv
+[14:49:01] NanoMelt: 1 designs + control in 28s; control Tm 66.74 C
+[14:49:01] round 4 done in 30s: shortlist 120, new to the pool 1, pool 668, abguard PASS in pool 664
+[14:49:01] portfolio after round 4: 20 designs; lead WWVEGFYEMI
+[14:49:02] ledger check-run: NEW  run_id leo-dl-r05-c420bb
+[14:49:02] === round 5: refine-5 ===
+[14:49:02]   arm refine       from top 60 pool designs  moves 10,200
+[14:49:02]   refine       in    10,200 -> novel    7,535 -> scope    3,121 -> clf   2,010 -> picked 120   best WWVEGFYEMI R -0.60 (-1.09+/-0.49) epi 1.38
+[14:49:02]   round 5: 10,200 enumerated -> 120 shortlisted in 0s
+[14:49:02] ledger check: 120 designs: 0 new, 120 already in the ledger, 0 repeated within the file
+[14:49:02] ledger add: logged 120 rows for leo-dl-r05-c420bb (0 unchanged) in variants.csv
+[14:49:02] round 5 done in 1s: shortlist 120, new to the pool 0, pool 668, abguard PASS in pool 664
+[14:49:02] portfolio after round 5: 20 designs; lead WWVEGFYEMI
+[14:49:02] a refine round found nothing new: the search has converged
+[14:49:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (0s of 1200s)
+[14:50:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (60s of 1200s)
+[14:51:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (120s of 1200s)
+[14:52:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (180s of 1200s)
+[14:53:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (240s of 1200s)
+[14:54:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (300s of 1200s)
+[14:55:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (360s of 1200s)
+[14:56:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (420s of 1200s)
+[14:57:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (480s of 1200s)
+[14:58:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (540s of 1200s)
+[14:59:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (600s of 1200s)
+[15:00:02] finalize: waiting for the GPU worker to fold 20 of 20 portfolio designs (660s of 1200s)

@@ -1,0 +1,39 @@
+[14:44:40] GPU worker started; folding only when the card is free
+[14:45:10] GPU busy (11137 MiB used by another job); waiting for it to free up
+[14:46:00] GPU still busy after 45s (11603 MiB used); skipping this stage
+[14:46:00] card busy (11603 MiB held by another job); 527 designs queued
+[14:46:00] GPU busy (11603 MiB used by another job); waiting for it to free up
+[14:46:51] GPU still busy after 45s (8463 MiB used); skipping this stage
+[14:46:51] GPU busy (8463 MiB used by another job); waiting for it to free up
+[14:48:55] GPU busy (3409 MiB used by another job); waiting for it to free up
+[14:49:45] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:49:45] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:50:36] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:50:36] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:51:26] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:51:26] card busy (3627 MiB held by another job); 664 designs queued
+[14:51:26] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:52:16] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:52:16] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:53:06] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:53:06] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:53:56] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:53:56] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:54:46] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:54:47] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:55:37] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:55:37] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:56:27] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:56:27] card busy (3627 MiB held by another job); 664 designs queued
+[14:56:27] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:57:17] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:57:17] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:58:07] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:58:07] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:58:43] GPU worker started; folding only when the card is free
+[14:58:43] GPU busy (3627 MiB used by another job); waiting for it to free up
+[14:59:33] GPU still busy after 45s (3627 MiB used); skipping this stage
+[14:59:33] card busy (3627 MiB held by another job); 664 designs queued
+[14:59:34] GPU busy (3627 MiB used by another job); waiting for it to free up
+[15:00:24] GPU still busy after 45s (3627 MiB used); skipping this stage
+[15:00:24] GPU busy (3627 MiB used by another job); waiting for it to free up

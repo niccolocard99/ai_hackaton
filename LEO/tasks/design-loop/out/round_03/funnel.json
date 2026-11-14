@@ -1,0 +1,23 @@
+{
+ "round": 3,
+ "cfg": {
+  "name": "refine-3",
+  "refine_top": 60,
+  "per_arm": 120,
+  "min_div": 1
+ },
+ "funnel": {
+  "refine": {
+   "in": 10200,
+   "unique": 9431,
+   "identity_ok": 9395,
+   "novel": 8340,
+   "in_scope": 4429,
+   "enumerated": 10200,
+   "classifier_ok": 2613,
+   "selected": 120
+  }
+ },
+ "total_enumerated": 10200,
+ "seconds": 0.3
+}

@@ -1,0 +1,76 @@
+{
+ "round": 1,
+ "cfg": {
+  "name": "broad",
+  "product_arms": [
+   "conservative",
+   "balanced",
+   "affinity"
+  ],
+  "m_balanced": 9,
+  "m_affinity": 7,
+  "keep": 800000,
+  "shell_seeds": 120,
+  "shell_radii": [
+   3
+  ],
+  "m_shell": 7,
+  "keep_per_seed": 6000,
+  "per_arm": 150,
+  "min_div": 2
+ },
+ "funnel": {
+  "conservative": {
+   "in": 800000,
+   "unique": 800000,
+   "identity_ok": 800000,
+   "novel": 461300,
+   "in_scope": 303914,
+   "enumerated": 30046752,
+   "classifier_ok": 7348,
+   "selected": 150
+  },
+  "balanced": {
+   "in": 800000,
+   "unique": 800000,
+   "identity_ok": 800000,
+   "novel": 558074,
+   "in_scope": 192691,
+   "enumerated": 53144100,
+   "classifier_ok": 47179,
+   "selected": 150
+  },
+  "affinity": {
+   "in": 800000,
+   "unique": 800000,
+   "identity_ok": 800000,
+   "novel": 672050,
+   "in_scope": 152986,
+   "enumerated": 421654016,
+   "classifier_ok": 30210,
+   "selected": 150
+  },
+  "shell3": {
+   "in": 720000,
+   "unique": 679141,
+   "identity_ok": 679141,
+   "novel": 315003,
+   "in_scope": 315003,
+   "enumerated": 70727216,
+   "classifier_ok": 57370,
+   "selected": 150
+  },
+  "abpipe": {
+   "in": 244,
+   "unique": 244,
+   "identity_ok": 244,
+   "novel": 244,
+   "in_scope": 180,
+   "enumerated": 244,
+   "classifier_ok": 40,
+   "selected": 36
+  }
+ },
+ "total_enumerated": 575572328,
+ "seconds": 62.6
+}

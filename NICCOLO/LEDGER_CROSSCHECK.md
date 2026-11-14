@@ -201,3 +201,36 @@ both is better, and I had not tested it. That came out of his aggregator, not mi
 **Dilution is real:** all five columns (+0.659) is worse than the best two (+0.729). `borda` with no
 `columns` set — the `baseline.yaml` default — ranks on every registered score equally, which drags the two
 good signals down with the weak ones. Column sets should be chosen, not defaulted.
+
+## Re-check after JAHN's selection fixes (commit `8cd70a4`)
+
+He fixed two defects in `select_diverse` found in his first full 3-round run. Re-verified on my side:
+
+**Nothing of mine broke.** His 25 tests pass (2 new regression tests), and the pre-filter scorer, the gate
+filter and the no-splits path all still work. He did not touch my `_niccolo.py` fixes, and the
+`niccolo_loop.yaml` column change survived.
+
+**His factual claims about my data are exact.** 658 legal 10-mer variants, 131 with a KD, 9 of those below
+1 nM, tightest 0.095 nM = log10 −1.02. His extrapolation warning in `LOOP.md` — that a predicted log10 KD
+below −1.02 is tighter than anything measured in the legal band — is correctly derived and is a caveat I
+had not written down myself.
+
+**The fix is a measured improvement.** Ranking the 131 legal variants with measured KD by the pipeline's own
+borda(`pred_log10_kd`, `p_binder`) using out-of-fold scores, then running both versions of `select_diverse`:
+
+| n asked | old: median KD | new: median KD | plain top-N | old median pool rank | new |
+|---|---|---|---|---|---|
+| 10 | 10.5 nM | **3.9 nM** | 3.9 nM | 7 | 5 |
+| 20 | 15.2 nM | **4.6 nM** | 6.5 nM | 13 | 10 |
+| 30 | 16.5 nM | **12.0 nM** | 12.9 nM | 20 | 14 |
+
+Cluster bootstrap on the difference at n=20: **−0.504 log10, 95% CI [−1.212, −0.041]** — entirely below
+zero, so the new selector really does pick tighter binders, by a median factor of about **3.2x**. His
+"starved walk" diagnosis is confirmed: the old version drew from deeper in the pool at every size.
+
+At n=20 the new selector also beats a plain top-20 (4.6 vs 6.5 nM) while still enforcing the diversity cap,
+so the constraint is not costing affinity here — it is dropping redundant near-duplicates.
+
+**The trade-off to plan around:** the new version returns a shorter list rather than padding. Across
+bootstrap resamples it returned a median of **12 of 20** requested. If we need 20 submissions, either the
+candidate pool has to be larger or `--pool-frac` raised; asking for 20 will not reliably give 20.

@@ -1,0 +1,66 @@
+{
+ "round": 2,
+ "cfg": {
+  "name": "wide",
+  "product_arms": [
+   "balanced",
+   "affinity"
+  ],
+  "m_balanced": 10,
+  "m_affinity": 8,
+  "keep": 1000000,
+  "shell_seeds": 187,
+  "shell_radii": [
+   3,
+   4
+  ],
+  "m_shell": 7,
+  "keep_per_seed": 5000,
+  "per_arm": 150,
+  "min_div": 2
+ },
+ "funnel": {
+  "balanced": {
+   "in": 1000000,
+   "unique": 1000000,
+   "identity_ok": 1000000,
+   "novel": 712008,
+   "in_scope": 252121,
+   "enumerated": 121000000,
+   "classifier_ok": 53635,
+   "selected": 150
+  },
+  "affinity": {
+   "in": 1000000,
+   "unique": 1000000,
+   "identity_ok": 1000000,
+   "novel": 837573,
+   "in_scope": 194088,
+   "enumerated": 1358954496,
+   "classifier_ok": 42982,
+   "selected": 150
+  },
+  "shell3": {
+   "in": 895000,
+   "unique": 836533,
+   "identity_ok": 836533,
+   "novel": 417072,
+   "in_scope": 417072,
+   "enumerated": 105471018,
+   "classifier_ok": 58645,
+   "selected": 150
+  },
+  "shell4": {
+   "in": 895000,
+   "unique": 684760,
+   "identity_ok": 684760,
+   "novel": 387551,
+   "in_scope": 387551,
+   "enumerated": 68731979,
+   "classifier_ok": 70333,
+   "selected": 150
+  }
+ },
+ "total_enumerated": 1654157493,
+ "seconds": 128.9
+}
