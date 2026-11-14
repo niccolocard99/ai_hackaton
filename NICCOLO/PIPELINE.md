@@ -204,9 +204,14 @@ From `LEDGER_CROSSCHECK.md`, Mann-Whitney with BH correction over all 10 positio
 - **Conserve W99, Y105, F104, M107** — mutating any of them associates with *weaker* binding
   (q < 0.001, < 0.001, 0.028, 0.040).
 
-Counting substitutions at those costly positions predicts affinity better than mutation count alone
-(Spearman +0.505 vs +0.234). Note that only **1 of 131** legal variants beats trastuzumab's measured KD, and
-**0 of 131** beat its best replicate — and all 131 are in the provided data, so none is itself submittable.
+This is **design guidance, not a better predictor.** The ranker already encodes the same per-position
+structure — its implied costs agree with the measured effects at Spearman +0.794 across the 10 positions —
+and adding a costly-position counter to it changes nothing out-of-fold (+0.683 → +0.684, CI [−0.005,
++0.011]). Use the table to decide *where to put substitutions when generating* a design; use the ranker to
+score the result.
+
+Note that only **1 of 131** legal variants beats trastuzumab's measured KD, and **0 of 131** beat its best
+replicate — and all 131 are in the provided data, so none is itself submittable.
 
 ## 7. What would actually move the needle
 

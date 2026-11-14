@@ -9,8 +9,8 @@
 | | |
 |---|---|
 | Experiments | 9 (`worked` 7, `failed` 1, `inconclusive` 1) — **3 of them ours** |
-| Theories | 17 active + 2 retired — `low` 1, `medium` 7, `high` 9 |
-| Ideas | 15 open/lit-checked, 2 done |
+| Theories | 18 active + 2 retired — `low` 1, `medium` 6, `high` 11 |
+| Ideas | 14 open/lit-checked, 3 done |
 | Research passes | 7 (step B blocked: no credits) |
 | AMASS spend | 14 searches, $0.70 — **team credits now exhausted**, see Blocked |
 | Published | PR #2 **merged** into `main` at `27b6982`; later work goes out as a new PR |
@@ -45,6 +45,7 @@ alone until credits are topped up.
 | EXP-001 backfilled from `LEO/STATE.md` with its five reasons for being unrankable | cross-checked against `runs/her2/scored-boltz2` figures in that file | initial |
 | `research_pass.py` runs a scoped pass, caches, tracks spend, writes pass files | pass-001 executed at `--max-new 0`, zero spend | initial |
 | Field parser bug fixed: `\s*` swallowed the line after an empty field | 4 of 8 theories had silently lost `query_terms`; re-ran and all 8 parse | initial |
+| **EXP-009: cross-checked this ledger against the full SPR-768 table** — overturned TH-019's hit rate and inverted IDEA-008's recipe | `python -I validate.py` passes; scripts in `NICCOLO/eda/p15`–`p17` | this pass |
 
 ## Blocked
 
@@ -60,8 +61,8 @@ alone until credits are topped up.
 
 0. **Top up AMASS credits** (or accept repo-scan-only passes). Step B cannot run at all until then — though note Step A has produced every substantive result so far.
 1. **IDEA-011 — switch the ranker.** Adopt the sequence pre-filter (`NICCOLO/eda/prefilter.py`, branch `origin/nick`) as the primary ranking for optimisation-track designs. Costs no GPU, runs on a laptop, and replaces a metric EXP-003 shows is near-useless (Boltz-2 ipTM AUROC 0.645) with one at Spearman +0.622 against measured KD. Highest-value action available.
-2. **IDEA-017 — pull the full SPR-768 table** (one `scp`, then re-run two scripts we have). Every affinity number here comes from a 60-variant calibration subset that was *chosen*, not sampled, so TH-019's hit rate is an existence proof rather than a frequency. Cheapest high-value item on the board.
-3. **IDEA-008 — hand the design to whoever has the GPU**, now with measured substitutions: A106→L, D108→V, plus a deliberate choice between M107→H (safe, costs affinity) and D102→Q/E (largest measured gain, but contacts in 6 of 8 structures). 63.6% identity either way.
+2. ~~IDEA-017 — pull the full SPR-768 table~~ **DONE (EXP-009).** It cost us two claims: the legal-band hit rate is **1 of 131 (0.8%)**, not 1 of 21, and **0 of 131** against trastuzumab's best replicate; and the per-position pattern behind IDEA-008 was a base-rate artefact.
+3. **IDEA-008 — hand the design to whoever has the GPU**, with the recipe **revised by EXP-009**: `G100 + G101 + A106 + D108`, 63.6% identity. **Do not run the old recipe** — M107 (q=0.040) and F104 (q=0.028) measurably *hurt* affinity on 131 legal variants, A106/D102/D108 are inert, and G100/G101 are the only two positions where mutating helps. M107 never contacts HER2 yet is the costliest to mutate, so non-contact means tolerated, not free.
 3. **IDEA-005 — add a VHH** alongside the scFv designs. TH-012: the only format where both no-proxy properties (Tm, structure accuracy) are covered.
 4. Each pass: scan the repo for new committed results, `--scope` the weakest theory, apply, commit.
 5. IDEA-010 — energetics for Y109, the one assumption IDEA-008 rests on and the one position SPR-768 cannot speak to. pass-003 proved the literature will not answer it.

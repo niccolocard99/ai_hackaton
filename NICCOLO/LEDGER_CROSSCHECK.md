@@ -68,24 +68,36 @@ all 10 positions:
 *harmful*, D102/A106/D108 are inert, and the two positions that actually help — **G100 and G101** — are not
 in it. Caveat: M107 conserved has n=11, so its effect size is uncertain even though the sign is clear.
 
-## 4. What we were all missing: a better aggregate signal
+## 4. The position table is a readout of the ranker, not new predictive signal
 
-Counting substitutions at the seven "mutating hurts" positions (W99, D102, G103, F104, Y105, A106, M107)
-predicts affinity far better than mutation count alone:
+An earlier version of this file quoted "substitutions at the costly positions → Spearman **+0.505**, versus
++0.234 for mutation count" and called it a better aggregate signal. **That framing was wrong.** The +0.505
+is an in-sample univariate correlation on the 131 legal variants, with no cross-validation, so it is not
+comparable to the ranker's out-of-fold **+0.683**. It is lower, not higher.
 
-| Predictor | Spearman vs log10 KD, 131 legal variants |
+Two tests (`eda/p17_is_it_new.py`):
+
+| Test | Result |
 |---|---|
-| substitutions at the "hurts" positions | **+0.505** (p < 1e-8) |
-| total mutation count | +0.234 (p = 0.007) |
+| Ranker's implied per-position cost vs the measured effect | **Spearman +0.794**, p=0.006, agreeing on **8 of 10** positions |
+| Ranker + costly-position counter, out-of-fold | +0.683 → +0.684, 95% CI [−0.005, +0.011] — **no difference** |
 
-**Revised design guidance:** the identity rule forces ≥4 substitutions, so spend them where they cost least
-— **G100 and G101 first** (both associated with *tighter* binding), then D102/A106/D108 (inert) — and
-**conserve W99, Y105, F104 and M107**.
+The ridge already encodes the per-position structure in its coefficients. The counter is redundant.
 
-That this is partly discoverable from the ledger's own structural work makes it more credible, not less:
-EXP-002 found A106/M107/D108 never contact HER2 in 8 crystal structures. Non-contact predicts *tolerance*
-(A106 and D108 are indeed inert) but not *benefit* — and M107 shows non-contact positions can still be
-costly to change. Contact analysis bounds the damage; it does not pick the substitutions.
+**What the position table is actually for**, then:
+
+1. **Design guidance, which the ranker cannot give.** The ranker *scores* finished sequences; it does not
+   tell you where to spend the ≥4 substitutions the identity rule forces when *generating* a design. The
+   position table does, and that is what IDEA-008 needs.
+2. **Independent corroboration that the ranker is not fitting noise.** Ridge coefficients from 179 variants
+   and a rank test on 131 legal variants are different estimators, and they agree on 8 of 10 positions.
+3. **The two disagreements are the interesting part — and they are exactly EXP-008's two positions.** At
+   D102 and A106 the ranker says mutating helps while the measured test says inert. Both agree they are not
+   costly, and neither supports building a recipe around them.
+
+None of this weakens §1–§3, which are facts about the landscape and a methodological error, not Spearman
+claims: the hit rate is 1 in 131, the "8 of 8" convergence is a base-rate artefact, and M107/F104 are
+measurably costly to mutate.
 
 ---
 
@@ -110,5 +122,6 @@ costly to change. Contact analysis bounds the damage; it does not pick the subst
 | **EXP-008** | add a base-rate column to any "mutated in N of N winners" claim |
 | **IDEA-017** | **answered** — see §1; no `scp` needed, the numbers are here |
 | New standing rule | any "winners share X" claim must report how common X is among non-winners |
+| New standing rule | compare a new predictor against the existing model out-of-fold, never an in-sample univariate r against a CV score |
 
 All figures reproducible with `python -I eda/p15_ledger_check.py` and `python -I eda/p16_position_test.py`.
