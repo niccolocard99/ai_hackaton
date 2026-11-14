@@ -211,6 +211,7 @@ clashes, and 3 to 6 interchain H-bonds. All four pass `NICCOLO/scripts/check_den
 So the designs do land on trastuzumab's epitope, and each overlaps trastuzumab's Fv heavily, which is the
 expected signature of competing for the same site. That is a geometric proxy for the competition assay,
 not a measurement of it. Four designs say nothing about the rate across a batch.
+<<<<<<< HEAD
 
 **Batch 1 (`fixedfw`, 100 designs, seed 2) plus the 4 smoke designs, scored 14 Nov.**
 
@@ -263,3 +264,5 @@ How to read the result: the number that matters is the share of children (and of
 the strong-epitope bar, against batch 1's 8%. A child that scores well is a design-pose measurement, not
 evidence of binding. Untested: a multi-parent refine spec (`input_as_annotated_cif` with a partial-trajectory
 fraction); if RFD4 rejects it, fall back to one parent per run with `--input parent.cif`.
+=======
+>>>>>>> origin/main

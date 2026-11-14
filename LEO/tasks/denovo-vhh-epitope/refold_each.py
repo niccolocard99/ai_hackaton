@@ -6,10 +6,17 @@ target separately"). Designs with different CDR lengths shift the framework resi
 share them. For each design in the list this builds a one-design tree (select_for_refold.py), then runs
 refold.sh on it (prepare, fold, score), and finally merges every refold_metrics.csv into one summary.
 
+<<<<<<< HEAD
     FORCE=1 ./refold_each.py results/batch1-shortlist.csv shortlist1 of3ob [N]
 
 LIST is a CSV with a sequence_id column (RUN__EXAMPLE), e.g. the shortlist from score_designs.py. NAME is the
 output folder under runs/. MODEL is of3ob or protenix-v2 (no Boltz: team decision). N limits the run to the first N designs.
+=======
+    FORCE=1 ./refold_each.py results/batch1-shortlist.csv shortlist1 boltz2 [N]
+
+LIST is a CSV with a sequence_id column (RUN__EXAMPLE), e.g. the shortlist from score_designs.py. NAME is the
+output folder under runs/. MODEL is boltz2, of3ob or protenix-v2. N limits the run to the first N designs.
+>>>>>>> origin/main
 Output: runs/NAME/refold_summary.csv. Each design takes about one docker start per step, so budget minutes
 per design, not seconds. FORCE=1 is passed through to the GPU guard in refold.sh.
 
@@ -20,7 +27,10 @@ import csv
 import os
 import subprocess
 import sys
+<<<<<<< HEAD
 import time
+=======
+>>>>>>> origin/main
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -45,6 +55,7 @@ def main():
             w.writerow(r)
         print(f"\n##### {i}/{len(rows)}  {sid}", flush=True)
         subprocess.run([sys.executable, str(HERE / "select_for_refold.py"), str(one), str(d / "in")], check=True, cwd=HERE)
+<<<<<<< HEAD
         for _ in range(180):  # refold.sh exits 3 only from its GPU guard (another oslo-hackathon container is running)
             res = subprocess.run([str(HERE / "refold.sh"), f"{name}/{sid}", "1", model],
                                  env={**os.environ, "DESIGN_DIR": str(d / "in")}, cwd=HERE)
@@ -52,6 +63,10 @@ def main():
                 break
             print("GPU busy, retrying in 20 s", flush=True)
             time.sleep(20)
+=======
+        res = subprocess.run([str(HERE / "refold.sh"), f"{name}/{sid}", "1", model],
+                             env={**os.environ, "DESIGN_DIR": str(d / "in")}, cwd=HERE)
+>>>>>>> origin/main
         scored = HERE / d / f"scored-{model}" / "refold_metrics.csv"
         if res.returncode != 0 or not scored.is_file():
             failed.append(sid)

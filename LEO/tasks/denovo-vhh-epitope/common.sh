@@ -6,9 +6,13 @@ DESIGN_IMG=$Q:apheris-rfd4-proteina-v0.3.0-antibody-2026-10-30
 
 # Options that go in front of every model command (18-vm.md, "Run a design"). Mounts the current
 # directory as /work, so scripts cd to the task folder first and all outputs stay under runs/.
+<<<<<<< HEAD
 # --cpus 3 and the thread caps: the VM is CPU-saturated (team request, 14 Nov: stay under about 3 cores).
 RUN="docker run --rm --gpus all --shm-size 16g --cpus 3 --user $(id -u):$(id -g) -e HOME=/tmp \
   -e OMP_NUM_THREADS=2 -e MKL_NUM_THREADS=2 -e OPENBLAS_NUM_THREADS=2 \
+=======
+RUN="docker run --rm --gpus all --shm-size 16g --user $(id -u):$(id -g) -e HOME=/tmp \
+>>>>>>> origin/main
   -v /etc/passwd:/etc/passwd:ro -v $PWD:/work -w /work"
 
 # One H100 80 GB is shared by the whole team: do not start a heavy job while another is running.

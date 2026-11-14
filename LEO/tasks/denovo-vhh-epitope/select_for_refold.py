@@ -80,7 +80,11 @@ def main():
     result["result"]["designs"] = designs
     (HERE / out / "result.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf8")
     print(f"{len(rows)} designs from {len(runs)} run(s) -> {HERE / out}")
+<<<<<<< HEAD
     print(f"next: DESIGN_DIR={out} ./refold.sh NAME {len(rows)} of3ob")
+=======
+    print(f"next: DESIGN_DIR={out} ./refold.sh NAME {len(rows)} boltz2")
+>>>>>>> origin/main
 
 
 if __name__ == "__main__":

@@ -5,7 +5,10 @@
   },
   "outputs": {
     "design_fixedfw.json": "2f28e02d2965fa14232222f9b69f32a0dbf780ee49c7a59f5e99d0d20f5dd6cf",
+<<<<<<< HEAD
     "design_fixedfw_long.json": "cac3a877faa70179e4b711f9aa940f6ac55ac532ea61ab8194902972a39818a2",
+=======
+>>>>>>> origin/main
     "design_freefw.json": "1f961fbea5289b3ac08ab40ba8a6cd8501b992f92c23db86e2e5458877590f77",
     "framework_vhh.cif": "66354d95f32759701d82c8b0048c005436e0dea3226ba65e005807d12da2a1f7",
     "target_her2_d4.cif": "6ec157d42a5533a844d2eeeccf1c32cd32e11880e8e2ff975e49894c5bbe2445"
