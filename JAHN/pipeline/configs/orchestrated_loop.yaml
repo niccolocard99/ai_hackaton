@@ -40,5 +40,8 @@ filters:                   # cheap first, expensive last; each runs on the previ
 scorers:
   - {name: niccolo_prefilter, params: {splits_dir: "${HOME}/nick-work/splits"}}
 
-# Niccolo's cascade: gate on p_binder (the filter above), then rank on predicted log10 KD (lower is tighter).
-aggregator: {name: borda, params: {columns: [score__pred_log10_kd]}}
+# Rank on BOTH columns (equal weights): borda(pred_log10_kd, p_binder) measured +0.729 Spearman vs
+# +0.680 on pred_log10_kd alone (NICCOLO/eda/p18-p19, PR #13); in the legal >=4-sub band the gap is
+# not established (+0.041, CI [-0.005, +0.092]) but the sign holds and it never hurt. Ranking on
+# every score__* column is worse than the best two (+0.659 vs +0.729), so the columns stay explicit.
+aggregator: {name: borda, params: {columns: [score__pred_log10_kd, score__p_binder]}}
