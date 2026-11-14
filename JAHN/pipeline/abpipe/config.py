@@ -9,7 +9,7 @@ from pathlib import Path
 import yaml
 
 TOP_KEYS = {"run", "data_dir", "repo_root", "plugins", "parent", "generators", "generator",
-            "filters", "scorers", "aggregator", "orchestrate"}
+            "filters", "scorers", "aggregator", "orchestrate", "validate"}
 RUN_KEYS = {"name", "out_dir", "cache_dir", "seed"}
 ORCHESTRATE_KEYS = {"policy", "agent_cmd", "patience", "deadline", "primary", "select", "rounds"}
 
@@ -98,6 +98,11 @@ def load(source, base_dir: Path | None = None) -> Config:
     bad = set(orch) - ORCHESTRATE_KEYS
     if bad:
         raise ConfigError(f"unknown orchestrate keys {sorted(bad)}; allowed {sorted(ORCHESTRATE_KEYS)}")
+    val = raw.get("validate")
+    if val is not None:
+        if not isinstance(val, dict) or "name" not in val or set(val) - {"name", "params"}:
+            raise ConfigError("`validate` must be {name: <filter>, params: {...}}; it runs on the "
+                              "selected shortlist, after ranking, instead of on every survivor")
     out_dir = Path(run.get("out_dir", "runs"))
     repo_root = raw.get("repo_root")
     if repo_root is None:

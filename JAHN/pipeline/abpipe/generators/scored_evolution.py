@@ -70,7 +70,7 @@ class ScoredEvolution(Generator):
     be at least min_dist_provided substitutions from every provided window, and be new (not in `history`).
     """
 
-    version = "1"
+    version = "2"
 
     def __init__(self, parents: str | None = None, parents_sha256: str | None = None, history: tuple = (),
                  history_sha256: str | None = None, n_elite: int = 100, frac_sample: float = 0.4,
@@ -93,7 +93,7 @@ class ScoredEvolution(Generator):
         self.w_clf, self.w_rank, self.w_facs, self.temperature, self.eta = w_clf, w_rank, w_facs, temperature, eta
         self.min_dist_provided, self.exclude = min_dist_provided, exclude
         self.eda_dir, self.splits_dir, self.spr_csv = eda_dir, splits_dir, spr_csv
-        self.version = f"1+{_niccolo.quick_tag(eda_dir)}"
+        self.version = f"2+{_niccolo.quick_tag(eda_dir)}"
 
     # ------------------------------------------------------------------ inputs
     def _elites(self, parent) -> np.ndarray:
@@ -123,11 +123,17 @@ class ScoredEvolution(Generator):
         return np.unique(np.concatenate(codes)) if codes else np.zeros(0, np.int64)
 
     def _facs_enrichment(self, ctx: Context) -> np.ndarray:
-        """log fold-enrichment of each residue at each position among FACS 'high' variants (smoothed)."""
+        """log fold-enrichment of each residue at each position among FACS binder variants (smoothed).
+
+        Binder means FACS class high or medium — the team's rule: {high, medium} are binders,
+        everything else (low, unclassified) is a non-binder. The classes are NOT an affinity
+        ranking (AGENT_GUIDE section 5: median KD is 7.2 nM for high, 4.2 nM for medium), so
+        this is only a prior on measurability, never a ranker.
+        """
         facs = data.facs_table(ctx)
         S = novelty.encode([w for w in facs["cdrh3"].to_list() if len(w) == L and set(w) <= set(AA)])
         keep = [i for i, w in enumerate(facs["cdrh3"].to_list()) if len(w) == L and set(w) <= set(AA)]
-        hi = facs["binding_class"].is_in(["high"]).to_numpy()[keep]
+        hi = facs["binding_class"].is_in(["high", "medium"]).to_numpy()[keep]
         base = hi.mean()
         E = np.zeros((L, NA))
         for p in range(L):

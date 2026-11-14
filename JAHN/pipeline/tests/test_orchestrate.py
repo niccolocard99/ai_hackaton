@@ -53,7 +53,7 @@ def plugin(tmp_path_factory):
     sys.path.remove(str(d))
 
 
-def toy_cfg(tmp_path, plugin, *, n=8, rounds=None):
+def toy_cfg(tmp_path, plugin, *, n=8, rounds=None, validate=None):
     raw = {"run": {"name": "t", "out_dir": str(tmp_path / "runs"), "seed": 1},
            "data_dir": str(tmp_path), "repo_root": str(tmp_path), "plugins": [plugin],
            "generators": [{"name": "t2_gen", "n": n}],
@@ -62,7 +62,25 @@ def toy_cfg(tmp_path, plugin, *, n=8, rounds=None):
            "aggregator": {"name": "borda", "params": {"columns": ["score__len"]}}}
     if rounds:
         raw["orchestrate"] = rounds
+    if validate:
+        raw["validate"] = validate
     return raw
+
+
+def test_validate_runs_on_the_selection_after_ranking(tmp_path, plugin):
+    """A `validate:` filter runs on the selected rows only, drops its failures, and is journaled."""
+    raw = toy_cfg(tmp_path, plugin, validate={"name": "t2_min_len", "params": {"min_len": 16}})
+    out = tmp_path / "orch"
+    doc = orchestrate.run_orchestrated(raw, rounds=2, select=10, out_dir=out, log=lambda m: None)
+    for r in (0, 1):
+        sel = pl.read_parquet(out / f"round_0{r}" / "selected.parquet")
+        assert (sel["heavy_sequence"].str.len_chars() >= 16).all() if sel.height else True
+        meta = json.loads((out / f"round_0{r}" / "loop_round.json").read_text())
+        assert meta["validate"]["rows_in"] >= meta["validate"]["rows_out"]
+    entry = [e for e in doc["rounds"] if e["round"] == 0][0]
+    assert "validate" in entry and entry["validate"]["dropped"] >= 1
+    assert "validate  t2_min_len" in (out / "round_00" / "STEPS.md").read_text()
+    assert "BASE VALIDATION on the shortlist" in (out / "round_00" / "REPORT.md").read_text()
 
 
 BASE_STATE = {"loop": {"select": 60, "min_pair_hamming": 3, "max_sub_share": 0.25, "pool_frac": 0.10},

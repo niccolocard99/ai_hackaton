@@ -133,6 +133,39 @@ def _lite_stats(man: dict, sel: pl.DataFrame, scored: pl.DataFrame, pool_n: int,
     return st
 
 
+def _validate_selection(raw: dict, sel: pl.DataFrame, ctx, rd: Path, slog) -> tuple[pl.DataFrame, dict | None]:
+    """BASE VALIDATION on the shortlist only: run the `validate:` filter on the selected rows.
+
+    The frozen stage-1 chain runs track_check on every survivor, which costs minutes per round at
+    n=20000 while rejecting candidates the selection would never keep. Here the same official
+    checkers run on what is actually selected (order of magnitude: 60 rows, not 13,600), after the
+    ranking. Failures drop out of the selection and are journaled like any filter stage.
+    """
+    spec = raw.get("validate")
+    if not spec or sel.height == 0:
+        return sel, None
+    flt = registry.get("filter", spec["name"])(**spec.get("params") or {})
+    t0 = time.time()
+    res, cached = runner._cached(ctx, {"stage": "validate", "name": spec["name"], "version": flt.version,
+                                       "params": spec.get("params") or {},
+                                       "input": runner.schema.content_hash(sel, runner._KEY_COLS)},
+                                 lambda: flt.check(sel, ctx))
+    keep = res.filter(pl.col("reason").is_null())
+    info = [c for c in res.columns if c.startswith("info__")]
+    out = sel.join(keep.select("sequence_id"), on="sequence_id", how="semi").join(
+        res.select("sequence_id", *info), on="sequence_id", how="left") if info else \
+        sel.join(keep.select("sequence_id"), on="sequence_id", how="semi")
+    dropped = sel.height - out.height
+    entry = {"name": spec["name"], "version": flt.version, "params": spec.get("params") or {},
+             "rows_in": sel.height, "rows_out": out.height, "failed": dropped, "seconds": round(time.time() - t0, 1),
+             "cached": cached, "rejections": [{"sequence_id": r["sequence_id"], "reason": r["reason"]}
+                                               for r in res.filter(pl.col("reason").is_not_null())
+                                               .head(20).iter_rows(named=True)]}
+    slog(f"  validate  {spec['name']:<24} {sel.height:>7} -> {out.height:>7}  ({dropped} dropped)"
+         f"{'  (cached)' if cached else ''}")
+    return out, entry
+
+
 def _round_entry(r, snap, decision, budget, st=None) -> dict:
     entry = {"round": r, "utc": snap["utc"], "source": decision.source, "reasoning": decision.reasoning,
              "patch": decision.patch, "stop": decision.stop, "stop_reason": decision.stop_reason,
@@ -142,7 +175,7 @@ def _round_entry(r, snap, decision, budget, st=None) -> dict:
     if st:
         entry.update({k: st[k] for k in ("generated", "survivors", "selected", "carried_over",
                                          "new_in_selected", "wall_seconds", "selected_medians",
-                                         "mean_pairwise_hamming") if k in st})
+                                         "mean_pairwise_hamming", "validate") if k in st})
     return entry
 
 
@@ -298,6 +331,7 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
                                  lp["max_sub_share"], lp["pool_frac"])
         else:
             sel = select_generic_diverse(ranked, lp["select"], lp["min_pair_hamming"])
+        sel, ventry = _validate_selection(raw_current, sel, ctx, rd, slog)
         carried = int(sel["sequence_id"].is_in(prev["sequence_id"].to_list()).sum()) if prev is not None else 0
         _write_selected(sel, rd)
         cfg_sha = hashlib.sha256(json.dumps(raw_current, sort_keys=True, default=str).encode()).hexdigest()[:16]
@@ -305,13 +339,17 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
                                                          "min_pair_hamming": lp["min_pair_hamming"],
                                                          "max_sub_share": lp["max_sub_share"],
                                                          "pool_frac": lp["pool_frac"],
-                                                         "patch_applied": decision.patch}))
+                                                         "patch_applied": decision.patch,
+                                                         "validate": ventry}))
         if ctx.parent is not None:
             st = _round_stats(man, sel, scored, ctx.parent, pool.height, carried)
         else:
             st = _lite_stats(man, sel, scored, pool.height, carried)
         st["selected_medians"] = {c: st[c]["selected_median"] for c in st if isinstance(st.get(c), dict)
                                   and "selected_median" in st[c]}
+        if ventry:
+            st["validate"] = {"in": ventry["rows_in"], "out": ventry["rows_out"],
+                              "dropped": ventry["failed"], "top_rejections": ventry["rejections"][:5]}
         st["round"], st["wall_seconds"] = r, round(time.time() - t0, 1)
         entry = _round_entry(r, snap, decision, budget, st)
         report.iteration_report(rd, entry, man)

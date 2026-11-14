@@ -113,6 +113,12 @@ def iteration_report(rd: Path, entry: dict, man: dict | None = None) -> None:
         L += ["", f"## Outcome: {entry.get('generated')} generated -> {entry.get('survivors')} survive filters "
               f"-> {entry.get('selected')} selected ({entry.get('carried_over', 0)} carried over, "
               f"{entry.get('new_in_selected', 0)} new)"]
+        v = entry.get("validate")
+        if v:
+            L.append(f"- BASE VALIDATION on the shortlist: {v['in']} in -> {v['out']} out "
+                     f"({v['dropped']} dropped by the official checkers)")
+            for rej in (v.get("top_rejections") or [])[:5]:
+                L.append(f"    - {rej['sequence_id']}: {rej['reason']}")
         if entry.get("selected_medians"):
             L.append(f"- selected medians: {json.dumps(entry['selected_medians'], sort_keys=True)}")
         if entry.get("mean_pairwise_hamming") is not None:

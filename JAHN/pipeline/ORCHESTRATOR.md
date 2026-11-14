@@ -92,6 +92,12 @@ Per round, under `--out`:
 
 ## Known gaps (do not read past these)
 
+- **Binder semantics (team rule, 14 Nov):** a FACS class of high or medium means binder;
+  everything else means non-binder. This is a binary split, never a ranking — the FACS classes do
+  not track KD (AGENT_GUIDE section 5), so affinity still comes only from the SPR-trained
+  pre-filter. Encoded in `scored_evolution._facs_enrichment` (prior) and `nearest_known_binder`
+  (binder_classes default), both version-bumped so no cached result predates the rule.
+
 - The loop optimises the **surrogate's** score. Both pre-filter models are linear one-hot; their
   optimum is nearly reachable in one shot, so the rules mostly adapt the funnel, the exploration
   mix and the stopping time. The loop earns its keep when scorers for thermostability, epitope or

@@ -44,7 +44,12 @@ filters:                   # cheap first, expensive last; each runs on the previ
   - {name: abguard_hard}
   - {name: dedupe}
   - {name: new_liabilities, params: {severities: [high], max_new: 0}}
-  - {name: track_check}                                           # BASE VALIDATION: abguard track + track rules
+  # track_check is NOT here: it runs as `validate` below, on the selected shortlist only.
+  # Measured on this VM: both official scripts over ~13.6k survivors dominated the round (~7 of 8
+  # minutes) while the selection keeps at most `select` rows. Same official verdict, ~200x fewer rows.
+
+validate:                  # BASE VALIDATION, after ranking, on what the round actually keeps
+  name: track_check
 
 scorers:
   - {name: niccolo_prefilter}        # no splits_dir: the FACS feature was measured to add nothing and is off

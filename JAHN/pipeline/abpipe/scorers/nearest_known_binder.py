@@ -18,15 +18,17 @@ class NearestKnownBinder(Scorer):
     score__binder_distance: distance to the nearest known binder (lower is better).
     score__neighbor_binder_frac: share of binders among the k nearest FACS variants, counting every
     variant tied with the k-th so the result does not depend on the order of the reference table.
+    Binders are FACS class high or medium — the team's rule: {high, medium} are binders, everything
+    else is a non-binder. The classes are not an affinity ranking, only a binder/non-binder split.
     metric auto uses Hamming (substituted positions, as the FACS edit_distance counts them) because
     every candidate window and every FACS variant has the same length; it falls back to Levenshtein
     if the FACS lengths differ from the window's.
     """
 
-    version = "3"
+    version = "4"
     outputs = {"score__binder_distance": "lower", "score__neighbor_binder_frac": "higher"}
 
-    def __init__(self, binder_classes: tuple = ("high",), k: int = 25, chunk: int = 256, metric: str = "auto"):
+    def __init__(self, binder_classes: tuple = ("high", "medium"), k: int = 25, chunk: int = 256, metric: str = "auto"):
         self.binder_classes, self.k, self.chunk = tuple(binder_classes), k, chunk
         self.metric = check_metric(metric)
 
