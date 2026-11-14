@@ -34,7 +34,7 @@ from pathlib import Path
 
 import polars as pl
 
-from abpipe import policy as policymod, probe as probemod, registry, runner
+from abpipe import policy as policymod, probe as probemod, registry, report, runner
 from abpipe import config as cfgmod
 from abpipe.iterate import EVOLVER, _round_stats, _strip_rank, _write_selected, select_diverse
 from abpipe.generators.scored_evolution import file_sha256, history_digest
@@ -273,13 +273,16 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
                 spec.params = {**spec.params, "parents": str(prev_dir / "selected.csv"),
                                "parents_sha256": file_sha256(prev_dir / "selected.csv")}
         log(f"=== round_{r:02d} (seed {cfg.seed}) ===")
-        man = runner.run(cfg, log=lambda m: log(m))
+        rd.mkdir(parents=True, exist_ok=True)
+        slog = report.StepLog(rd, t0, log)
+        man = runner.run(cfg, log=slog)
         if man.get("stopped"):
             entry.update({"stop": True, "stop_reason": man["stopped"]})
             state_doc["stopped"] = f"round_{r:02d}: {man['stopped']}"
             state_doc["rounds"].append(entry)
             with open(jsonl_path, "a") as fh:
                 fh.write(json.dumps(entry, default=str) + "\n")
+            report.iteration_report(rd, entry, man)
             _md(md_path, _render_entry(entry))
             state_path.write_text(json.dumps(state_doc, indent=2, default=str))
             log(f"round_{r:02d}: STOP — {man['stopped']}")
@@ -311,6 +314,7 @@ def run_orchestrated(config, rounds=None, select=None, out_dir="runs/orchestrate
                                   and "selected_median" in st[c]}
         st["round"], st["wall_seconds"] = r, round(time.time() - t0, 1)
         entry = _round_entry(r, snap, decision, budget, st)
+        report.iteration_report(rd, entry, man)
         state_doc["rounds"] = [x for x in state_doc["rounds"] if x["round"] != r] + [entry]
         state_doc["rounds"].sort(key=lambda x: x["round"])
         walls.append(st["wall_seconds"])

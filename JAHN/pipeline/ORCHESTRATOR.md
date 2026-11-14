@@ -62,8 +62,14 @@ cd JAHN/pipeline
 
 ## The journal (scored in the pitch: "clear reasoning")
 
-Per round, in three places under `--out`:
+Per round, under `--out`:
 
+- `round_NN/STEPS.md` — **the small report for every step**: each module completion (generate,
+  filter, score, rank) appended live with a timestamp since the round started, so the funnel is
+  readable while the round is still running.
+- `round_NN/REPORT.md` — **the major report for one full iteration**: the decision and reasoning that
+  shaped the round, the funnel table with per-filter rejection reasons, score statistics of the
+  selected set, the top selected designs, and the stop verdict if any.
 - `decisions.jsonl` — one machine-readable line per round: probe, budget, patch, reasoning, funnel.
 - `DECISIONS.md` — the same, human-readable, one section per round.
 - `orchestration.json` — the full state: every round's stats, score medians, `mean_pairwise_hamming`,
